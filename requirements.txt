@@ -18,7 +18,7 @@ numpy == 1.13.3
 # code/model/agent.py: 2
 # code/model/baseline.py: 3
 # code/model/trainer.py: 9
-tensorflow_gpu == 1.3.0
+tensorflow == 1.3.0
 
 # code/data/feed_data.py: 1
 # code/model/trainer.py: 3

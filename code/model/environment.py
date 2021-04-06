@@ -20,10 +20,12 @@ class Episode(object):
             self.num_rollouts = test_rollouts
         self.current_hop = 0
         start_entities, query_relation,  end_entities, all_answers = data
-        self.no_examples = start_entities.shape[0]
+        self.no_examples = start_entities.shape[0]   #256
+        #print(start_entities,start_entities.shape)
         self.positive_reward = positive_reward
         self.negative_reward = negative_reward
-        start_entities = np.repeat(start_entities, self.num_rollouts)
+        start_entities = np.repeat(start_entities, self.num_rollouts) 
+        #print(self.no_examples,start_entities.shape)
         batch_query_relation = np.repeat(query_relation, self.num_rollouts)
         end_entities = np.repeat(end_entities, self.num_rollouts)
         self.start_entities = start_entities
@@ -81,23 +83,23 @@ class env(object):
         self.test_rollouts = params['test_rollouts']
         input_dir = params['data_input_dir']
         if mode == 'train':
-            self.batcher = RelationEntityBatcher(input_dir=input_dir,
-                                                 batch_size=params['batch_size'],
-                                                 entity_vocab=params['entity_vocab'],
-                                                 relation_vocab=params['relation_vocab']
-                                                 )
+            self.batcher = RelationEntityBatcher(dataset=params['dataset'],
+                                                  batch_size=params['batch_size'],
+                                                  entity_vocab=params['entity_vocab'],
+                                                  relation_vocab=params['relation_vocab']
+                                                  )
         else:
-            self.batcher = RelationEntityBatcher(input_dir=input_dir,
-                                                 mode =mode,
-                                                 batch_size=params['batch_size'],
-                                                 entity_vocab=params['entity_vocab'],
-                                                 relation_vocab=params['relation_vocab'])
+            self.batcher = RelationEntityBatcher(dataset=params['dataset'],
+                                                  batch_size=params['batch_size'],
+                                                  entity_vocab=params['entity_vocab'],
+                                                  relation_vocab=params['relation_vocab'],
+                                                  mode=mode)
 
             self.total_no_examples = self.batcher.store.shape[0]
-        self.grapher = RelationEntityGrapher(triple_store=params['data_input_dir'] + '/' + 'graph.txt',
-                                             max_num_actions=params['max_num_actions'],
-                                             entity_vocab=params['entity_vocab'],
-                                             relation_vocab=params['relation_vocab'])
+        self.grapher = RelationEntityGrapher(triple_store=params['dataset']['graph'],
+                                              max_num_actions=params['max_num_actions'],
+                                              entity_vocab=params['entity_vocab'],
+                                              relation_vocab=params['relation_vocab'])
 
     def get_episodes(self):
         params = self.batch_size, self.path_len, self.num_rollouts, self.test_rollouts, self.positive_reward, self.negative_reward, self.mode, self.batcher

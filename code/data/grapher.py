@@ -1,7 +1,7 @@
 from collections import defaultdict
 import logging
 import numpy as np
-import csv
+# import csv
 
 logger = logging.getLogger(__name__)
 
@@ -26,13 +26,13 @@ class RelationEntityGrapher:
         print("KG constructed")
 
     def create_graph(self):
-        with open(self.triple_store) as triple_file_raw:
-            triple_file = csv.reader(triple_file_raw, delimiter='\t')
-            for line in triple_file:
-                e1 = self.entity_vocab[line[0]]
-                r = self.relation_vocab[line[1]]
-                e2 = self.entity_vocab[line[2]]
-                self.store[e1].append((r, e2))
+        # with open(self.triple_store) as triple_file_raw:
+            # triple_file = csv.reader(triple_file_raw, delimiter='\t')
+        for line in self.triple_store:
+            e1 = self.entity_vocab[line[0]]
+            r = self.relation_vocab[line[1]]
+            e2 = self.entity_vocab[line[2]]
+            self.store[e1].append((r, e2))
 
         for e1 in self.store:
             num_actions = 1
@@ -62,7 +62,8 @@ class RelationEntityGrapher:
 
                 correct_e2 = answers[i]
                 for j in range(entities.shape[0]):
-                    if entities[j] in all_correct_answers[i/rollouts] and entities[j] != correct_e2:
+                    #print(i/rollouts,j,i,rollouts)
+                    if entities[j] in all_correct_answers[int(i/rollouts)] and entities[j] != correct_e2:
                         entities[j] = self.ePAD
                         relations[j] = self.rPAD
 
