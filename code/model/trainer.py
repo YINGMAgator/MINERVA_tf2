@@ -1,5 +1,6 @@
 from __future__ import absolute_import
 from __future__ import division
+
 from tqdm import tqdm
 import time
 import os
@@ -13,7 +14,7 @@ from code.model.environment import env
 import codecs
 from collections import defaultdict
 import gc
-import resource
+#import resource
 import sys
 from code.model.baseline import ReactiveBaseline
 #from scipy.misc import logsumexp as lse
@@ -27,7 +28,7 @@ class Trainer(object):
     def __init__(self, params):
 
         # transfer parameters to self
-        for key, val in params.items(): setattr(self, key, val);
+        for key, val in params.items(): setattr(self, key, val)
 
         self.agent = Agent(params)
         self.save_path = None
@@ -47,6 +48,7 @@ class Trainer(object):
         # self.optimizer = tf.compat.v1.train.AdamOptimizer(self.learning_rate)
         self.optimizer = tf.keras.optimizers.Adam(self.learning_rate)
 
+    #total loss encorporating 
     def calc_reinforce_loss(self,cum_discounted_reward,loss_all,logits_all):
         loss = tf.stack(loss_all, axis=1)  # [B, T]
 
@@ -69,87 +71,14 @@ class Trainer(object):
         # print(self.decaying_beta(self.global_step))
         return total_loss
 
-
     def entropy_reg_loss(self, all_logits):
         all_logits = tf.stack(all_logits, axis=2)  # [B, MAX_NUM_ACTIONS, T]
+        #we take the average because of the batch size being greater than 1
         entropy_policy = - tf.reduce_mean(tf.reduce_sum(tf.multiply(tf.exp(all_logits), all_logits), axis=1))  # scalar
         return entropy_policy
-    
 
 
-    # def initialize(self, restore=None, sess=None):
-
-    #     logger.info("Creating TF graph...")
-    #     self.candidate_relation_sequence = []
-    #     self.candidate_entity_sequence = []
-    #     self.input_path = []
-    #     self.first_state_of_test = tf.compat.v1.placeholder(tf.bool, name="is_first_state_of_test")
-    #     self.query_relation = tf.compat.v1.placeholder(tf.int32, [None], name="query_relation")
-    #     self.range_arr = tf.compat.v1.placeholder(tf.int32, shape=[None, ])
-    #     self.entity_sequence = []
-
-    #     # to feed in the discounted reward tensor
-    #     self.cum_discounted_reward = tf.compat.v1.placeholder(tf.float32, [None, self.path_length],
-    #                                                 name="cumulative_discounted_reward")
-
-
-
-    #     for t in range(self.path_length):
-    #         next_possible_relations = tf.compat.v1.placeholder(tf.int32, [None, self.max_num_actions],
-    #                                                name="next_relations_{}".format(t))
-    #         next_possible_entities = tf.compat.v1.placeholder(tf.int32, [None, self.max_num_actions],
-    #                                                  name="next_entities_{}".format(t))
-    #         input_label_relation = tf.compat.v1.placeholder(tf.int32, [None], name="input_label_relation_{}".format(t))
-    #         start_entities = tf.compat.v1.placeholder(tf.int32, [None, ])
-    #         self.input_path.append(input_label_relation)
-    #         self.candidate_relation_sequence.append(next_possible_relations)
-    #         self.candidate_entity_sequence.append(next_possible_entities)
-    #         self.entity_sequence.append(start_entities)
-            
-            
-            
-    #     self.loss_before_reg = tf.constant(0.0)
-        
-        
-        # self.per_example_loss, self.per_example_logits, self.action_idx = self.agent(
-        #     self.candidate_relation_sequence,
-        #     self.candidate_entity_sequence, self.entity_sequence,
-        #     self.input_path,
-        #     self.query_relation, self.range_arr, self.first_state_of_test, self.path_length)
-
-
-
-
-        # # Building the test graph
-        # self.prev_state = tf.compat.v1.placeholder(tf.float32, self.agent.get_mem_shape(), name="memory_of_agent")
-        # self.prev_relation = tf.compat.v1.placeholder(tf.int32, [None, ], name="previous_relation")
-        # self.query_embedding = tf.nn.embedding_lookup(params=self.agent.relation_lookup_table, ids=self.query_relation)  # [B, 2D]
-        # layer_state = tf.unstack(self.prev_state, self.LSTM_layers)
-        # formated_state = [tf.unstack(s, 2) for s in layer_state]
-        # self.next_relations = tf.compat.v1.placeholder(tf.int32, shape=[None, self.max_num_actions])
-        # self.next_entities = tf.compat.v1.placeholder(tf.int32, shape=[None, self.max_num_actions])
-
-        # self.current_entities = tf.compat.v1.placeholder(tf.int32, shape=[None,])
-
-
-
-        # with tf.compat.v1.variable_scope("policy_steps_unroll") as scope:
-        #     scope.reuse_variables()
-        #     self.test_loss, test_state, self.test_logits, self.test_action_idx, self.chosen_relation = self.agent.step(
-        #         self.next_relations, self.next_entities, formated_state, self.prev_relation, self.query_embedding,
-        #         self.current_entities, self.input_path[0], self.range_arr, self.first_state_of_test)
-        #     self.test_state = tf.stack(test_state)
-
-        # logger.info('TF Graph creation done..')
-        # self.model_saver = tf.compat.v1.train.Saver(max_to_keep=2)
-
-        # # return the variable initializer Op.
-        # if not restore:
-        #     return tf.compat.v1.global_variables_initializer()
-        # else:
-        #     return  self.model_saver.restore(sess, restore)
-
-
+    #the return we all know and love, discounted by gamma
     def calc_cum_discounted_reward(self, rewards):
         """
         calculates the cumulative discounted reward.
@@ -167,26 +96,6 @@ class Trainer(object):
             cum_disc_reward[:, t] = running_add
         return cum_disc_reward
 
-    # def gpu_io_setup(self):
-    #     # create fetches for partial_run_setup
-    #     fetches = self.per_example_loss  + self.action_idx + [self.loss_op] + self.per_example_logits + [self.dummy]
-    #     feeds =  [self.first_state_of_test] + self.candidate_relation_sequence+ self.candidate_entity_sequence + self.input_path + \
-    #             [self.query_relation] + [self.cum_discounted_reward] + [self.range_arr] + self.entity_sequence
-
-
-    #     feed_dict = [{} for _ in range(self.path_length)]
-
-    #     feed_dict[0][self.first_state_of_test] = False
-    #     feed_dict[0][self.query_relation] = None
-    #     feed_dict[0][self.range_arr] = np.arange(self.batch_size*self.num_rollouts)
-    #     for i in range(self.path_length):
-    #         feed_dict[i][self.input_path[i]] = np.zeros(self.batch_size * self.num_rollouts)  # placebo
-    #         feed_dict[i][self.candidate_relation_sequence[i]] = None
-    #         feed_dict[i][self.candidate_entity_sequence[i]] = None
-    #         feed_dict[i][self.entity_sequence[i]] = None
-
-    #     return fetches, feeds, feed_dict
-
     def train(self):
         # import pdb
         # pdb.set_trace()
@@ -197,9 +106,7 @@ class Trainer(object):
         self.first_state_of_test = False
         self.range_arr = np.arange(self.batch_size*self.num_rollouts)
         
-        
         for episode in self.train_environment.get_episodes():
-
             self.batch_counter += 1
             model_state = self.agent.state_init
             prev_relation = self.agent.relation_init            
@@ -209,17 +116,24 @@ class Trainer(object):
             query_embedding = self.agent.get_query_embedding(query_relation)
             # get initial state
             state = episode.get_state()
-            # for each time step
+            
             with tf.GradientTape() as tape:
                 loss_before_regularization = []
                 logits_all = []
+                # for each time step
                 for i in range(self.path_length):
+                    #Step 1:
+                    #temporarily replace the idx with the brute force answer. Essentially, we mute the
+                    #agent and just verify that the brute force algo. is correct, otherwise we cannot use
+                    #it as a metric
                     loss, model_state, logits, idx, prev_relation = self.agent.step(state['next_relations'],
                                                                                   state['next_entities'],
                                                                                   model_state, prev_relation, query_embedding,
                                                                                   state['current_entities'],  
                                                                                   range_arr=self.range_arr,
                                                                                   first_step_of_test = self.first_state_of_test)
+                    #Step 2:
+                    #some code to calculate loss between loss and prediction
                     loss_before_regularization.append(loss)
                     logits_all.append(logits)
                     # action = np.squeeze(action, axis=1)  # [B,]

@@ -21,11 +21,10 @@ class Episode(object):
         self.current_hop = 0
         start_entities, query_relation,  end_entities, all_answers = data
         self.no_examples = start_entities.shape[0]   #256
-        #print(start_entities,start_entities.shape)
         self.positive_reward = positive_reward
         self.negative_reward = negative_reward
+        #turns start entities into a list of the same start entity num_rollouts number of times so we can keep track of all the rollouts later on
         start_entities = np.repeat(start_entities, self.num_rollouts) 
-        #print(self.no_examples,start_entities.shape)
         batch_query_relation = np.repeat(query_relation, self.num_rollouts)
         end_entities = np.repeat(end_entities, self.num_rollouts)
         self.start_entities = start_entities
@@ -58,13 +57,17 @@ class Episode(object):
         return reward
 
     def __call__(self, action):
+        #increment path length by 1
         self.current_hop += 1
+        #update current entities to be equal to the node the action taken leads to
         self.current_entities = self.state['next_entities'][np.arange(self.no_examples*self.num_rollouts), action]
 
+        #use this new information to generate the next set of possible actions
         next_actions = self.grapher.return_next_actions(self.current_entities, self.start_entities, self.query_relation,
                                                         self.end_entities, self.all_answers, self.current_hop == self.path_len - 1,
                                                         self.num_rollouts )
 
+        #and create a new state
         self.state['next_relations'] = next_actions[:, :, 1]
         self.state['next_entities'] = next_actions[:, :, 0]
         self.state['current_entities'] = self.current_entities
@@ -82,6 +85,7 @@ class env(object):
         self.path_len = params['path_length']
         self.test_rollouts = params['test_rollouts']
         input_dir = params['data_input_dir']
+        #create the batchers, which in turn create arrays for all triples and query answers. We call these to give us batches
         if mode == 'train':
             self.batcher = RelationEntityBatcher(dataset=params['dataset'],
                                                   batch_size=params['batch_size'],
@@ -96,11 +100,13 @@ class env(object):
                                                   mode=mode)
 
             self.total_no_examples = self.batcher.store.shape[0]
+        #create the whole graph which the agent will traverse along, allowing us to know what actions are possible next
         self.grapher = RelationEntityGrapher(triple_store=params['dataset']['graph'],
                                               max_num_actions=params['max_num_actions'],
                                               entity_vocab=params['entity_vocab'],
                                               relation_vocab=params['relation_vocab'])
 
+    #returns an episode, a tool which the trainer can use to get current states from, take a step, and then give the actions back to to get another current state until we reach the end
     def get_episodes(self):
         params = self.batch_size, self.path_len, self.num_rollouts, self.test_rollouts, self.positive_reward, self.negative_reward, self.mode, self.batcher
         if self.mode == 'train':

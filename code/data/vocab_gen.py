@@ -8,11 +8,12 @@ Created on Sun May 31 00:07:01 2020
 
 
 class Vocab_Gen:
+    #UNDERSTOOD
     def __init__(self, Datasets):
         self.entity_vocab = {}
         self.relation_vocab = {}
         
-        
+        #default values-  everything set to 0 to start
         self.entity_vocab['PAD'] = len(self.entity_vocab)
         self.entity_vocab['UNK'] = len(self.entity_vocab)
         self.relation_vocab['PAD'] = len(self.relation_vocab)
@@ -22,6 +23,7 @@ class Vocab_Gen:
         
         self.entity_counter = len(self.entity_vocab)
         self.relation_counter = len(self.relation_vocab)
+        #dataset is the knowledge base, contains list of facts (entity, relation, entity) where entity or relation correspond to their encodings
         for dataset in Datasets:
             for line in dataset:
                 if line[0] not in self.entity_vocab:
