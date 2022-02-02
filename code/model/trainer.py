@@ -137,6 +137,8 @@ class Trainer(object):
                     loss_before_regularization.append(loss)
                     logits_all.append(logits)
                     # action = np.squeeze(action, axis=1)  # [B,]
+                    #gets the correct step of the correct path from the object variable
+                    idx=episode.correct_path[i]
                     state = episode(idx)
                 # get the final reward from the environment
                 rewards = episode.get_reward()

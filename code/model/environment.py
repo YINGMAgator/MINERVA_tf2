@@ -3,6 +3,7 @@ from __future__ import division
 import numpy as np
 from code.data.feed_data import RelationEntityBatcher
 from code.data.grapher import RelationEntityGrapher
+from code.data.label_gen import Labeller
 import logging
 
 logger = logging.getLogger()
@@ -19,7 +20,8 @@ class Episode(object):
         else:
             self.num_rollouts = test_rollouts
         self.current_hop = 0
-        start_entities, query_relation,  end_entities, all_answers = data
+        # we have correct path passed to the episode, which we will access later
+        start_entities, query_relation,  end_entities, all_answers, self.correct_path = data
         self.no_examples = start_entities.shape[0]   #256
         self.positive_reward = positive_reward
         self.negative_reward = negative_reward
@@ -61,6 +63,8 @@ class Episode(object):
         self.current_hop += 1
         #update current entities to be equal to the node the action taken leads to
         self.current_entities = self.state['next_entities'][np.arange(self.no_examples*self.num_rollouts), action]
+        print("Arrived at:")
+        print(self.state['next_entities'][np.arange(self.no_examples*self.num_rollouts), action])
 
         #use this new information to generate the next set of possible actions
         next_actions = self.grapher.return_next_actions(self.current_entities, self.start_entities, self.query_relation,
@@ -105,16 +109,17 @@ class env(object):
                                               max_num_actions=params['max_num_actions'],
                                               entity_vocab=params['entity_vocab'],
                                               relation_vocab=params['relation_vocab'])
+        #creates the labeller for the environment, which will find the best path by brute force
+        self.labeller = Labeller([self.grapher.array_store, params['entity_vocab']['PAD'], params['relation_vocab']['PAD']])
 
     #returns an episode, a tool which the trainer can use to get current states from, take a step, and then give the actions back to to get another current state until we reach the end
     def get_episodes(self):
         params = self.batch_size, self.path_len, self.num_rollouts, self.test_rollouts, self.positive_reward, self.negative_reward, self.mode, self.batcher
         if self.mode == 'train':
-            for data in self.batcher.yield_next_batch_train():
-
+            for data in self.batcher.yield_next_batch_train(self.labeller):
                 yield Episode(self.grapher, data, params)
         else:
-            for data in self.batcher.yield_next_batch_test():
+            for data in self.batcher.yield_next_batch_test(self.labeller):
                 if data == None:
                     return
                 yield Episode(self.grapher, data, params)

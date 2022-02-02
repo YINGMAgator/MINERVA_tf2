@@ -5,11 +5,12 @@ from collections import defaultdict
 import csv
 import random
 import os
+from code.data.label_gen import Labeller
 
 
 class RelationEntityBatcher():
 
-    def __init__(self,dataset,batch_size, entity_vocab, relation_vocab, mode = "train"):
+    def __init__(self,dataset,batch_size, entity_vocab, relation_vocab, mode = "train", num_rollouts=20):
         # self.input_dir = input_dir
         # self.input_file = input_dir+'/{0}.txt'.format(mode)
         self.train_data = dataset['train']
@@ -18,6 +19,7 @@ class RelationEntityBatcher():
         self.graph_data = dataset['graph'] 
         self.batch_size = batch_size
         self.full_graph = dataset['full_graph']
+        self.num_rollouts = num_rollouts
         print('Reading vocab...')
         self.entity_vocab = entity_vocab
         self.relation_vocab = relation_vocab
@@ -77,12 +79,18 @@ class RelationEntityBatcher():
                     self.store_all_correct[(e1, r)].add(e2)
                     
     #UNDERSTOOD
-    def yield_next_batch_train(self):
+    def yield_next_batch_train(self, labeller):
         while True:
             #randomly generates a list of indexes of facts in the training data the length of which is the batch size
             batch_idx = np.random.randint(0, self.store.shape[0], size=self.batch_size)
             #creates numpy array of the facts at those indexes
             batch = self.store[batch_idx, :]
+            #generates correct paths
+            labels=np.array([labeller.correct_path(batch[i,:]) for i in range(len(batch))])
+            #get indices where no path was found and delete them from the batch
+            indices=np.argwhere(labels==np.array([-1,-1]))
+            np.delete(labels,indices)
+            np.delete(batch,indices)
             #split these facts into their component parts
             e1 = batch[:,0]
             r = batch[:, 1]
@@ -94,10 +102,12 @@ class RelationEntityBatcher():
             assert e1.shape[0] == e2.shape[0] == r.shape[0] == len(all_e2s)
             #return a list of facts and and query answers where the query is e1 and r of an arbitrary fact
             #from this we will have a bunch of facts and then a bunch of queries that we can create and know the right answer(s) of
-            yield e1, r, e2, all_e2s
+            #returns 3 256 long action indexes, corresponding to steps 1, 2, and 3 of the path for all samples in the batch
+            #current problem is figuring out how to incorporate the rollout thing to make them 5120 long instead of 256
+            yield e1, r, e2, all_e2s, np.repeat(np.transpose(labels),self.num_rollouts,axis=1)
 
     #UNDERSTOOD
-    def yield_next_batch_test(self):
+    def yield_next_batch_test(self, labeller):
         remaining_triples = self.store.shape[0]
         current_idx = 0
         while True:
@@ -115,6 +125,12 @@ class RelationEntityBatcher():
                 remaining_triples = 0
             #get the facts that batch_idx points to as well as the potential right answers for the (e1, r, ?) query
             batch = self.store[batch_idx, :]
+            #generates correct paths
+            labels=np.array([labeller.correct_path(batch[i,:]) for i in range(len(batch))])
+            #get indices where no path was found and delete them from the batch
+            indices=np.argwhere(labels==np.array([-1,-1]))
+            np.delete(labels,indices)
+            np.delete(batch,indices)
             e1 = batch[:,0]
             r = batch[:, 1]
             e2 = batch[:, 2]
@@ -123,4 +139,4 @@ class RelationEntityBatcher():
                 all_e2s.append(self.store_all_correct[(e1[i], r[i])])
             assert e1.shape[0] == e2.shape[0] == r.shape[0] == len(all_e2s)
             #return a list of facts and and query answers where the query is e1 and r of an arbitrary fact
-            yield e1, r, e2, all_e2s
+            yield e1, r, e2, all_e2s, np.repeat(np.transpose(labels),self.num_rollouts,axis=1)

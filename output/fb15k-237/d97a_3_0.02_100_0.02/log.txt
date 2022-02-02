@@ -1,0 +1,7 @@
+02/01/2022 05:10:36 PM: [ reading vocab files... ]
+02/01/2022 05:10:37 PM: [ Reading mid to name map ]
+02/01/2022 05:10:37 PM: [ Done.. ]
+02/01/2022 05:10:37 PM: [ Total number of entities 14536 ]
+02/01/2022 05:10:37 PM: [ Total number of relations 478 ]
+02/01/2022 05:10:39 PM: [ <tensorflow.python.keras.layers.legacy_rnn.rnn_cell_impl.LSTMCell object at 0x000002B0AC69AE80>: Note that this cell is not optimized for performance. Please use tf.contrib.cudnn_rnn.CudnnLSTM for better performance on GPU. ]
+02/01/2022 05:10:39 PM: [ `tf.nn.rnn_cell.MultiRNNCell` is deprecated. This class is equivalent as `tf.keras.layers.StackedRNNCells`, and will be replaced by that in Tensorflow 2.0. ]
