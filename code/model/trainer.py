@@ -1,5 +1,6 @@
 from __future__ import absolute_import
 from __future__ import division
+from torch import float32
 
 from tqdm import tqdm
 import time
@@ -105,6 +106,9 @@ class Trainer(object):
         self.batch_counter = 0
         self.first_state_of_test = False
         self.range_arr = np.arange(self.batch_size*self.num_rollouts)
+
+        #cross entropy that we will use in our supervised learning implementation
+        cce = tf.keras.losses.CategoricalCrossentropy(reduction=tf.keras.losses.Reduction.NONE)
         
         for episode in self.train_environment.get_episodes():
             self.batch_counter += 1
@@ -118,6 +122,7 @@ class Trainer(object):
             state = episode.get_state()
             
             with tf.GradientTape() as tape:
+                supervised_learning_loss = []
                 loss_before_regularization = []
                 logits_all = []
                 # for each time step
@@ -126,7 +131,7 @@ class Trainer(object):
                     #temporarily replace the idx with the brute force answer. Essentially, we mute the
                     #agent and just verify that the brute force algo. is correct, otherwise we cannot use
                     #it as a metric
-                    loss, model_state, logits, idx, prev_relation = self.agent.step(state['next_relations'],
+                    loss, model_state, logits, idx, prev_relation, scores = self.agent.step(state['next_relations'],
                                                                                   state['next_entities'],
                                                                                   model_state, prev_relation, query_embedding,
                                                                                   state['current_entities'],  
@@ -134,51 +139,67 @@ class Trainer(object):
                                                                                   first_step_of_test = self.first_state_of_test)
                     #Step 2:
                     #some code to calculate loss between loss and prediction
-                    loss_before_regularization.append(loss)
-                    logits_all.append(logits)
+                    ###functional RL code###loss_before_regularization.append(loss)
+                    ###functional RL code###logits_all.append(logits)
                     # action = np.squeeze(action, axis=1)  # [B,]
+
+                    ##CODE FOR SUPERVISED LEARNING LOSS
+                    #idx=episode.correct_path[i]
+                    correct=np.full((5120,200),0)
+                    correct[np.arange(0,5120),episode.correct_path[i]]=np.ones(5120)
+                    supervised_learning_loss.append(cce(tf.convert_to_tensor(correct),scores))
+
+                    #create a tensor of size (2560,200) where in each of the 2560 rows, the tensor of length 200 has -9.9999000e+04 at every index except the index specified in the correct path, which has a 1
+                    #then i take the cross entropy loss between the scores outputted by the network and the correct answers
+                    #get the sum of the 200 long vectors so you have a 2560,1 vector
+                    #append this to a list so you can take the sum over the three steps for each batch and then take the average of the batches
+                    ##END CODE FOR SUPERVISED LEARNING LOSS
+
                     #gets the correct step of the correct path from the object variable
-                    idx=episode.correct_path[i]
                     state = episode(idx)
                 # get the final reward from the environment
-                rewards = episode.get_reward()
+                ###functional RL code###rewards = episode.get_reward()
     
                 # computed cumulative discounted reward
-                cum_discounted_reward = self.calc_cum_discounted_reward(rewards)  # [B, T]
+                ###functional RL code###cum_discounted_reward = self.calc_cum_discounted_reward(rewards)  # [B, T]
     
-                batch_total_loss = self.calc_reinforce_loss(cum_discounted_reward,loss_before_regularization,logits_all)
-            gradients = tape.gradient(batch_total_loss, self.agent.trainable_variables)
+                ###functional RL code###batch_total_loss = self.calc_reinforce_loss(cum_discounted_reward,loss_before_regularization,logits_all)
+                supervised_learning_total_loss =  tf.math.reduce_mean(tf.reduce_sum(supervised_learning_loss,0))
+                print("Supervised Learning Total Loss:")
+                print(supervised_learning_total_loss)
+            ###functional RL code###gradients = tape.gradient(batch_total_loss, self.agent.trainable_variables)
+            gradients = tape.gradient(supervised_learning_total_loss, self.agent.trainable_variables)
             # print(len(self.agent.trainable_variables),self.agent.trainable_variables)
             gradients, _ = tf.clip_by_global_norm(gradients, self.grad_clip_norm)
             self.optimizer.apply_gradients(zip(gradients, self.agent.trainable_variables))        
 
             
             # print statistics
-            train_loss = 0.98 * train_loss + 0.02 * batch_total_loss
+            ###functional RL code###train_loss = 0.98 * train_loss + 0.02 * batch_total_loss
             # train_loss1 = 0.98 * train_loss1 + 0.02 * loss1
             # print(batch_total_loss,loss1,train_loss,train_loss1)
-            avg_reward = np.mean(rewards)
+            ###functional RL code###avg_reward = np.mean(rewards)
             # now reshape the reward to [orig_batch_size, num_rollouts], I want to calculate for how many of the
             # entity pair, atleast one of the path get to the right answer
-            reward_reshape = np.reshape(rewards, (self.batch_size, self.num_rollouts))  # [orig_batch, num_rollouts]
-            reward_reshape = np.sum(reward_reshape, axis=1)  # [orig_batch]
-            reward_reshape = (reward_reshape > 0)
-            num_ep_correct = np.sum(reward_reshape)
-            if np.isnan(train_loss):
-                raise ArithmeticError("Error in computing loss")
-                
-            logger.info("batch_counter: {0:4d}, num_hits: {1:7.4f}, avg. reward per batch {2:7.4f}, "
-                        "num_ep_correct {3:4d}, avg_ep_correct {4:7.4f}, train loss {5:7.4f}".
-                        format(self.batch_counter, np.sum(rewards), avg_reward, num_ep_correct,
-                                (num_ep_correct / self.batch_size),
-                                train_loss))                
+            ###functional RL code###reward_reshape = np.reshape(rewards, (self.batch_size, self.num_rollouts))  # [orig_batch, num_rollouts]
+            ###functional RL code###reward_reshape = np.sum(reward_reshape, axis=1)  # [orig_batch]
+            ###functional RL code###reward_reshape = (reward_reshape > 0)
+            ###functional RL code###num_ep_correct = np.sum(reward_reshape)
+            ###functional RL code###if np.isnan(train_loss):
+            ###functional RL code###    raise ArithmeticError("Error in computing loss")
+            ###functional RL code###    
+            ###functional RL code###logger.info("batch_counter: {0:4d}, num_hits: {1:7.4f}, avg. reward per batch {2:7.4f}, "
+            ###functional RL code###            "num_ep_correct {3:4d}, avg_ep_correct {4:7.4f}, train loss {5:7.4f}".
+            ###functional RL code###            format(self.batch_counter, np.sum(rewards), avg_reward, num_ep_correct,
+            ###functional RL code###                    (num_ep_correct / self.batch_size),
+            ###functional RL code###                    train_loss))                
             # print('111111111111111111111111')
-            if self.batch_counter%self.eval_every == 0:
-                with open(self.output_dir + '/scores.txt', 'a') as score_file:
-                    score_file.write("Score for iteration " + str(self.batch_counter) + "\n")
-                os.mkdir(self.path_logger_file + "/" + str(self.batch_counter))
-                self.path_logger_file_ = self.path_logger_file + "/" + str(self.batch_counter) + "/paths"
-                self.test(beam=True, print_paths=False)
+            ###functional RL code###if self.batch_counter%self.eval_every == 0:
+            ###functional RL code###    with open(self.output_dir + '/scores.txt', 'a') as score_file:
+            ###functional RL code###        score_file.write("Score for iteration " + str(self.batch_counter) + "\n")
+            ###functional RL code###    os.mkdir(self.path_logger_file + "/" + str(self.batch_counter))
+            ###functional RL code###    self.path_logger_file_ = self.path_logger_file + "/" + str(self.batch_counter) + "/paths"
+            ###functional RL code###    self.test(beam=True, print_paths=False)
 
             # logger.info('Memory usage: %s (kb)' % resource.getrusage(resource.RUSAGE_SELF).ru_maxrss)
 

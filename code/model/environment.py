@@ -63,8 +63,8 @@ class Episode(object):
         self.current_hop += 1
         #update current entities to be equal to the node the action taken leads to
         self.current_entities = self.state['next_entities'][np.arange(self.no_examples*self.num_rollouts), action]
-        print("Arrived at:")
-        print(self.state['next_entities'][np.arange(self.no_examples*self.num_rollouts), action])
+        #print("Arrived at:")
+        #print(self.state['next_entities'][np.arange(self.no_examples*self.num_rollouts), action])
 
         #use this new information to generate the next set of possible actions
         next_actions = self.grapher.return_next_actions(self.current_entities, self.start_entities, self.query_relation,
