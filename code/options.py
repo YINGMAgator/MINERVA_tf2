@@ -8,6 +8,8 @@ from pprint import pprint
 #UNDERSTOOD
 def read_options():
     parser = argparse.ArgumentParser()
+    #flag for whether we are just running the program to generate labels for a dataset
+    parser.add_argument("--label_gen", default=0, type=int)
     #for the training data
     parser.add_argument("--data_input_dir", default="", type=str)
     parser.add_argument("--input_file", default="train.txt", type=str)
@@ -68,6 +70,10 @@ def read_options():
         parsed = vars(parser.parse_args())
     except IOError as msg:
         parser.error(str(msg))
+
+    #dataset name
+    parsed['dataset_name']=parsed['base_output_dir'][7:-1]
+
     parsed['input_files'] = [parsed['data_input_dir'] + '/' + parsed['input_file']]
 
     parsed['use_entity_embeddings'] = (parsed['use_entity_embeddings'] == 1)

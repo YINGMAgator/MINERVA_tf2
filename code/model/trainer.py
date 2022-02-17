@@ -145,8 +145,9 @@ class Trainer(object):
 
                     ##CODE FOR SUPERVISED LEARNING LOSS
                     #idx=episode.correct_path[i]
-                    correct=np.full((5120,200),0)
-                    correct[np.arange(0,5120),episode.correct_path[i]]=np.ones(5120)
+                    active_length=scores.shape[0]
+                    correct=np.full((active_length,200),0)
+                    correct[np.arange(0,active_length),episode.correct_path[i]]=np.ones(active_length)
                     supervised_learning_loss.append(cce(tf.convert_to_tensor(correct),scores))
 
                     #create a tensor of size (2560,200) where in each of the 2560 rows, the tensor of length 200 has -9.9999000e+04 at every index except the index specified in the correct path, which has a 1
@@ -164,7 +165,7 @@ class Trainer(object):
                 ###functional RL code###cum_discounted_reward = self.calc_cum_discounted_reward(rewards)  # [B, T]
     
                 ###functional RL code###batch_total_loss = self.calc_reinforce_loss(cum_discounted_reward,loss_before_regularization,logits_all)
-                supervised_learning_total_loss =  tf.math.reduce_mean(tf.reduce_sum(supervised_learning_loss,0))
+                supervised_learning_total_loss =  tf.math.reduce_mean(tf.math.square(tf.reduce_sum(supervised_learning_loss,0)))
                 print("Supervised Learning Total Loss:")
                 print(supervised_learning_total_loss)
             ###functional RL code###gradients = tape.gradient(batch_total_loss, self.agent.trainable_variables)
@@ -473,7 +474,7 @@ if __name__ == '__main__':
         with open(input_file) as raw_input_file:
             csv_file = csv.reader(raw_input_file, delimiter = '\t' )
             for line in csv_file:
-                ds.append(line)   
+                ds.append(line)
         options['dataset'][dataset]=ds
 
     # input_file = options['data_input_dir']+'test.txt'

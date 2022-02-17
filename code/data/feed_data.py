@@ -77,9 +77,11 @@ class RelationEntityBatcher():
                     r = self.relation_vocab[r]
                     e2 = self.entity_vocab[e2]
                     self.store_all_correct[(e1, r)].add(e2)
+        
                     
     #UNDERSTOOD
     def yield_next_batch_train(self, labeller):
+        
         while True:
             #randomly generates a list of indexes of facts in the training data the length of which is the batch size
             batch_idx = np.random.randint(0, self.store.shape[0], size=self.batch_size)

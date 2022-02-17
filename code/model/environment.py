@@ -5,6 +5,7 @@ from code.data.feed_data import RelationEntityBatcher
 from code.data.grapher import RelationEntityGrapher
 from code.data.label_gen import Labeller
 import logging
+import sys
 
 logger = logging.getLogger()
 
@@ -77,6 +78,7 @@ class Episode(object):
         self.state['current_entities'] = self.current_entities
         return self.state
 
+import csv
 
 class env(object):
     def __init__(self, params, mode='train'):
@@ -109,8 +111,20 @@ class env(object):
                                               max_num_actions=params['max_num_actions'],
                                               entity_vocab=params['entity_vocab'],
                                               relation_vocab=params['relation_vocab'])
+        #creates the filepath of the existing or yet to be generated correct labels csv
+        correct_filepath="C:\\Users\\owenb\\OneDrive\\Documents\\GitHub\\MINERVA_tf2\\labels\\"+params['dataset_name']+"_labels.csv"
         #creates the labeller for the environment, which will find the best path by brute force
-        self.labeller = Labeller([self.grapher.array_store, params['entity_vocab']['PAD'], params['relation_vocab']['PAD']])
+        self.labeller = Labeller([self.grapher.array_store, params['entity_vocab']['PAD'], params['relation_vocab']['PAD'], params['label_gen'], correct_filepath])
+        #Code to generate labels for all of the potential queries and save them to a CSV file
+        print("generating labels file")
+        if(params['label_gen']):
+            with open(correct_filepath,'w',newline='') as csvfile:
+                writer=csv.writer(csvfile, dialect='excel')
+                for x in range(len(self.batcher.store)):
+                    #writes a row with the query followed by the correct steps
+                    writer.writerow(np.concatenate((self.batcher.store[x,:],self.labeller.correct_path(self.batcher.store[x,:]))))
+            sys.exit("Correct labels written to "+params['dataset_name']+"_labels.csv")
+
 
     #returns an episode, a tool which the trainer can use to get current states from, take a step, and then give the actions back to to get another current state until we reach the end
     def get_episodes(self):

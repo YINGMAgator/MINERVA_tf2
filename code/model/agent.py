@@ -154,6 +154,6 @@ class Agent(tf.keras.Model):
         chosen_relation = tf.gather_nd(next_relations, tf.transpose(a=tf.stack([range_arr, action_idx])))
 
         #return loss, history, action probability distribution (logits), chosen action, and chosen relation
-        return loss, new_state, tf.nn.log_softmax(scores), action_idx, chosen_relation, scores
+        return loss, new_state, tf.nn.log_softmax(scores), action_idx, chosen_relation, prelim_scores
 
 
