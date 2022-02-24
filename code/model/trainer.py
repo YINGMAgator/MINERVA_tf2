@@ -1,5 +1,6 @@
 from __future__ import absolute_import
 from __future__ import division
+import enum
 from torch import float32
 
 from tqdm import tqdm
@@ -21,12 +22,21 @@ from code.model.baseline import ReactiveBaseline
 #from scipy.misc import logsumexp as lse
 from scipy.special import logsumexp as lse
 from code.data.vocab_gen import Vocab_Gen
+import matplotlib.pyplot as plt
 logger = logging.getLogger()
 logging.basicConfig(stream=sys.stdout, level=logging.DEBUG)
 
 
 class Trainer(object):
     def __init__(self, params):
+        #set up loss graph
+        plt.show()
+        self.axes=plt.gca()
+        self.axes.set_xlim(0, 1)
+        self.axes.set_ylim(0, 1)
+        self.xdata = []
+        self.ydata = []
+        self.line, = self.axes.plot(self.xdata, self.ydata, 'r-')
 
         # transfer parameters to self
         for key, val in params.items(): setattr(self, key, val)
@@ -110,7 +120,7 @@ class Trainer(object):
         #cross entropy that we will use in our supervised learning implementation
         cce = tf.keras.losses.CategoricalCrossentropy(reduction=tf.keras.losses.Reduction.NONE)
         
-        for episode in self.train_environment.get_episodes():
+        for z, episode in enumerate(self.train_environment.get_episodes()):
             self.batch_counter += 1
             model_state = self.agent.state_init
             prev_relation = self.agent.relation_init            
@@ -168,6 +178,27 @@ class Trainer(object):
                 supervised_learning_total_loss =  tf.math.reduce_mean(tf.math.square(tf.reduce_sum(supervised_learning_loss,0)))
                 print("Supervised Learning Total Loss:")
                 print(supervised_learning_total_loss)
+
+                #increment x of graph
+                self.axes.set_xlim(0,self.axes.get_xlim()[1]+1)
+                #change y of graph if needed
+                if supervised_learning_total_loss>self.axes.get_ylim()[1]:
+                    self.axes.set_ylim(self.axes.get_ylim()[0],supervised_learning_total_loss)
+                elif supervised_learning_total_loss<self.axes.get_ylim()[0]:
+                    self.axes.set_ylim(supervised_learning_total_loss,self.axes.get_ylim()[1])
+                #regen line
+                self.line, = self.axes.plot(self.xdata, self.ydata, 'r-')
+                #append new data
+                self.xdata.append(z)
+                self.ydata.append(supervised_learning_total_loss)
+                #populate new line
+                self.line.set_xdata(self.xdata)
+                self.line.set_ydata(self.ydata)
+                #draw everything and briefly wait
+                plt.draw()
+                plt.pause(1e-17)
+                time.sleep(0.1)
+
             ###functional RL code###gradients = tape.gradient(batch_total_loss, self.agent.trainable_variables)
             gradients = tape.gradient(supervised_learning_total_loss, self.agent.trainable_variables)
             # print(len(self.agent.trainable_variables),self.agent.trainable_variables)

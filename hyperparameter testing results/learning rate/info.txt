@@ -1,0 +1,5 @@
+1e-6: stayed pretty constant around 1750, though was 1200 in next trial so I suspect the error is fairly dependent on the initialization
+1e-5: stayed pretty constant aroundn 1800
+1e-4: slight downward trend starting around 800. Possibly on the right track, but stopped after going down about 100.
+1e-3: sharp downward trend that plateaued after going from 1000 to 400. The error then diverged after 60 training steps before going back down even lower to a bit above 200. Oscillations like this continued, suggesting that perhaps a learning rate schedule would be best.
+1e-2: error increased before decreasing and oscillating up and down. This is clearly far too low, as it's running widening circles around the optimum as it overshoots and swings around.

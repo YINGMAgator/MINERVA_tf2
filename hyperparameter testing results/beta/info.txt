@@ -1,0 +1,5 @@
+0.0001: error followed a sharper downward trend at learning rate 1e-4 than when set to its default value. Error decreased from above 800 down to 500 before slowing down around iteration 100.
+0.001: Downward trend from before still exists, but is substantially both more constant and less pronounced, plateauing after a measly decrease of less than 100.
+0.01: Downward trend is almost nonexistent until around training step 120. Still isn't very pronounced.
+0.1: Error starts even higher than with 1750, but downward trend kicks in by step 40 and is very solid, decreasing by 500 before plateauing. However, it doesn't breach 1000.
+1: Error increases over time, with a pronounced divergence starting around step 80.
