@@ -1,3 +1,9 @@
+:: ensure that the code runs on GPU, where it can take advantage of the 400gb swap file
+set CUDA_VISIBLE_DEVICES=""
+
+:: block out warning messages that we're using almost all of the system's RAM and hard drive
+set TF_CPP_MIN_LOG_LEVEL=2
+
 :: Go to code package parent directory
 cd C:\Users\owenb\OneDrive\Documents\GitHub\MINERVA_tf2
 
