@@ -212,7 +212,8 @@ class Trainer(object):
                 self.line.set_ydata(self.ydata)
                 #draw everything and briefly wait
                 plt.draw()
-                plt.pause(1e-17)
+                #commented out because I need this to run in the background so I can work on other stuff
+                #plt.pause(1e-17)
                 time.sleep(0.1)
 
             if use_RL:
