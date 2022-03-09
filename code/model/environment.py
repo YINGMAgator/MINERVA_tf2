@@ -116,8 +116,8 @@ class env(object):
         #creates the labeller for the environment, which will find the best path by brute force
         self.labeller = Labeller([self.grapher.array_store, params['entity_vocab']['PAD'], params['relation_vocab']['PAD'], params['label_gen'], correct_filepath])
         #Code to generate labels for all of the potential queries and save them to a CSV file
-        print("generating labels file")
         if(params['label_gen']):
+            print("generating labels file")
             with open(correct_filepath,'w',newline='') as csvfile:
                 writer=csv.writer(csvfile, dialect='excel')
                 for x in range(len(self.batcher.store)):

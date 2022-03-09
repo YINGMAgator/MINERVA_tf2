@@ -1,0 +1,5 @@
+0.0002: slight error decrease over time
+0.002: substantially more pronounced error over just the first 80 steps
+0.02: much more slight decrease in error over first 150
+0.2: no noticeable decrease in error
+2: error is almost totally constant, very slight decrease

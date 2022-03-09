@@ -1,6 +1,9 @@
 from __future__ import absolute_import
 from __future__ import division
+from cProfile import label
+from cmath import sqrt
 import enum
+from math import ceil
 from torch import float32
 
 from tqdm import tqdm
@@ -29,17 +32,14 @@ logging.basicConfig(stream=sys.stdout, level=logging.DEBUG)
 
 class Trainer(object):
     def __init__(self, params):
-        #set up loss graph
-        plt.show()
-        self.axes=plt.gca()
-        self.axes.set_xlim(0, 1)
-        self.axes.set_ylim(0, 1)
-        self.xdata = []
-        self.ydata = []
-        self.line, = self.axes.plot(self.xdata, self.ydata, 'r-')
-
         # transfer parameters to self
         for key, val in params.items(): setattr(self, key, val)
+
+        #set up loss graph, including x range since we already know the number of training iterations that will occur
+        plt.show()
+        self.axes=plt.gca()
+        self.axes.set_xlim(0, self.total_iterations)
+        self.axes.set_ylim(0, 1) #since we don't want the y lim to get reset ever, even when we switch from SL to RL
 
         self.agent = Agent(params)
         self.save_path = None
@@ -107,10 +107,11 @@ class Trainer(object):
             cum_disc_reward[:, t] = running_add
         return cum_disc_reward
 
-    def train(self):
-        # import pdb
-        # pdb.set_trace()
-        # fetches, feeds, feed_dict = self.gpu_io_setup()
+    def train(self,use_RL):
+        #reset loss graph to add another set of data
+        self.xdata = []
+        self.ydata = []
+        self.line, = self.axes.plot(self.xdata, self.ydata, 'r-' if use_RL else 'b-', label=("reinforcement " if use_RL else "supervised ")+"learning loss")
 
         train_loss = 0.0
         self.batch_counter = 0
@@ -119,8 +120,8 @@ class Trainer(object):
 
         #cross entropy that we will use in our supervised learning implementation
         cce = tf.keras.losses.CategoricalCrossentropy(reduction=tf.keras.losses.Reduction.NONE)
-        
         for z, episode in enumerate(self.train_environment.get_episodes()):
+
             self.batch_counter += 1
             model_state = self.agent.state_init
             prev_relation = self.agent.relation_init            
@@ -149,48 +150,63 @@ class Trainer(object):
                                                                                   first_step_of_test = self.first_state_of_test)
                     #Step 2:
                     #some code to calculate loss between loss and prediction
-                    ###functional RL code###loss_before_regularization.append(loss)
-                    ###functional RL code###logits_all.append(logits)
-                    # action = np.squeeze(action, axis=1)  # [B,]
+                    if use_RL:
+                        loss_before_regularization.append(loss)
+                        logits_all.append(logits)
+                        # action = np.squeeze(action, axis=1)  # [B,]
+                    else: #use supervised learning
+                        ##CODE FOR SUPERVISED LEARNING LOSS
+                        #note that ? is used as a placeholder since this value varies from dataset to dataset
+                        #create a tensor of size (?,200) where in each of the ? rows, the tensor of length 200 has -9.9999000e+04 at every index except the index specified in the correct path, which has a 1
+                        #then i take the cross entropy loss between the scores outputted by the network and the correct answers
+                        #get the sum of the 200 long vectors so you have a ?,1 vector
+                        #append this to a list so you can take the sum over the three steps for each batch and then take the average of the batches
+                        active_length=scores.shape[0]
+                        correct=np.full((active_length,200),0)
+                        correct[np.arange(0,active_length),episode.correct_path[i]]=np.ones(active_length)
+                        supervised_learning_loss.append(cce(tf.convert_to_tensor(correct),scores))
+                        ##END CODE FOR SUPERVISED LEARNING LOSS
 
-                    ##CODE FOR SUPERVISED LEARNING LOSS
-                    #idx=episode.correct_path[i]
-                    active_length=scores.shape[0]
-                    correct=np.full((active_length,200),0)
-                    correct[np.arange(0,active_length),episode.correct_path[i]]=np.ones(active_length)
-                    supervised_learning_loss.append(cce(tf.convert_to_tensor(correct),scores))
-
-                    #create a tensor of size (2560,200) where in each of the 2560 rows, the tensor of length 200 has -9.9999000e+04 at every index except the index specified in the correct path, which has a 1
-                    #then i take the cross entropy loss between the scores outputted by the network and the correct answers
-                    #get the sum of the 200 long vectors so you have a 2560,1 vector
-                    #append this to a list so you can take the sum over the three steps for each batch and then take the average of the batches
-                    ##END CODE FOR SUPERVISED LEARNING LOSS
-
-                    #gets the correct step of the correct path from the object variable
+                    #gets gets the new state from the action chosen by the agent
                     state = episode(idx)
-                # get the final reward from the environment
-                ###functional RL code###rewards = episode.get_reward()
-    
-                # computed cumulative discounted reward
-                ###functional RL code###cum_discounted_reward = self.calc_cum_discounted_reward(rewards)  # [B, T]
-    
-                ###functional RL code###batch_total_loss = self.calc_reinforce_loss(cum_discounted_reward,loss_before_regularization,logits_all)
-                supervised_learning_total_loss =  tf.math.reduce_mean(tf.math.square(tf.reduce_sum(supervised_learning_loss,0)))
-                print("Supervised Learning Total Loss:")
-                print(supervised_learning_total_loss)
+                
+                # get the final reward from the environment and update the limits of the graphs accordingly
+                # plus add the new data to the dataset
+                if use_RL:
+                    rewards = episode.get_reward()
+                    # computed cumulative discounted reward
+                    cum_discounted_reward = self.calc_cum_discounted_reward(rewards)  # [B, T]
+                    batch_total_loss = self.calc_reinforce_loss(cum_discounted_reward,loss_before_regularization,logits_all)
+                    print("Reinforcement Learning Total Loss:")
+                    print(batch_total_loss)
 
-                #increment x of graph
-                self.axes.set_xlim(0,self.axes.get_xlim()[1]+1)
-                #change y of graph if needed
-                if supervised_learning_total_loss>self.axes.get_ylim()[1]:
-                    self.axes.set_ylim(self.axes.get_ylim()[0],supervised_learning_total_loss)
-                elif supervised_learning_total_loss<self.axes.get_ylim()[0]:
-                    self.axes.set_ylim(supervised_learning_total_loss,self.axes.get_ylim()[1])
+                    #change y of graph if needed
+                    if batch_total_loss>self.axes.get_ylim()[1]:
+                        self.axes.set_ylim(self.axes.get_ylim()[0],batch_total_loss)
+                    elif batch_total_loss<self.axes.get_ylim()[0]:
+                        self.axes.set_ylim(batch_total_loss,self.axes.get_ylim()[1])
+
+                    #append new data
+                    self.xdata.append(z)
+                    self.ydata.append(batch_total_loss)
+
+                else: #use supervised learning
+                    supervised_learning_total_loss =  tf.math.reduce_mean(tf.math.square(tf.reduce_sum(supervised_learning_loss,0)))
+                    print("Supervised Learning Total Loss:")
+                    print(supervised_learning_total_loss)
+
+                    #change y of graph if needed
+                    if supervised_learning_total_loss>self.axes.get_ylim()[1]:
+                        self.axes.set_ylim(self.axes.get_ylim()[0],supervised_learning_total_loss)
+                    elif supervised_learning_total_loss<self.axes.get_ylim()[0]:
+                        self.axes.set_ylim(supervised_learning_total_loss,self.axes.get_ylim()[1])
+
+                    #append new data
+                    self.xdata.append(z)
+                    self.ydata.append(supervised_learning_total_loss)
+                
                 #regen line
-                self.line, = self.axes.plot(self.xdata, self.ydata, 'r-')
-                #append new data
-                self.xdata.append(z)
-                self.ydata.append(supervised_learning_total_loss)
+                self.line, = self.axes.plot(self.xdata, self.ydata, 'r-' if use_RL else 'b-', label=("reinforcement " if use_RL else "supervised ")+"learning loss")
                 #populate new line
                 self.line.set_xdata(self.xdata)
                 self.line.set_ydata(self.ydata)
@@ -199,44 +215,16 @@ class Trainer(object):
                 plt.pause(1e-17)
                 time.sleep(0.1)
 
-            ###functional RL code###gradients = tape.gradient(batch_total_loss, self.agent.trainable_variables)
-            gradients = tape.gradient(supervised_learning_total_loss, self.agent.trainable_variables)
+            if use_RL:
+                gradients = tape.gradient(batch_total_loss, self.agent.trainable_variables)
+            else: #use supervised learning
+                gradients = tape.gradient(supervised_learning_total_loss, self.agent.trainable_variables)
             # print(len(self.agent.trainable_variables),self.agent.trainable_variables)
             gradients, _ = tf.clip_by_global_norm(gradients, self.grad_clip_norm)
             self.optimizer.apply_gradients(zip(gradients, self.agent.trainable_variables))        
 
-            
-            # print statistics
-            ###functional RL code###train_loss = 0.98 * train_loss + 0.02 * batch_total_loss
-            # train_loss1 = 0.98 * train_loss1 + 0.02 * loss1
-            # print(batch_total_loss,loss1,train_loss,train_loss1)
-            ###functional RL code###avg_reward = np.mean(rewards)
-            # now reshape the reward to [orig_batch_size, num_rollouts], I want to calculate for how many of the
-            # entity pair, atleast one of the path get to the right answer
-            ###functional RL code###reward_reshape = np.reshape(rewards, (self.batch_size, self.num_rollouts))  # [orig_batch, num_rollouts]
-            ###functional RL code###reward_reshape = np.sum(reward_reshape, axis=1)  # [orig_batch]
-            ###functional RL code###reward_reshape = (reward_reshape > 0)
-            ###functional RL code###num_ep_correct = np.sum(reward_reshape)
-            ###functional RL code###if np.isnan(train_loss):
-            ###functional RL code###    raise ArithmeticError("Error in computing loss")
-            ###functional RL code###    
-            ###functional RL code###logger.info("batch_counter: {0:4d}, num_hits: {1:7.4f}, avg. reward per batch {2:7.4f}, "
-            ###functional RL code###            "num_ep_correct {3:4d}, avg_ep_correct {4:7.4f}, train loss {5:7.4f}".
-            ###functional RL code###            format(self.batch_counter, np.sum(rewards), avg_reward, num_ep_correct,
-            ###functional RL code###                    (num_ep_correct / self.batch_size),
-            ###functional RL code###                    train_loss))                
-            # print('111111111111111111111111')
-            ###functional RL code###if self.batch_counter%self.eval_every == 0:
-            ###functional RL code###    with open(self.output_dir + '/scores.txt', 'a') as score_file:
-            ###functional RL code###        score_file.write("Score for iteration " + str(self.batch_counter) + "\n")
-            ###functional RL code###    os.mkdir(self.path_logger_file + "/" + str(self.batch_counter))
-            ###functional RL code###    self.path_logger_file_ = self.path_logger_file + "/" + str(self.batch_counter) + "/paths"
-            ###functional RL code###    self.test(beam=True, print_paths=False)
-
-            # logger.info('Memory usage: %s (kb)' % resource.getrusage(resource.RUSAGE_SELF).ru_maxrss)
-
-            # gc.collect()
             if self.batch_counter >= self.total_iterations:
+                plt.savefig("C:\\Users\\owenb\\OneDrive\\Documents\\GitHub\\MINERVA_tf2\\hyperparameter testing results\\FB15K\\"+self.hp_type+"\\"+self.hp_level+".png")
                 break
 
     def test(self, beam=False, print_paths=False, save_model = True, auc = False):
@@ -508,26 +496,6 @@ if __name__ == '__main__':
                 ds.append(line)
         options['dataset'][dataset]=ds
 
-    # input_file = options['data_input_dir']+'test.txt'
-    # options['test_data'] = []
-    # with open(input_file) as raw_input_file:
-    #     csv_file = csv.reader(raw_input_file, delimiter = '\t' )
-    #     for line in csv_file:
-    #         options['test_data'].append(line)  
-
-    # input_file = options['data_input_dir']+'dev.txt'
-    # options['dev_data'] = []
-    # with open(input_file) as raw_input_file:
-    #     csv_file = csv.reader(raw_input_file, delimiter = '\t' )
-    #     for line in csv_file:
-    #         options['dev_data'].append(line)  
-            
-    # input_file = options['data_input_dir']+'graph.txt'
-    # options['graph_data'] = []
-    # with open(input_file) as raw_input_file:
-    #     csv_file = csv.reader(raw_input_file, delimiter = '\t' )
-    #     for line in csv_file:
-    #         options['graph_data'].append(line)  
     ds = []
     input_file = options['data_input_dir']+'full_graph.txt'
     if os.path.isfile(input_file):
@@ -538,11 +506,7 @@ if __name__ == '__main__':
     else:
         for dataset in Dataset_list:
             ds = ds + options['dataset'][dataset]
-    options['dataset']['full_graph'] = ds
-    # data_read_in =temp_fullgraph.split('\n')
-    # options['fullgraph_data'] = []
-    # for line in data_read_in:
-    #     options['fullgraph_data'].append(line.split('\t'))        
+    options['dataset']['full_graph'] = ds      
     
     # read the vocab files, it will be used by many classes hence global scope
     logger.info('reading vocab files...')
@@ -550,56 +514,26 @@ if __name__ == '__main__':
     options['relation_vocab'] = vocab.relation_vocab
     
     options['entity_vocab'] = vocab.entity_vocab
-    # print(len(options['entity_vocab'] ))
-    # options['relation_vocab'] = json.load(open(options['vocab_dir'] + '/relation_vocab.json'))
     
-    # options['entity_vocab'] = json.load(open(options['vocab_dir'] + '/entity_vocab.json'))
     print(len(options['entity_vocab'] ))
     logger.info('Reading mid to name map')
     mid_to_word = {}
-    # with open('/iesl/canvas/rajarshi/data/RL-Path-RNN/FB15k-237/fb15k_names', 'r') as f:
-    #     mid_to_word = json.load(f)
+
     logger.info('Done..')
     logger.info('Total number of entities {}'.format(len(options['entity_vocab'])))
     logger.info('Total number of relations {}'.format(len(options['relation_vocab'])))
     save_path = ''
-    # config = tf.compat.v1.ConfigProto()
-    # config.gpu_options.allow_growth = False
-    # config.log_device_placement = False
 
-    # print('this is the right code,uuuuuuuuuuuuuyyyyyyyyyyyyyyyy')
     #Training
     if not options['load_model']:
         trainer = Trainer(options)
-    # with tf.compat.v1.Session(config=config) as sess:
-        # sess.run(trainer.initialize())
 
-        trainer.train()
+        #one training pass supervised learning, one training pass reinforcement learning
+        print("training with supervised learning")
+        trainer.train(False)
+        #commented out because we will only be doing hyperparameter tuning on SL
+        #print("training with reinforcement learning")
+        #trainer.train(True)
         save_path = trainer.save_path
         path_logger_file = trainer.path_logger_file
         output_dir = trainer.output_dir
-
-        # tf.compat.v1.reset_default_graph()
-    #Testing on test with best model
-    # else:
-    #     logger.info("Skipping training")
-    #     logger.info("Loading model from {}".format(options["model_load_dir"]))
-
-    # trainer = Trainer(options)
-    # if options['load_model']:
-    #     save_path = options['model_load_dir']
-    #     path_logger_file = trainer.path_logger_file
-    #     output_dir = trainer.output_dir
-    # with tf.compat.v1.Session(config=config) as sess:
-    #     trainer.initialize(restore=save_path, sess=sess)
-
-    #     trainer.test_rollouts = 100
-
-    #     os.mkdir(path_logger_file + "/" + "test_beam")
-    #     trainer.path_logger_file_ = path_logger_file + "/" + "test_beam" + "/paths"
-    #     with open(output_dir + '/scores.txt', 'a') as score_file:
-    #         score_file.write("Test (beam) scores with best model from " + save_path + "\n")
-    #     trainer.test_environment = trainer.test_test_environment
-    #     trainer.test_environment.test_rollouts = 100
-
-    #     trainer.test(sess, beam=True, print_paths=True, save_model=False)

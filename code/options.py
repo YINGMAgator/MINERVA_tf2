@@ -8,6 +8,9 @@ from pprint import pprint
 #UNDERSTOOD
 def read_options():
     parser = argparse.ArgumentParser()
+    #the following arguments are only for use during hyperparameter tuning and should be commented out when not in use
+    parser.add_argument("--hp_type", default=0, type=str)
+    parser.add_argument("--hp_level", default=0, type=str)
     #flag for whether we are just running the program to generate labels for a dataset
     parser.add_argument("--label_gen", default=0, type=int)
     #for the training data
