@@ -4,6 +4,7 @@ import argparse
 import uuid
 import os
 from pprint import pprint
+from tensorflow import keras
 
 #UNDERSTOOD
 def read_options():
@@ -11,6 +12,9 @@ def read_options():
     #the following arguments are only for use during hyperparameter tuning and should be commented out when not in use
     parser.add_argument("--hp_type", default=0, type=str)
     parser.add_argument("--hp_level", default=0, type=str)
+    #use a lr schedule instead of a fixed lr
+    parser.add_argument("--schedule", default=0, type=str)
+    parser.add_argument("--rate", default=0, type=str)
     #flag for whether we are just running the program to generate labels for a dataset
     parser.add_argument("--label_gen", default=0, type=int)
     #for the training data
@@ -91,6 +95,11 @@ def read_options():
     parsed['model_dir'] = parsed['output_dir']+'/'+ 'model/'
 
     parsed['load_model'] = (parsed['load_model'] == 1)
+
+    #handle lr schedule
+    if parsed['schedule']==1:
+        schedule=keras.optimizers.schedules.ExponentialDecay(initial_learning_rate=parsed['learning_rate'],decay_steps=parsed['total_iterations'],decay_rate=parsed['rate'])
+        parsed['learning_rate']=schedule
 
     ##Logger##
     parsed['path_logger_file'] = parsed['output_dir']
