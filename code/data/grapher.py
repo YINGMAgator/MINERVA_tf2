@@ -16,7 +16,7 @@ class RelationEntityGrapher:
         self.relation_vocab = relation_vocab
         self.entity_vocab = entity_vocab
         self.store = defaultdict(list)
-        #create graph: length=nodes, holds up to max_num_actions of edges where an edge is [r,e2]
+        #create graph: length=nodes, holds up to max_num_actions of edges where an edge is [e2,r]
         self.array_store = np.ones((len(entity_vocab), max_num_actions, 2), dtype=np.dtype('int32'))
         self.array_store[:, :, 0] *= self.ePAD
         self.array_store[:, :, 1] *= self.rPAD

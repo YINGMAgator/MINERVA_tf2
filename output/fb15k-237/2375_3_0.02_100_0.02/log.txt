@@ -1,0 +1,5 @@
+03/17/2022 01:15:34 AM: [ reading vocab files... ]
+03/17/2022 01:15:34 AM: [ Reading mid to name map ]
+03/17/2022 01:15:34 AM: [ Done.. ]
+03/17/2022 01:15:34 AM: [ Total number of entities 14536 ]
+03/17/2022 01:15:34 AM: [ Total number of relations 478 ]

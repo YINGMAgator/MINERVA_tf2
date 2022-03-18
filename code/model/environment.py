@@ -122,7 +122,8 @@ class env(object):
                 writer=csv.writer(csvfile, dialect='excel')
                 for x in range(len(self.batcher.store)):
                     #writes a row with the query followed by the correct steps
-                    writer.writerow(np.concatenate((self.batcher.store[x,:],self.labeller.correct_path(self.batcher.store[x,:]))))
+                    for path in self.labeller.correct_path(self.batcher.store[x,:]):
+                        writer.writerow(np.concatenate((self.batcher.store[x,:],path)))
             sys.exit("Correct labels written to "+params['dataset_name']+"_labels.csv")
 
 

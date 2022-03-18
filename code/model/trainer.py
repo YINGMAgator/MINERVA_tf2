@@ -4,6 +4,7 @@ from cProfile import label
 from cmath import sqrt
 import enum
 from math import ceil
+from cv2 import accumulate
 from torch import float32
 
 from tqdm import tqdm
@@ -44,8 +45,9 @@ class Trainer(object):
         self.agent = Agent(params)
         self.save_path = None
         self.train_environment = env(params, 'train')
-        self.dev_test_environment = env(params, 'dev')
-        self.test_test_environment = env(params, 'test')
+        # I don't want to load a 10gb file into memory 3 times so I'm just not creating these environemnts during this part of testing
+        self.dev_test_environment = None #env(params, 'dev')
+        self.test_test_environment = None #env(params, 'test')
         self.test_environment = self.dev_test_environment
         self.rev_relation_vocab = self.train_environment.grapher.rev_relation_vocab
         self.rev_entity_vocab = self.train_environment.grapher.rev_entity_vocab
@@ -120,6 +122,7 @@ class Trainer(object):
 
         #cross entropy that we will use in our supervised learning implementation
         cce = tf.keras.losses.CategoricalCrossentropy(reduction=tf.keras.losses.Reduction.NONE)
+
         for z, episode in enumerate(self.train_environment.get_episodes()):
 
             self.batch_counter += 1
@@ -132,10 +135,15 @@ class Trainer(object):
             # get initial state
             state = episode.get_state()
             
+            #need a variable for this
+            #!!!
+            last_step = ["N/A"]*256
+            
             with tf.GradientTape() as tape:
                 supervised_learning_loss = []
                 loss_before_regularization = []
                 logits_all = []
+                
                 # for each time step
                 for i in range(self.path_length):
                     #Step 1:
@@ -155,20 +163,47 @@ class Trainer(object):
                         logits_all.append(logits)
                         # action = np.squeeze(action, axis=1)  # [B,]
                     else: #use supervised learning
-                        ##CODE FOR SUPERVISED LEARNING LOSS
-                        #note that ? is used as a placeholder since this value varies from dataset to dataset
-                        #create a tensor of size (?,200) where in each of the ? rows, the tensor of length 200 has -9.9999000e+04 at every index except the index specified in the correct path, which has a 1
-                        #then i take the cross entropy loss between the scores outputted by the network and the correct answers
-                        #get the sum of the 200 long vectors so you have a ?,1 vector
-                        #append this to a list so you can take the sum over the three steps for each batch and then take the average of the batches
+                        # we fill 2 arrays up, one with valid actions from where the agent is at and another with the batch that action
+                        # is relevant in
+                        indices=np.array([], int)
+                        actions=np.array([], int)
+                        for batch_num in range(len(episode.correct_path[i])):
+                            #episode correct path, current step, relevant batch, 
+                            #fix last step thing!!!
+                            valid = episode.correct_path[i][batch_num][last_step[i]]
+                            np.concatenate((actions, valid))
+                            np.concatenate((indices, [batch_num] * len(valid)))
+
+                        np.repeat(indices, self.num_rollouts)
+                        np.repeat(actions, self.num_rollouts)
+
+                        # then we use that to generate the perfect score distribution (1 for all valid actions, 0 for all invalid actions)
+                        # and calculate the loss between that and the scores actually generated
                         active_length=scores.shape[0]
                         correct=np.full((active_length,200),0)
-                        correct[np.arange(0,active_length),episode.correct_path[i]]=np.ones(active_length)
+                        correct[indices, actions] = np.ones(len(indices))
                         supervised_learning_loss.append(cce(tf.convert_to_tensor(correct),scores))
-                        ##END CODE FOR SUPERVISED LEARNING LOSS
+
+                        # update last step for all batches
+                        #last_step = idx
+
+                    #code for testing if our label gen method is valid
+                    actions=np.array([], int)
+                    for batch_num in range(len(episode.correct_path[i])):
+                        #episode correct path, current step, relevant batch, 
+                        #need batch specific last step
+                        #fix last step thing!!!
+                        valid = episode.correct_path[i][batch_num][last_step]
+                        np.concatenate((actions, valid[0]))
+                    last_step=0
+                    np.repeat(actions, self.num_rollouts)
 
                     #gets gets the new state from the action chosen by the agent
-                    state = episode(idx)
+                    state = episode(actions)
+
+                #calculating the accuracy, or the portion of batches where the correct answer was found
+                accuracy = np.sum((np.sum(np.reshape(episode.get_reward(), (self.batch_size, self.num_rollouts)), axis=1) > 0))/self.batch_size
+                print("Accuracy "+ accuracy)
                 
                 # get the final reward from the environment and update the limits of the graphs accordingly
                 # plus add the new data to the dataset
@@ -213,7 +248,7 @@ class Trainer(object):
                 #draw everything and briefly wait
                 plt.draw()
                 #commented out because I need this to run in the background so I can work on other stuff
-                #plt.pause(1e-17)
+                plt.pause(1e-17)
                 time.sleep(0.1)
 
             if use_RL:
