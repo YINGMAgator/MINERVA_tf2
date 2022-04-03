@@ -25,6 +25,7 @@ import sys
 from code.model.baseline import ReactiveBaseline
 #from scipy.misc import logsumexp as lse
 from scipy.special import logsumexp as lse
+import pickle
 from code.data.vocab_gen import Vocab_Gen
 import matplotlib.pyplot as plt
 logger = logging.getLogger()
@@ -135,9 +136,7 @@ class Trainer(object):
             # get initial state
             state = episode.get_state()
             
-            #need a variable for this
-            #!!!
-            last_step = ["N/A"]*256
+            last_step = ["N/A"]*self.batch_size
             
             with tf.GradientTape() as tape:
                 supervised_learning_loss = []
@@ -168,14 +167,23 @@ class Trainer(object):
                         indices=np.array([], int)
                         actions=np.array([], int)
                         for batch_num in range(len(episode.correct_path[i])):
-                            #episode correct path, current step, relevant batch, 
-                            #fix last step thing!!!
-                            valid = episode.correct_path[i][batch_num][last_step[i]]
-                            np.concatenate((actions, valid))
-                            np.concatenate((indices, [batch_num] * len(valid)))
+                            #problem that if agent takes a step such that they can't get to a reward, their last step won't be a key in the dictionary
+                            #find the action that goes back to the previous state
+                            #solution: allow the agent to just learn nothing extra from these cases after they already happen. Instead, they learn from the fact that
+                            # in the correct answer on the previous step, the action they took was marked as 0 because they shouldn't take it. Thus, the agent is already learning
+                            # not to take that action
+                            try:
+                                valid = episode.correct_path[i][batch_num][last_step[batch_num]]
+                            except:
+                                valid = episode.backtrack(batch_num)
+                            actions = np.concatenate((actions, valid))
+                            indices = np.concatenate((indices, [batch_num] * len(valid)))
+                        indices = np.repeat(indices, self.num_rollouts)
+                        actions = np.repeat(actions, self.num_rollouts)
 
-                        np.repeat(indices, self.num_rollouts)
-                        np.repeat(actions, self.num_rollouts)
+                        #ensure type int
+                        indices=indices.astype(int)
+                        actions=actions.astype(int)
 
                         # then we use that to generate the perfect score distribution (1 for all valid actions, 0 for all invalid actions)
                         # and calculate the loss between that and the scores actually generated
@@ -185,25 +193,22 @@ class Trainer(object):
                         supervised_learning_loss.append(cce(tf.convert_to_tensor(correct),scores))
 
                         # update last step for all batches
-                        #last_step = idx
+                        last_step = idx.numpy()
 
                     #code for testing if our label gen method is valid
-                    actions=np.array([], int)
-                    for batch_num in range(len(episode.correct_path[i])):
-                        #episode correct path, current step, relevant batch, 
-                        #need batch specific last step
-                        #fix last step thing!!!
-                        valid = episode.correct_path[i][batch_num][last_step]
-                        np.concatenate((actions, valid[0]))
-                    last_step=0
-                    np.repeat(actions, self.num_rollouts)
+                    # actions_test=np.array([], int)
+                    # for batch_num in range(len(episode.correct_path[i])):
+                    #     valid = episode.correct_path[i][batch_num][last_step[batch_num]]
+                    #     actions_test = np.concatenate((actions_test, [valid[0]]))
+                    # last_step=actions_test
+                    # actions_test = np.repeat(actions_test, self.num_rollouts)
 
                     #gets gets the new state from the action chosen by the agent
-                    state = episode(actions)
+                    state = episode(idx)
 
                 #calculating the accuracy, or the portion of batches where the correct answer was found
                 accuracy = np.sum((np.sum(np.reshape(episode.get_reward(), (self.batch_size, self.num_rollouts)), axis=1) > 0))/self.batch_size
-                print("Accuracy "+ accuracy)
+                print("Accuracy "+ str(accuracy))
                 
                 # get the final reward from the environment and update the limits of the graphs accordingly
                 # plus add the new data to the dataset
@@ -248,7 +253,7 @@ class Trainer(object):
                 #draw everything and briefly wait
                 plt.draw()
                 #commented out because I need this to run in the background so I can work on other stuff
-                plt.pause(1e-17)
+                #plt.pause(1e-17)
                 time.sleep(0.1)
 
             if use_RL:
@@ -260,7 +265,7 @@ class Trainer(object):
             self.optimizer.apply_gradients(zip(gradients, self.agent.trainable_variables))        
 
             if self.batch_counter >= self.total_iterations:
-                plt.savefig("C:\\Users\\owenb\\OneDrive\\Documents\\GitHub\\MINERVA_tf2\\hyperparameter testing results\\FB15K\\"+self.hp_type+"\\"+self.hp_level+".png")
+                plt.savefig("C:\\Users\\owenb\\OneDrive\\Documents\\GitHub\\MINERVA_tf2\\hyperparameter testing results\\FB15K\\"+self.hp_type+"\\"+self.hp_level+"_advanced_labels.png")
                 break
 
     def test(self, beam=False, print_paths=False, save_model = True, auc = False):

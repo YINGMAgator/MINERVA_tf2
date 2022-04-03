@@ -8,38 +8,18 @@
 # import csv
 import numpy as np
 import csv
+import pickle
 
 class Labeller(object):
     def __init__(self,params):
         self.array_store, self.ePAD, self.rPAD, self.generate, self.correct_filepath = params
         if not self.generate:
             print("loading correct labels")
-            self.correct={}
-            with open(self.correct_filepath,'r',newline='') as csvfile:
-                reader=csv.reader(csvfile, dialect='excel')
-                for x in reader:
-                    # make or update step dictionaries for that query
-                    if self.arr_2_key(x[:3]) in self.correct:
-                        self.correct[self.arr_2_key(x[:3])][0]["N/A"] += [x[3]]
-                        if x[3] in self.correct[self.arr_2_key(x[:3])][1]:
-                            self.correct[self.arr_2_key(x[:3])][1][x[3]] += x[4]
-                        else:
-                            self.correct[self.arr_2_key(x[:3])][1][x[3]] = x[4]
-                        if x[4] in self.correct[self.arr_2_key(x[:3])][2]:
-                            self.correct[self.arr_2_key(x[:3])][2][x[4]] += x[5]
-                        else:
-                            self.correct[self.arr_2_key(x[:3])][2][x[4]] = x[5]
-                    else:
-                        self.correct[self.arr_2_key(x[:3])] = {
-                            0: {"N/A":[x[3]]},
-                            1: {x[3]:[x[4]]},
-                            2: {x[4]:[x[5]]}
-                        }
+            self.correct=pickle.load(open(self.correct_filepath,'rb'))
 
     def correct_path(self, line):
         if self.generate:
             return self.correct_path_generate(line)
-            #edit
         return self.correct[self.arr_2_key(line)]
 
     def arr_2_key(self,arr):
@@ -92,6 +72,7 @@ class Labeller(object):
         # this handles the case that there is a direct connection btwn node 1 and the answer, which means the answer would show up as a starting node in the second hop
         if e2 in start_entity_2nd_hop:
                 start_entity_2nd_hop.remove(e2)
+        # temp_paths=paths
         for e21 in start_entity_2nd_hop:
             # ret2 = every possible second action, given the first action
             ret2 = self.array_store[e21, :, :].copy()
@@ -128,5 +109,31 @@ class Labeller(object):
                             for h3 in hop3:
                                 paths+=1
                                 yield np.array([h1, h2, h3], int)
+                # else:
+                #     #if that third node does not lead to the answer, go back
+                #     # all actions that take you from the start node to the second node
+                #     hop1 = np.where(ret1[ :, 0]== e21)[0]
+                #     # all actions that take you from the second node to the current node
+                #     hop2=  np.where(ret2[ :, 0]== e31)[0]
+                #     # all actions that takes you from the current node back to the second node
+                #     hop3=  np.where(ret3[ :, 0]== e21)[0]
+                #     for h1 in hop1:
+                #         for h2 in hop2:
+                #             for h3 in hop3:
+                #                 print(h3)
+                #                 paths+=1
+                #                 yield np.array([h1, h2, h3], int)
+            # # we get here without yielding anything if the second action we took can't lead to a correct answer
+            # if paths-temp_paths == 0:
+            #     # all actions that take you from the start node to the second node
+            #     hop1 = np.where(ret1[ :, 0] == e21)[0]
+            #     # all actions that take you from the second node back to the start node
+            #     hop2=  np.where(ret2[ :, 0] == e1)[0]
+            #     for h1 in hop1:
+            #         for h2 in hop2:
+            #             paths+=1
+            #             print(h2)
+            #             yield np.array([h1, h2, 0], int)
+
         if paths == 0:
             yield np.array([-1, -1, -1], int)

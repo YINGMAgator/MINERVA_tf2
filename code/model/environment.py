@@ -6,7 +6,7 @@ from code.data.grapher import RelationEntityGrapher
 from code.data.label_gen import Labeller
 import logging
 import sys
-
+import pickle
 logger = logging.getLogger()
 
 
@@ -59,9 +59,15 @@ class Episode(object):
         reward = np.select(condlist, choicelist)  # [B,]
         return reward
 
+    def backtrack(self, batch):
+        # returns all the actions which, taken at the current state, will take the agent to its previous state
+        # this allows the agent to learn to backtrack when it makes a mistake
+        return np.where(self.state['next_entities'][batch, :] == self.last_entities[batch])[0]
+
     def __call__(self, action):
         #increment path length by 1
         self.current_hop += 1
+        self.last_entities=self.current_entities
         #update current entities to be equal to the node the action taken leads to
         self.current_entities = self.state['next_entities'][np.arange(self.no_examples*self.num_rollouts), action]
         #print("Arrived at:")
@@ -112,19 +118,34 @@ class env(object):
                                               entity_vocab=params['entity_vocab'],
                                               relation_vocab=params['relation_vocab'])
         #creates the filepath of the existing or yet to be generated correct labels csv
-        correct_filepath="C:\\Users\\owenb\\OneDrive\\Documents\\GitHub\\MINERVA_tf2\\labels\\"+params['dataset_name']+"_labels.csv"
+        correct_filepath="C:\\Users\\owenb\\OneDrive\\Documents\\GitHub\\MINERVA_tf2\\labels\\"+params['dataset_name']+"_labeldict"
         #creates the labeller for the environment, which will find the best path by brute force
         self.labeller = Labeller([self.grapher.array_store, params['entity_vocab']['PAD'], params['relation_vocab']['PAD'], params['label_gen'], correct_filepath])
         #Code to generate labels for all of the potential queries and save them to a CSV file
         if(params['label_gen']):
-            print("generating labels file")
-            with open(correct_filepath,'w',newline='') as csvfile:
-                writer=csv.writer(csvfile, dialect='excel')
-                for x in range(len(self.batcher.store)):
-                    #writes a row with the query followed by the correct steps
-                    for path in self.labeller.correct_path(self.batcher.store[x,:]):
-                        writer.writerow(np.concatenate((self.batcher.store[x,:],path)))
-            sys.exit("Correct labels written to "+params['dataset_name']+"_labels.csv")
+            self.correct={}
+            for x in range(len(self.batcher.store)):
+                #skip ever writing to a csv
+                key = str(self.batcher.store[x,:][0])+str(self.batcher.store[x,:][1])+str(self.batcher.store[x,:][2])
+                for path in self.labeller.correct_path(self.batcher.store[x,:]):
+                    if key in self.correct:
+                        self.correct[key][0]["N/A"] += [path[0]]
+                        if path[0] in self.correct[key][1]:
+                            self.correct[key][1][path[0]] += [path[1]]
+                        else:
+                            self.correct[key][1][path[0]] = [path[1]]
+                        if path[1] in self.correct[key][2]:
+                            self.correct[key][2][path[1]] += [path[2]]
+                        else:
+                            self.correct[key][2][path[1]] = [path[2]]
+                    else:
+                        self.correct[key] = {
+                            0: {"N/A" : [path[0]]},
+                            1: {path[0] : [path[1]]},
+                            2: {path[1] : [path[2]]}
+                        }
+            pickle.dump(self.correct, open(correct_filepath, "wb"))
+            sys.exit("Correct labels written to "+params['dataset_name']+"_labeldict")
 
 
     #returns an episode, a tool which the trainer can use to get current states from, take a step, and then give the actions back to to get another current state until we reach the end
