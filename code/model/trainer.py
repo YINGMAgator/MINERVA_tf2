@@ -33,7 +33,7 @@ logging.basicConfig(stream=sys.stdout, level=logging.DEBUG)
 
 
 class Trainer(object):
-    def __init__(self, params):
+    def __init__(self, params, environment):
         # transfer parameters to self
         for key, val in params.items(): setattr(self, key, val)
 
@@ -45,7 +45,8 @@ class Trainer(object):
 
         self.agent = Agent(params)
         self.save_path = None
-        self.train_environment = env(params, 'train')
+        self.train_environment = environment
+        #self.train_environment = env(params, 'train')
         # I don't want to load a 10gb file into memory 3 times so I'm just not creating these environemnts during this part of testing
         self.dev_test_environment = None #env(params, 'dev')
         self.test_test_environment = None #env(params, 'test')
@@ -110,6 +111,17 @@ class Trainer(object):
             cum_disc_reward[:, t] = running_add
         return cum_disc_reward
 
+    def get_test_actions(self, correct):
+        used_indexes=[]
+        actions=[]
+        chosen =np.where(correct==1)
+        for count, index in enumerate(chosen[0]):
+            if index in used_indexes:
+                continue
+            used_indexes += [index]
+            actions += [chosen[1][count]]
+        return actions
+
     def train(self,use_RL):
         #reset loss graph to add another set of data
         self.xdata = []
@@ -125,7 +137,6 @@ class Trainer(object):
         cce = tf.keras.losses.CategoricalCrossentropy(reduction=tf.keras.losses.Reduction.NONE)
 
         for z, episode in enumerate(self.train_environment.get_episodes()):
-
             self.batch_counter += 1
             model_state = self.agent.state_init
             prev_relation = self.agent.relation_init            
@@ -136,7 +147,7 @@ class Trainer(object):
             # get initial state
             state = episode.get_state()
             
-            last_step = ["N/A"]*self.batch_size
+            last_step = ["N/A"]*(self.batch_size*self.num_rollouts)
             
             with tf.GradientTape() as tape:
                 supervised_learning_loss = []
@@ -162,48 +173,76 @@ class Trainer(object):
                         logits_all.append(logits)
                         # action = np.squeeze(action, axis=1)  # [B,]
                     else: #use supervised learning
-                        # we fill 2 arrays up, one with valid actions from where the agent is at and another with the batch that action
-                        # is relevant in
-                        indices=np.array([], int)
-                        actions=np.array([], int)
+                        active_length=scores.shape[0]
+                        correct=np.full((active_length,200),0)
+
+                        actions_test=np.array([], int)
                         for batch_num in range(len(episode.correct_path[i])):
-                            #problem that if agent takes a step such that they can't get to a reward, their last step won't be a key in the dictionary
-                            #find the action that goes back to the previous state
-                            #solution: allow the agent to just learn nothing extra from these cases after they already happen. Instead, they learn from the fact that
-                            # in the correct answer on the previous step, the action they took was marked as 0 because they shouldn't take it. Thus, the agent is already learning
-                            # not to take that action
                             try:
                                 valid = episode.correct_path[i][batch_num][last_step[batch_num]]
                             except:
+                                print("this should never happen")
                                 valid = episode.backtrack(batch_num)
-                            actions = np.concatenate((actions, valid))
-                            indices = np.concatenate((indices, [batch_num] * len(valid)))
-                        indices = np.repeat(indices, self.num_rollouts)
-                        actions = np.repeat(actions, self.num_rollouts)
-
-                        #ensure type int
-                        indices=indices.astype(int)
-                        actions=actions.astype(int)
-
-                        # then we use that to generate the perfect score distribution (1 for all valid actions, 0 for all invalid actions)
-                        # and calculate the loss between that and the scores actually generated
-                        active_length=scores.shape[0]
-                        correct=np.full((active_length,200),0)
-                        correct[indices, actions] = np.ones(len(indices))
+                            # valid = list(set(valid))
+                            actions_test = np.concatenate((actions_test, [valid[0]]))
+                            correct[np.array([batch_num]*len(valid), int),np.array(valid, int)]=np.ones(len(valid))
+                        last_step = idx.numpy()
                         supervised_learning_loss.append(cce(tf.convert_to_tensor(correct),scores))
+                        actions_test=actions_test.astype(int)
+                        # #we fill 2 arrays up, one with valid actions from where the agent is at and another with the batch that action
+                        # #is relevant in
+                        # indices=np.array([], int)
+                        # actions=np.array([], int)
+
+                        # for batch_num in range(len(episode.correct_path[i])):
+                        #     #problem that if agent takes a step such that they can't get to a reward, their last step won't be a key in the dictionary
+                        #     #find the action that goes back to the previous state
+                        #     #solution: allow the agent to just learn nothing extra from these cases after they already happen. Instead, they learn from the fact that
+                        #     # in the correct answer on the previous step, the action they took was marked as 0 because they shouldn't take it. Thus, the agent is already learning
+                        #     # not to take that action
+                        #     try:
+                        #         valid = episode.correct_path[i][batch_num][last_step[batch_num]]
+                        #     except:
+                        #         valid = episode.backtrack(batch_num)
+                        #     actions = np.concatenate((actions, valid))
+                        #     indices = np.concatenate((indices, [batch_num] * len(valid)))
+                        # #create the correct matrix pre-rollout, then roll it out so all the batches are effectively covered
+                        # indices = indices.astype(int)
+                        # actions = actions.astype(int)
+                        # active_length=scores.shape[0]
+                        # correct=np.full((active_length,200),0)
+                        # correct[indices, actions] = np.ones(len(indices))
+                        # ##MAKING SURE LABELS WORK
+                        # actions = self.get_test_actions(correct)
+                        # # ##fin
+                        # # correct = np.repeat(correct, self.num_rollouts, axis=0)
+                        # correct = correct.astype(int)
+                        # supervised_learning_loss.append(cce(tf.convert_to_tensor(correct),scores))
+
+                        # indices = np.repeat(indices, self.num_rollouts)
+                        # actions = np.repeat(actions, self.num_rollouts)
+                        # indices=indices.astype(int)
+                        # actions=actions.astype(int)
+                        # active_length=scores.shape[0]
+                        # correct=np.full((active_length,200),0)
+                        # correct[indices, actions] = np.ones(len(indices))
+                        # print(np.count_nonzero(correct[len(episode.correct_path[i])+1:,:]==1))
+                        # supervised_learning_loss.append(cce(tf.convert_to_tensor(correct),scores))
 
                         # update last step for all batches
-                        last_step = idx.numpy()
+                        #last_step = idx.numpy()
+                        #last_step = actions
 
-                    #code for testing if our label gen method is valid
+                    # code for testing if our label gen method is valid
                     # actions_test=np.array([], int)
                     # for batch_num in range(len(episode.correct_path[i])):
                     #     valid = episode.correct_path[i][batch_num][last_step[batch_num]]
                     #     actions_test = np.concatenate((actions_test, [valid[0]]))
                     # last_step=actions_test
-                    # actions_test = np.repeat(actions_test, self.num_rollouts)
-
+                    # #actions_test = np.repeat(actions_test, self.num_rollouts)
+                    # actions_test = actions_test.astype(int)
                     #gets gets the new state from the action chosen by the agent
+                    #state = episode(idx)
                     state = episode(idx)
 
                 #calculating the accuracy, or the portion of batches where the correct answer was found
@@ -510,8 +549,8 @@ class Trainer(object):
         idx = idx[:, -k:]  # take the last k highest indices # [B , k]
         return idx.reshape((-1))
 
-if __name__ == '__main__':
-
+#if __name__ == '__main__':
+def setup():
     # read command line options
     options = read_options()
     # Set logging
@@ -565,16 +604,29 @@ if __name__ == '__main__':
     logger.info('Total number of relations {}'.format(len(options['relation_vocab'])))
     save_path = ''
 
-    #Training
-    if not options['load_model']:
-        trainer = Trainer(options)
+    return options, env(options, 'train')
+    #return Trainer(options)
+    # #Training
+    # if not options['load_model']:
+    #     trainer = Trainer(options)
 
-        #one training pass supervised learning, one training pass reinforcement learning
-        print("training with supervised learning")
-        trainer.train(False)
-        #commented out because we will only be doing hyperparameter tuning on SL
-        #print("training with reinforcement learning")
-        #trainer.train(True)
-        save_path = trainer.save_path
-        path_logger_file = trainer.path_logger_file
-        output_dir = trainer.output_dir
+    #     #one training pass supervised learning, one training pass reinforcement learning
+    #     print("training with supervised learning")
+    #     trainer.train(False)
+    #     #commented out because we will only be doing hyperparameter tuning on SL
+    #     #print("training with reinforcement learning")
+    #     #trainer.train(True)
+    #     save_path = trainer.save_path
+    #     path_logger_file = trainer.path_logger_file
+    #     output_dir = trainer.output_dir
+
+def train(options, env):
+    trainer = Trainer(options, env)
+    print("training with supervised learning")
+    trainer.train(False)
+    #commented out because we will only be doing hyperparameter tuning on SL
+    #print("training with reinforcement learning")
+    #trainer.train(True)
+    save_path = trainer.save_path
+    path_logger_file = trainer.path_logger_file
+    output_dir = trainer.output_dir

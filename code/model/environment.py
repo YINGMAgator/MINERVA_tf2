@@ -27,7 +27,7 @@ class Episode(object):
         self.positive_reward = positive_reward
         self.negative_reward = negative_reward
         #turns start entities into a list of the same start entity num_rollouts number of times so we can keep track of all the rollouts later on
-        start_entities = np.repeat(start_entities, self.num_rollouts) 
+        start_entities = np.repeat(start_entities, self.num_rollouts)#KEY LINE RIGHT HERE
         batch_query_relation = np.repeat(query_relation, self.num_rollouts)
         end_entities = np.repeat(end_entities, self.num_rollouts)
         self.start_entities = start_entities

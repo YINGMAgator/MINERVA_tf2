@@ -90,9 +90,11 @@ class RelationEntityBatcher():
             labels=[[],[],[]]
             for i in range(len(batch)):
                 correct = labeller.correct_path(batch[i,:])
-                labels[0].append(correct[0])
-                labels[1].append(correct[1])
-                labels[2].append(correct[2])
+                #handle rollouts
+                for i in range(self.num_rollouts):
+                    labels[0].append(correct[0])
+                    labels[1].append(correct[1])
+                    labels[2].append(correct[2])
             #get indices where no path was found and delete them from the batch
             indices=np.argwhere(labels==np.array([-1,-1]))
             np.delete(labels,indices)
