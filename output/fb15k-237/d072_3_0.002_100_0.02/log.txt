@@ -1,0 +1,6 @@
+04/12/2022 12:47:19 PM: [ reading vocab files... ]
+04/12/2022 12:47:19 PM: [ Reading mid to name map ]
+04/12/2022 12:47:19 PM: [ Done.. ]
+04/12/2022 12:47:19 PM: [ Total number of entities 14536 ]
+04/12/2022 12:47:19 PM: [ Total number of relations 478 ]
+04/12/2022 12:47:21 PM: [ `tf.nn.rnn_cell.MultiRNNCell` is deprecated. This class is equivalent as `tf.keras.layers.StackedRNNCells`, and will be replaced by that in Tensorflow 2.0. ]
