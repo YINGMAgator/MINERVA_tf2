@@ -1,14 +1,7 @@
 from __future__ import absolute_import
 from __future__ import division
-from cProfile import label
-from cmath import sqrt
-import enum
-from math import ceil
-from cv2 import accumulate
-from torch import float32
 
 from tqdm import tqdm
-import time
 import os
 import csv
 import logging
@@ -19,7 +12,6 @@ from code.options import read_options
 from code.model.environment import env
 import codecs
 from collections import defaultdict
-import gc
 #import resource
 import sys
 from code.model.baseline import ReactiveBaseline
@@ -33,7 +25,7 @@ logging.basicConfig(stream=sys.stdout, level=logging.DEBUG)
 
 
 class Trainer(object):
-    def __init__(self, params, environment):
+    def __init__(self, params):#, environment):
         # transfer parameters to self
         for key, val in params.items(): setattr(self, key, val)
 
@@ -49,8 +41,8 @@ class Trainer(object):
 
         self.agent = Agent(params)
         self.save_path = None
-        self.train_environment = environment
-        #self.train_environment = env(params, 'train')
+        #self.train_environment = environment
+        self.train_environment = env(params, 'train')
         # I don't want to load a 10gb file into memory 3 times so I'm just not creating these environemnts during this part of testing
         self.dev_test_environment = None #env(params, 'dev')
         self.test_test_environment = None #env(params, 'test')
@@ -155,6 +147,8 @@ class Trainer(object):
             state = episode.get_state()
             
             last_step = ["N/A"]*(self.batch_size*self.num_rollouts)
+
+            hub_nodes = 0
             
             with tf.GradientTape() as tape:
                 supervised_learning_loss = []
@@ -201,6 +195,10 @@ class Trainer(object):
                         actions_test=actions_test.astype(int)
                         
                     state = episode(idx) #actions_test if verifying labels
+
+                    for i in range(state['next_entities'].shape[0]):
+                        if np.sum(state['next_entities'][i,:]!=self.ePAD) > 100:
+                            hub_nodes+=1
 
                 #calculating the accuracy, or the portion of batches where the correct answer was found
                 accuracy = np.sum((np.sum(np.reshape(episode.get_reward(), (self.batch_size, self.num_rollouts)), axis=1) > 0))/self.batch_size
@@ -269,7 +267,8 @@ class Trainer(object):
             self.optimizer.apply_gradients(zip(gradients, self.agent.trainable_variables))        
 
             if self.batch_counter >= self.total_iterations:
-                plt.savefig("C:\\Users\\owenb\\OneDrive\\Documents\\GitHub\\MINERVA_tf2\\hyperparameter testing results\\FB15K\\"+self.hp_type+"\\"+self.hp_level+"_cce.png")
+                #plt.savefig("C:\\Users\\owenb\\OneDrive\\Documents\\GitHub\\MINERVA_tf2\\hyperparameter testing results\\FB15K\\"+self.hp_type+"\\"+self.hp_level+"_cce.png")
+                plt.savefig("hyperparameter testing results/FB15K/"+self.hp_type+"/"+self.hp_level+"_cce.png")
                 break
 
     def test(self, beam=False, print_paths=False, save_model = True, auc = False):
@@ -514,8 +513,8 @@ class Trainer(object):
         idx = idx[:, -k:]  # take the last k highest indices # [B , k]
         return idx.reshape((-1))
 
-#if __name__ == '__main__':
-def setup():
+if __name__ == '__main__':
+#def setup():
     # read command line options
     options = read_options()
     # Set logging
@@ -569,29 +568,29 @@ def setup():
     logger.info('Total number of relations {}'.format(len(options['relation_vocab'])))
     save_path = ''
 
-    return options, env(options, 'train')
+    #return options, env(options, 'train')
     #return Trainer(options)
     #Training
-    # if not options['load_model']:
-    #     trainer = Trainer(options)
+    if not options['load_model']:
+        trainer = Trainer(options)
 
-    #     #one training pass supervised learning, one training pass reinforcement learning
-    #     print("training with supervised learning")
-    #     trainer.train(False)
-    #     #commented out because we will only be doing hyperparameter tuning on SL
-    #     #print("training with reinforcement learning")
-    #     #trainer.train(True)
-    #     save_path = trainer.save_path
-    #     path_logger_file = trainer.path_logger_file
-    #     output_dir = trainer.output_dir
+        #one training pass supervised learning, one training pass reinforcement learning
+        print("training with supervised learning")
+        trainer.train(False)
+        #commented out because we will only be doing hyperparameter tuning on SL
+        #print("training with reinforcement learning")
+        #trainer.train(True)
+        save_path = trainer.save_path
+        path_logger_file = trainer.path_logger_file
+        output_dir = trainer.output_dir
 
-def train(options, env):
-    trainer = Trainer(options, env)
-    print("training with supervised learning")
-    trainer.train(False)
-    #commented out because we will only be doing hyperparameter tuning on SL
-    #print("training with reinforcement learning")
-    #trainer.train(True)
-    save_path = trainer.save_path
-    path_logger_file = trainer.path_logger_file
-    output_dir = trainer.output_dir
+# def train(options, env):
+#     trainer = Trainer(options, env)
+#     print("training with supervised learning")
+#     trainer.train(False)
+#     #commented out because we will only be doing hyperparameter tuning on SL
+#     #print("training with reinforcement learning")
+#     #trainer.train(True)
+#     save_path = trainer.save_path
+#     path_logger_file = trainer.path_logger_file
+#     output_dir = trainer.output_dir

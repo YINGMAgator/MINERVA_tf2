@@ -64,6 +64,9 @@ class Episode(object):
         # this allows the agent to learn to backtrack when it makes a mistake
         return np.where(self.state['next_entities'][batch, :] == self.last_entities[batch])[0]
 
+    def num_connections(self, batch):
+        pass
+
     def __call__(self, action):
         #increment path length by 1
         self.current_hop += 1
@@ -88,7 +91,7 @@ import csv
 
 class env(object):
     def __init__(self, params, mode='train'):
-
+        print("creating environment")
         self.batch_size = params['batch_size']
         self.num_rollouts = params['num_rollouts']
         self.positive_reward = params['positive_reward']
@@ -118,7 +121,8 @@ class env(object):
                                               entity_vocab=params['entity_vocab'],
                                               relation_vocab=params['relation_vocab'])
         #creates the filepath of the existing or yet to be generated correct labels csv
-        correct_filepath="C:\\Users\\owenb\\OneDrive\\Documents\\GitHub\\MINERVA_tf2\\labels\\"+params['dataset_name']+"_labeldict"
+        #correct_filepath="C:\\Users\\owenb\\OneDrive\\Documents\\GitHub\\MINERVA_tf2\\labels\\"+params['dataset_name']+"_labeldict"
+        correct_filepath = "labels/"+params['dataset_name']+"_labeldict"
         #creates the labeller for the environment, which will find the best path by brute force
         self.labeller = Labeller([self.grapher.array_store, params['entity_vocab']['PAD'], params['relation_vocab']['PAD'], params['label_gen'], correct_filepath])
         #Code to generate labels for all of the potential queries and save them to a CSV file

@@ -1,5 +1,6 @@
 from collections import defaultdict
 import logging
+from urllib.parse import MAX_CACHE_SIZE
 import numpy as np
 # import csv
 
@@ -16,6 +17,7 @@ class RelationEntityGrapher:
         self.relation_vocab = relation_vocab
         self.entity_vocab = entity_vocab
         self.store = defaultdict(list)
+        self.max_num_actions=max_num_actions
         #create graph: length=nodes, holds up to max_num_actions of edges where an edge is [e2,r]
         self.array_store = np.ones((len(entity_vocab), max_num_actions, 2), dtype=np.dtype('int32'))
         self.array_store[:, :, 0] *= self.ePAD
@@ -47,6 +49,7 @@ class RelationEntityGrapher:
             self.array_store[e1, 0, 0] = e1
             for r, e2 in self.store[e1]:
                 if num_actions == self.array_store.shape[1]:
+                    print("The maximum number of connections to this node ("+str(self.max_num_actions)+") has been exceeded. "+str(len(self.store[e1])-200)+" connecting nodes are being ignored")
                     break
                 #edge n at node e1: relation is relation r and destination node is e2
                 self.array_store[e1,num_actions,0] = e2
@@ -75,12 +78,13 @@ class RelationEntityGrapher:
                 entities = ret[i, :, 0]
                 relations = ret[i, :, 1]
 
+                #TURNED OFF BECAUSE WE DONT WANT TO MASK CORRECT ANSWERS ANYMORE
                 #if an entity connected to the current node is a correct answer but not the correct answer, set it and the relation connecting it to the current node to the PAD value
-                correct_e2 = answers[i]
-                for j in range(entities.shape[0]):
-                    #print(i/rollouts,j,i,rollouts)
-                    if entities[j] in all_correct_answers[int(i/rollouts)] and entities[j] != correct_e2:
-                        entities[j] = self.ePAD
-                        relations[j] = self.rPAD
+                # correct_e2 = answers[i]
+                # for j in range(entities.shape[0]):
+                #     #print(i/rollouts,j,i,rollouts)
+                #     if entities[j] in all_correct_answers[int(i/rollouts)] and entities[j] != correct_e2:
+                #         entities[j] = self.ePAD
+                #         relations[j] = self.rPAD
 
         return ret

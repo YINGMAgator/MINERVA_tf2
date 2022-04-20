@@ -71,12 +71,17 @@ class Agent(tf.keras.Model):
         
         cells = []
         for _ in range(self.LSTM_Layers):
+            #cells.append(tf.keras.layers.LSTMCell(self.m * self.hidden_size, use_peepholes=True, state_is_tuple=True))
             cells.append(tf.compat.v1.nn.rnn_cell.LSTMCell(self.m * self.hidden_size, use_peepholes=True, state_is_tuple=True))
         #LSTM to generate the history
+        
         self.policy_step = tf.compat.v1.nn.rnn_cell.MultiRNNCell(cells, state_is_tuple=True)
+        #self.policy_step = tf.keras.layers.StackedRNNCells(cells, state_is_tuple=True)
         
         self.state_init = self.policy_step.zero_state(batch_size=self.batch_size, dtype=tf.float32)
         self.relation_init = self.dummy_start_label
+
+        print("done creating agent")
     
     def get_query_embedding(self,query_relation):
         query_embedding = tf.nn.embedding_lookup(params=self.relation_lookup_table, ids=query_relation)  # [B, 2D]
