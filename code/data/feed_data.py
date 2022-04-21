@@ -51,6 +51,7 @@ class RelationEntityBatcher():
                 self.store.append([e1,r,e2])
                 self.store_all_correct[(e1, r)].add(e2)  #YM: there may exist multiple answers for the same query, i.e., same (e1,r) may mapping to different e2. store_all_correct will give all solution for the same query
             self.store = np.array(self.store)
+            #self.store_all_correct = np.array(self.store_all_correct)
         else:
             if self.mode == 'test':
                 dataset = self.test_data

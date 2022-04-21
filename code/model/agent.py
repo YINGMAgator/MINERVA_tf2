@@ -20,7 +20,7 @@ class Agent(tf.keras.Model):
         self.num_rollouts = params['num_rollouts']
         self.test_rollouts = params['test_rollouts']
         self.LSTM_Layers = params['LSTM_layers']
-        #incorporates the rollouts into the batch size somehow
+        #incorporates the rollouts into the batch size
         self.batch_size = params['batch_size'] * params['num_rollouts']
         print("batch size")
         print(params['batch_size'])

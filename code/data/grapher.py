@@ -49,7 +49,13 @@ class RelationEntityGrapher:
             self.array_store[e1, 0, 0] = e1
             for r, e2 in self.store[e1]:
                 if num_actions == self.array_store.shape[1]:
+                    # expand the dimensions of the arraystore to hold everything
                     print("The maximum number of connections to this node ("+str(self.max_num_actions)+") has been exceeded. "+str(len(self.store[e1])-200)+" connecting nodes are being ignored")
+                    # curlen=self.array_store.shape[1]
+                    # self.array_store=np.resize(self.array_store, (self.array_store.shape[0],len(self.store[e1])+1,2))
+                    # self.array_store[:,curlen:,:]=(self.ePAD, self.rPAD)
+                    # print("Dimensions expanded. Now "+str(len(self.store[e1])-self.array_store.shape[1])+" connecting nodes are being ignored")
+                    # print("The maximum number of connections to this node ("+str(self.max_num_actions)+") has been exceeded. "+str(len(self.store[e1])-200)+" connecting nodes are being ignored")
                     break
                 #edge n at node e1: relation is relation r and destination node is e2
                 self.array_store[e1,num_actions,0] = e2
@@ -74,17 +80,18 @@ class RelationEntityGrapher:
                 #for every e2 and r, if that action is true in the mask, set the values of r and of e2 to the pad value for entity and relation respectively
                 ret[i, :, 0][mask] = self.ePAD
                 ret[i, :, 1][mask] = self.rPAD
-            if last_step:
-                entities = ret[i, :, 0]
-                relations = ret[i, :, 1]
+            #TURNED OFF BECAUSE WE DONT WANT TO MASK CORRECT ANSWERS ANYMORE
+            # if last_step:
+            #     entities = ret[i, :, 0]
+            #     relations = ret[i, :, 1]
 
-                #TURNED OFF BECAUSE WE DONT WANT TO MASK CORRECT ANSWERS ANYMORE
-                #if an entity connected to the current node is a correct answer but not the correct answer, set it and the relation connecting it to the current node to the PAD value
-                # correct_e2 = answers[i]
-                # for j in range(entities.shape[0]):
-                #     #print(i/rollouts,j,i,rollouts)
-                #     if entities[j] in all_correct_answers[int(i/rollouts)] and entities[j] != correct_e2:
-                #         entities[j] = self.ePAD
-                #         relations[j] = self.rPAD
+                
+            #     #if an entity connected to the current node is a correct answer but not the correct answer, set it and the relation connecting it to the current node to the PAD value
+            #     correct_e2 = answers[i]
+            #     for j in range(entities.shape[0]):
+            #         #print(i/rollouts,j,i,rollouts)
+            #         if entities[j] in all_correct_answers[int(i/rollouts)] and entities[j] != correct_e2:
+            #             entities[j] = self.ePAD
+            #             relations[j] = self.rPAD
 
         return ret

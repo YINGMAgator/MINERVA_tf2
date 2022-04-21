@@ -6,12 +6,15 @@
 #SBATCH --gpus=2
 #SBATCH --output=b0.2_lr1e-5_l0.0002_bs200.out
 #SBATCH --job-name=kba_rl_combotest
-#SBATCH --mem=32000
+#SBATCH --mem=64000
 #SBATCH --nodes=1
 
 echo "Slurm nodes: $SLURM_JOB_NODELIST"
 NUM_GPUS=`echo $GPU_DEVICE_ORDINAL | tr ',' '\n' | wc -l`
 echo "assigned $NUM_GPUS gpu(s)"
+
+#allow fragmented memory
+TF_GPU_ALLOCATOR=cuda_malloc_async
 
 # load modules
 module load anaconda

@@ -118,6 +118,12 @@ class Trainer(object):
             actions += [chosen[1][count]]
         return actions
 
+    # the scores actually aren't exactly between 0 and 1, so we normalize them to that range to get a proper CCE error
+    def normalize_scores(self, scores):
+        scores = tf.cast(scores, dtype=tf.float32)
+        scores = tf.divide(tf.subtract(scores, tf.reduce_min(scores)), tf.subtract(tf.reduce_max(scores), tf.reduce_min(scores)))
+        return scores
+
     def train(self,use_RL):
         #reset loss graph to add another set of data
         self.xdata = []
@@ -175,7 +181,9 @@ class Trainer(object):
                         # action = np.squeeze(action, axis=1)  # [B,]
                     else: #use supervised learning
                         active_length=scores.shape[0]
-                        correct=np.full((active_length,200),0)
+                        choices=scores.shape[1]
+                        #assert choices == self.train_environment.action_len
+                        correct=np.full((active_length,choices),0)
                         actions_test=np.array([], int)
                         for batch_num in range(len(episode.correct_path[i])):
                             try:
@@ -191,7 +199,7 @@ class Trainer(object):
                                 print(sorted(list(set([int(x) for x in valid]))))
                                 print(list(np.nonzero(correct[batch_num,:]==1)[0]))
                         last_step = idx.numpy() #actions_test if verifying labels
-                        supervised_learning_loss.append(cce(tf.convert_to_tensor(correct),scores))
+                        supervised_learning_loss.append(cce(tf.convert_to_tensor(correct),self.normalize_scores(scores)))
                         actions_test=actions_test.astype(int)
                         
                     state = episode(idx) #actions_test if verifying labels
