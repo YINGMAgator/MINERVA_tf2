@@ -252,6 +252,7 @@ class Trainer(object):
 
                     #append new data
                     self.ydata_loss.append(supervised_learning_total_loss)
+                print("Episode: "+str(z))
                 
                 #regen line
                 self.line_loss, = self.loss_graph.plot(self.xdata, self.ydata_loss, 'r-', label="Loss")
