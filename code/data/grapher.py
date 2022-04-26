@@ -66,7 +66,7 @@ class RelationEntityGrapher:
 
     #UNDERSTOOD
     #receives a batch of states: (et, e1, rq, e2) for every query in the batch being pursued
-    def return_next_actions(self, current_entities, start_entities, query_relations, answers, all_correct_answers, last_step, rollouts):
+    def return_next_actions(self, current_entities, start_entities, query_relations, all_correct_answers, last_step, rollouts):
         ret = self.array_store[current_entities, :, :].copy()
         #for query in batch
         for i in range(current_entities.shape[0]):
@@ -76,7 +76,8 @@ class RelationEntityGrapher:
                 relations = ret[i, :, 1]
                 entities = ret[i, :, 0]
                 #generate a vector of length equal to number of edges from entity, where value is true if relation==query relation and e2=query answer for a given entity, false otherwise
-                mask = np.logical_and(relations == query_relations[i] , entities == answers[i])
+                ####mask = np.logical_and(relations == query_relations[i] , entities == answers[i])
+                mask = np.logical_and(relations == query_relations[i] ,[entities[j] in all_correct_answers[i] for j in range(len(entities))])
                 #for every e2 and r, if that action is true in the mask, set the values of r and of e2 to the pad value for entity and relation respectively
                 ret[i, :, 0][mask] = self.ePAD
                 ret[i, :, 1][mask] = self.rPAD

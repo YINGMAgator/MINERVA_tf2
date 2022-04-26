@@ -107,12 +107,6 @@ class Agent(tf.keras.Model):
                 action_embedding = relation_embedding
         return action_embedding
 
-    # the scores actually aren't exactly between 0 and 1, so we normalize them to that range to get a proper CCE error
-    def normalize_scores(self, scores):
-        scores = tf.cast(scores, dtype=tf.float32)
-        scores = tf.divide(tf.subtract(scores, tf.reduce_min(scores)), tf.subtract(tf.reduce_max(scores), tf.reduce_min(scores)))
-        return scores
-
     #all the relations for all the queries in the batch, all the next states for all the queries in the batch, all the previous histories for the queries in the batch, all the relatinos tht attached the 
     #previous states to the current states, all of the current entities for all the queries in the batch
     def step(self, next_relations, next_entities, prev_state, prev_relation, query_embedding, current_entities,
@@ -145,7 +139,7 @@ class Agent(tf.keras.Model):
         output_expanded = tf.expand_dims(output, axis=1)  # [B, 1, 2D]
         #multiply them together. This is the first step of creating the action probability distribution
         prelim_scores = tf.reduce_sum(input_tensor=tf.multiply(candidate_action_embeddings, output_expanded), axis=2)
-        prelim_scores = self.normalize_scores(prelim_scores)
+        
         #Masking PAD actions
         #makes all actions marked as PAD impossible to choose. This prevents the agent from encountering the failure mode where it goes to an action that is correct but not desired.
         comparison_tensor = tf.ones_like(next_relations, dtype=tf.int32) * self.rPAD  # matrix to compare

@@ -12,18 +12,25 @@ import pickle
 
 class Labeller(object):
     def __init__(self,params):
-        self.array_store, self.ePAD, self.rPAD, self.generate, self.correct_filepath = params
+        self.array_store, self.ePAD, self.rPAD, self.generate, self.correct_filepath, self.all_correct = params
         if not self.generate:
             print("loading correct labels")
             self.correct=pickle.load(open(self.correct_filepath,'rb'))
 
     def correct_path(self, line):
+        ####if self.generate:
+        ####    return self.correct_path_generate(line)
         if self.generate:
-            return self.correct_path_generate(line)
-        return self.correct[self.arr_2_key(line)]
+            e1 = line[0]
+            r = line[1]
+            for e2 in self.all_correct[(e1, r)]:
+                yield self.correct_path_generate([e1,r,e2])
+        else:
+            return self.correct[self.arr_2_key(line)]
 
     def arr_2_key(self,arr):
-        return str(arr[0])+str(arr[1])+str(arr[2])
+    ####    return str(arr[0])+str(arr[1])+str(arr[2])
+        return str(arr[0])+str(arr[1])
         
     # generate label for the training data
     def mask_out_right_answer(self, ret,query_relations,answers):

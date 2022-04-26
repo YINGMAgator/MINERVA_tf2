@@ -1,6 +1,6 @@
 #!/bin/bash
 
-#SBATCH --time=00:30:00
+#SBATCH --time=02:30:00
 #SBATCH --ntasks=1
 #SBATCH --cpus-per-gpu=4
 #SBATCH --gpus=2
@@ -13,7 +13,6 @@ echo "Slurm nodes: $SLURM_JOB_NODELIST"
 NUM_GPUS=`echo $GPU_DEVICE_ORDINAL | tr ',' '\n' | wc -l`
 echo "assigned $NUM_GPUS gpu(s)"
 
-#allow fragmented memory
 TF_GPU_ALLOCATOR=cuda_malloc_async
 
 # load modules
@@ -25,6 +24,6 @@ source activate YINGMA_KB
 cd /lustre/fs0/home/oburns/yingma_research_files/
 pwd
 echo "Starting Training:"
-python -m code.model.trainer --base_output_dir "output/fb15k-237/" --path_length 3 --hidden_size 50 --embedding_size 50 --batch_size 200 --beta 0.2 --Lambda 0.0002 --use_entity_embeddings 0 --train_entity_embeddings 0 --train_relation_embeddings 1 --data_input_dir "datasets/data_preprocessed/FB15K-237/" --vocab_dir "datasets/data_preprocessed/FB15K-237/vocab" --model_load_dir "saved_models/fb15k-237" --load_model 0 --nell_evaluation 0 --label_gen 0 --learning_rate 1e-5 --total_iterations=2000 --hp_type "combo trials" --hp_level "b0.2 lr1e-5 l0.0002 bs200"
+python -u -m code.model.trainer --base_output_dir "output/fb15k-237/" --max_num_actions 700 --path_length 3 --hidden_size 50 --embedding_size 50 --batch_size 200 --beta 0.2 --Lambda 0.0002 --use_entity_embeddings 0 --train_entity_embeddings 0 --train_relation_embeddings 1 --data_input_dir "datasets/data_preprocessed/FB15K-237/" --vocab_dir "datasets/data_preprocessed/FB15K-237/vocab" --model_load_dir "saved_models/fb15k-237" --load_model 0 --nell_evaluation 0 --label_gen 1 --learning_rate 1e-5 --total_iterations=500 --hp_type "combo trials" --hp_level "b0.2 lr1e-5 l0.0002 bs200 t4"
 
 echo "Ending script..."

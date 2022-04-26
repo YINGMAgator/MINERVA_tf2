@@ -153,8 +153,6 @@ class Trainer(object):
             state = episode.get_state()
             
             last_step = ["N/A"]*(self.batch_size*self.num_rollouts)
-
-            hub_nodes = 0
             
             with tf.GradientTape() as tape:
                 supervised_learning_loss = []

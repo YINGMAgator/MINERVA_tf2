@@ -23,24 +23,25 @@ class Episode(object):
             self.num_rollouts = test_rollouts
         self.current_hop = 0
         # we have correct path passed to the episode, which we will access later
-        start_entities, query_relation,  end_entities, all_answers, self.correct_path = data
+        ####start_entities, query_relation,  end_entities, all_answers, self.correct_path = data
+        start_entities, query_relation,  all_answers, self.correct_path = data
         self.no_examples = start_entities.shape[0]   #256
         self.positive_reward = positive_reward
         self.negative_reward = negative_reward
         #turns start entities into a list of the same start entity num_rollouts number of times so we can keep track of all the rollouts later on
         start_entities = np.repeat(start_entities, self.num_rollouts)#KEY LINE RIGHT HERE
         batch_query_relation = np.repeat(query_relation, self.num_rollouts)
-        end_entities = np.repeat(end_entities, self.num_rollouts)
+        ####end_entities = np.repeat(end_entities, self.num_rollouts)
         all_answers = np.repeat(all_answers, self.num_rollouts)
         self.start_entities = start_entities
-        self.end_entities = end_entities
-        self.all_end_entities = all_answers
+        ####self.end_entities = end_entities
+        ####self.all_end_entities = all_answers
         self.current_entities = np.array(start_entities)
         self.query_relation = batch_query_relation
         self.all_answers = all_answers
 
         next_actions = self.grapher.return_next_actions(self.current_entities, self.start_entities, self.query_relation,
-                                                        self.end_entities, self.all_answers, self.current_hop == self.path_len - 1,
+                                                        self.all_answers, self.current_hop == self.path_len - 1,
                                                         self.num_rollouts)
         self.state = {}
         self.state['next_relations'] = next_actions[:, :, 1]
@@ -55,11 +56,12 @@ class Episode(object):
 
     def get_reward(self):
         #instead of rewarding if the exact right correct answer is hit, reward if any correct answer is hit
-        # reward = []
-        # for i in range(self.current_entities.shape[0]):
-        #     reward+=[True if self.current_entities[i] in self.all_end_entities[i] else False]
-        # reward = np.array(reward)
-        reward = (self.current_entities == self.end_entities)
+        reward = []
+        for i in range(self.current_entities.shape[0]):
+            reward+=[True if self.current_entities[i] in self.all_answers[i] else False]
+            ####reward+=[True if self.current_entities[i] in self.all_end_entities[i] else False]
+        reward = np.array(reward)
+        ####reward = (self.current_entities == self.end_entities)
         # set the True and False values to the values of positive and negative rewards.
         condlist = [reward == True, reward == False]
         choicelist = [self.positive_reward, self.negative_reward]
@@ -85,7 +87,7 @@ class Episode(object):
 
         #use this new information to generate the next set of possible actions
         next_actions = self.grapher.return_next_actions(self.current_entities, self.start_entities, self.query_relation,
-                                                        self.end_entities, self.all_answers, self.current_hop == self.path_len - 1,
+                                                        self.all_answers, self.current_hop == self.path_len - 1,
                                                         self.num_rollouts )
 
         #and create a new state
@@ -121,7 +123,7 @@ class env(object):
                                                   relation_vocab=params['relation_vocab'],
                                                   mode=mode)
 
-            self.total_no_examples = self.batcher.store.shape[0]
+        ####self.total_no_examples = self.batcher.store.shape[0]
         #create the whole graph which the agent will traverse along, allowing us to know what actions are possible next
         self.grapher = RelationEntityGrapher(triple_store=params['dataset']['graph'],
                                               max_num_actions=params['max_num_actions'],
@@ -130,33 +132,34 @@ class env(object):
         #originally max num actions but will be expanded
         self.action_len = self.grapher.array_store.shape[1]
         #creates the filepath of the existing or yet to be generated correct labels csv
-        #correct_filepath="C:\\Users\\owenb\\OneDrive\\Documents\\GitHub\\MINERVA_tf2\\labels\\"+params['dataset_name']+"_labeldict"
         correct_filepath = "labels/"+params['dataset_name']+"_labeldict_allact_"+str(params['max_num_actions'])
         #creates the labeller for the environment, which will find the best path by brute force
-        self.labeller = Labeller([self.grapher.array_store, params['entity_vocab']['PAD'], params['relation_vocab']['PAD'], params['label_gen'], correct_filepath])
+        self.labeller = Labeller([self.grapher.array_store, params['entity_vocab']['PAD'], params['relation_vocab']['PAD'], params['label_gen'], correct_filepath, self.batcher.store_all_correct])
         #Code to generate labels for all of the potential queries and save them to a CSV file
         if(params['label_gen']):
             self.correct={}
-            for x in range(len(self.batcher.store)):
-                #skip ever writing to a csv
-                key = str(self.batcher.store[x,:][0])+str(self.batcher.store[x,:][1])+str(self.batcher.store[x,:][2])
-                for path in self.labeller.correct_path(self.batcher.store[x,:]):
-                    if key in self.correct:
-                        self.correct[key][0]["N/A"] += [path[0]]
-                        if path[0] in self.correct[key][1]:
-                            self.correct[key][1][path[0]] += [path[1]]
+            ####for x in range(len(self.batcher.store)):
+            for x in range(len(list(self.batcher.store_all_correct.keys()))):
+                ####key = str(self.batcher.store[x,:][0])+str(self.batcher.store[x,:][1])+str(self.batcher.store[x,:][2])
+                key = str(list(self.batcher.store_all_correct.keys())[x][0])+str(list(self.batcher.store_all_correct.keys())[x][1])
+                for pathgen in self.labeller.correct_path(list(self.batcher.store_all_correct.keys())[x]):
+                    for path in pathgen:
+                        if key in self.correct:
+                            self.correct[key][0]["N/A"] += [path[0]]
+                            if path[0] in self.correct[key][1]:
+                                self.correct[key][1][path[0]] += [path[1]]
+                            else:
+                                self.correct[key][1][path[0]] = [path[1]]
+                            if path[1] in self.correct[key][2]:
+                                self.correct[key][2][path[1]] += [path[2]]
+                            else:
+                                self.correct[key][2][path[1]] = [path[2]]
                         else:
-                            self.correct[key][1][path[0]] = [path[1]]
-                        if path[1] in self.correct[key][2]:
-                            self.correct[key][2][path[1]] += [path[2]]
-                        else:
-                            self.correct[key][2][path[1]] = [path[2]]
-                    else:
-                        self.correct[key] = {
-                            0: {"N/A" : [path[0]]},
-                            1: {path[0] : [path[1]]},
-                            2: {path[1] : [path[2]]}
-                        }
+                            self.correct[key] = {
+                                0: {"N/A" : [path[0]]},
+                                1: {path[0] : [path[1]]},
+                                2: {path[1] : [path[2]]}
+                            }
             pickle.dump(self.correct, open(correct_filepath, "wb"))
             sys.exit("Correct labels written to "+correct_filepath)
 
