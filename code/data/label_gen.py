@@ -13,20 +13,61 @@ import pickle
 class Labeller(object):
     def __init__(self,params):
         self.array_store, self.ePAD, self.rPAD, self.generate, self.correct_filepath, self.all_correct = params
-        if not self.generate:
-            print("loading correct labels")
-            self.correct=pickle.load(open(self.correct_filepath,'rb'))
+        # if not self.generate:
+        #     print("loading correct labels")
+        #     try:
+        #         self.correct=pickle.load(open(self.correct_filepath,'rb'))
+        #     except:
+        #         pass
+        self.open_labels()
+
+    def open_labels(self):
+        # try to open the labels file unless it is nonexistent or corrupted
+        # try:
+        #     with open(self.correct_filepath,'rb') as lf:
+        #         self.correct=pickle.load(lf)
+        # except:
+        #     self.correct={}
+        self.correct={}
+
+    def save_labels(self):
+        with open(self.correct_filepath,'wb') as lf:
+            pickle.dump(self.correct, lf)
 
     def correct_path(self, line):
-        ####if self.generate:
-        ####    return self.correct_path_generate(line)
-        if self.generate:
-            e1 = line[0]
-            r = line[1]
-            for e2 in self.all_correct[(e1, r)]:
-                yield self.correct_path_generate([e1,r,e2])
-        else:
+        # if this key is already in the dict, dont generate it again. Otherwise, generate the new key
+        if self.arr_2_key(line) in list(self.correct.keys()):
             return self.correct[self.arr_2_key(line)]
+        else:
+            e1=line[0]
+            r=line[1]
+            key=self.arr_2_key(line)
+            for e2 in self.all_correct[(e1, r)]:
+                for path in self.correct_path_generate([e1,r,e2]):
+                    if key in self.correct:
+                        self.correct[key][0]["N/A"] += [path[0]]
+                        if path[0] in self.correct[key][1]:
+                            self.correct[key][1][path[0]] += [path[1]]
+                        else:
+                            self.correct[key][1][path[0]] = [path[1]]
+                        if path[1] in self.correct[key][2]:
+                            self.correct[key][2][path[1]] += [path[2]]
+                        else:
+                            self.correct[key][2][path[1]] = [path[2]]
+                    else:
+                        self.correct[key] = {
+                            0: {"N/A" : [path[0]]},
+                            1: {path[0] : [path[1]]},
+                            2: {path[1] : [path[2]]}
+                        }
+            return self.correct[key]
+        # if self.generate:
+        #     e1 = line[0]
+        #     r = line[1]
+        #     for e2 in self.all_correct[(e1, r)]:
+        #         yield self.correct_path_generate([e1,r,e2])
+        # else:
+        #     return self.correct[self.arr_2_key(line)]
 
     def arr_2_key(self,arr):
     ####    return str(arr[0])+str(arr[1])+str(arr[2])

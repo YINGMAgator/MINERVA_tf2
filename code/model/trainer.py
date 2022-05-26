@@ -19,29 +19,20 @@ from code.model.baseline import ReactiveBaseline
 from scipy.special import logsumexp as lse
 import pickle
 from code.data.vocab_gen import Vocab_Gen
+import matplotlib
 import matplotlib.pyplot as plt
 logger = logging.getLogger()
 logging.basicConfig(stream=sys.stdout, level=logging.DEBUG)
 
-
+matplotlib.use('Agg') 
 class Trainer(object):
-    def __init__(self, params):#, environment):
+    def __init__(self, params):
         # transfer parameters to self
         for key, val in params.items(): setattr(self, key, val)
 
-        #set up loss graph, including x range since we already know the number of training iterations that will occur
-        plt.show()
-        self.figure, self.axes = plt.subplots(1,2)
-        self.loss_graph=self.axes[0]
-        self.accuracy_graph=self.axes[1]
-        self.loss_graph.set_xlim(0, self.total_iterations)
-        self.loss_graph.set_ylim(0, 1) #since we don't want the y lim to get reset ever, even when we switch from SL to RL
-        self.accuracy_graph.set_xlim(0, self.total_iterations)
-        self.accuracy_graph.set_ylim(0, 1)
-
         self.agent = Agent(params)
         self.save_path = None
-        #self.train_environment = environment
+        # self.train_environment = environment
         self.train_environment = env(params, 'train')
         # I don't want to load a 10gb file into memory 3 times so I'm just not creating these environemnts during this part of testing
         self.dev_test_environment = None #env(params, 'dev')
@@ -53,6 +44,12 @@ class Trainer(object):
         self.ePAD = self.entity_vocab['PAD']
         self.rPAD = self.relation_vocab['PAD']
         self.global_step = 0
+        self.path_data = []
+
+    def set_hpdependent(self, options):
+        self.Lambda = options['Lambda']
+        self.beta = options['beta']
+        self.learning_rate = options['learning_rate']
         self.decaying_beta = tf.keras.optimizers.schedules.ExponentialDecay(self.beta,decay_steps=200,decay_rate=0.90, staircase=True)
         # optimize
         self.baseline = ReactiveBaseline(l=self.Lambda)
@@ -124,15 +121,7 @@ class Trainer(object):
         scores = tf.divide(tf.subtract(scores, tf.reduce_min(scores)), tf.subtract(tf.reduce_max(scores), tf.reduce_min(scores)))
         return scores
 
-    def train(self,use_RL):
-        #reset loss graph to add another set of data
-        self.xdata = []
-        self.ydata_loss = []
-        self.ydata_accuracy = []
-
-        self.line_loss, = self.loss_graph.plot(self.xdata, self.ydata_loss, 'r-', label="Loss")
-        self.line_accuracy, = self.accuracy_graph.plot(self.xdata, self.ydata_accuracy, 'r-', label="Accuracy")
-
+    def train(self,use_RL, xdata, ydata_accuracy, ydata_loss, accuracy_graph, loss_graph, line_loss, line_accuracy):
         train_loss = 0.0
         self.batch_counter = 0
         self.first_state_of_test = False
@@ -142,6 +131,11 @@ class Trainer(object):
         cce = tf.keras.losses.CategoricalCrossentropy(reduction=tf.keras.losses.Reduction.NONE)
 
         for z, episode in enumerate(self.train_environment.get_episodes()):
+            # paths=[]
+            # start rl graph from the end of the supervised learning run
+            if use_RL:
+                z+=self.total_iterations_sl
+
             self.batch_counter += 1
             model_state = self.agent.state_init
             prev_relation = self.agent.relation_init            
@@ -151,6 +145,8 @@ class Trainer(object):
             query_embedding = self.agent.get_query_embedding(query_relation)
             # get initial state
             state = episode.get_state()
+            # starting points in path
+            # paths.append(state['current_entities'])
             
             last_step = ["N/A"]*(self.batch_size*self.num_rollouts)
             
@@ -199,24 +195,35 @@ class Trainer(object):
                         last_step = idx.numpy() #actions_test if verifying labels
                         supervised_learning_loss.append(cce(tf.convert_to_tensor(correct),self.normalize_scores(scores)))
                         actions_test=actions_test.astype(int)
-                        
+                    
                     state = episode(idx) #actions_test if verifying labels
+                    # paths.append(prev_relation)
+                    # paths.append(state['current_entities'])
 
-                    for i in range(state['next_entities'].shape[0]):
-                        if np.sum(state['next_entities'][i,:]!=self.ePAD) > 100:
-                            hub_nodes+=1
-
+                # batch num # of rows, each holding a path
+                # path = [[x[batch] for x in paths] for batch in range(self.batch_size*self.num_rollouts)]
+                reward = episode.get_reward()
+                # update node info objects
+                # for batch, path in enumerate(path):
+                #     success = reward[batch] == 1
+                #     entities = [path[0], path[2], path[4], path[6]]
+                #     for x in entities:
+                #         self.train_environment.grapher.node_info_objects[x].appearance_count += 1
+                #         if success:
+                #             self.train_environment.grapher.node_info_objects[x].correct_appearance_count += 1
+                #         else:
+                #             self.train_environment.grapher.node_info_objects[x].incorrect_appearance_count += 1
                 #calculating the accuracy, or the portion of batches where the correct answer was found
-                accuracy = np.sum((np.sum(np.reshape(episode.get_reward(), (self.batch_size, self.num_rollouts)), axis=1) > 0))/self.batch_size
+                accuracy = np.sum((np.sum(np.reshape(reward, (self.batch_size, self.num_rollouts)), axis=1) > 0))/self.batch_size
                 print("Accuracy "+ str(accuracy))
 
                 #change y of graph if needed for accuracy graph (same regardless of using RL or SL)
-                self.xdata.append(z)
-                if accuracy>self.accuracy_graph.get_ylim()[1]:
-                    self.accuracy_graph.set_ylim(self.accuracy_graph.get_ylim()[0],accuracy)
-                elif accuracy<self.accuracy_graph.get_ylim()[0]:
-                    self.accuracy_graph.set_ylim(accuracy,self.accuracy_graph.get_ylim()[1])
-                self.ydata_accuracy.append(accuracy)
+                xdata.append(z)
+                if accuracy>accuracy_graph.get_ylim()[1]:
+                    accuracy_graph.set_ylim(accuracy_graph.get_ylim()[0],accuracy)
+                elif accuracy<accuracy_graph.get_ylim()[0]:
+                    accuracy_graph.set_ylim(accuracy,accuracy_graph.get_ylim()[1])
+                ydata_accuracy.append(accuracy)
                 
                 # get the final reward from the environment and update the limits of the graphs accordingly
                 # plus add the new data to the dataset
@@ -229,13 +236,13 @@ class Trainer(object):
                     print(batch_total_loss)
 
                     #change y of graph if needed for loss graph
-                    if batch_total_loss>self.loss_graph.get_ylim()[1]:
-                        self.loss_graph.set_ylim(self.loss_graph.get_ylim()[0],batch_total_loss)
-                    elif batch_total_loss<self.loss_graph.get_ylim()[0]:
-                        self.loss_graph.set_ylim(batch_total_loss,self.loss_graph.get_ylim()[1])
+                    if batch_total_loss>loss_graph.get_ylim()[1]:
+                        loss_graph.set_ylim(loss_graph.get_ylim()[0],batch_total_loss)
+                    elif batch_total_loss<loss_graph.get_ylim()[0]:
+                        loss_graph.set_ylim(batch_total_loss,loss_graph.get_ylim()[1])
 
                     #append new data
-                    self.ydata_loss.append(batch_total_loss)
+                    ydata_loss.append(batch_total_loss)
 
                 else: #use supervised learning
                     supervised_learning_total_loss =  tf.math.reduce_mean(tf.math.square(tf.reduce_sum(supervised_learning_loss,0)))
@@ -243,23 +250,23 @@ class Trainer(object):
                     print(supervised_learning_total_loss)
 
                     #change y of graph if needed
-                    if supervised_learning_total_loss>self.loss_graph.get_ylim()[1]:
-                        self.loss_graph.set_ylim(self.loss_graph.get_ylim()[0],supervised_learning_total_loss)
-                    elif supervised_learning_total_loss<self.loss_graph.get_ylim()[0]:
-                        self.loss_graph.set_ylim(supervised_learning_total_loss,self.loss_graph.get_ylim()[1])
+                    if supervised_learning_total_loss>loss_graph.get_ylim()[1]:
+                        loss_graph.set_ylim(loss_graph.get_ylim()[0],supervised_learning_total_loss)
+                    elif supervised_learning_total_loss<loss_graph.get_ylim()[0]:
+                        loss_graph.set_ylim(supervised_learning_total_loss,loss_graph.get_ylim()[1])
 
                     #append new data
-                    self.ydata_loss.append(supervised_learning_total_loss)
+                    ydata_loss.append(supervised_learning_total_loss)
                 print("Episode: "+str(z))
                 
                 #regen line
-                self.line_loss, = self.loss_graph.plot(self.xdata, self.ydata_loss, 'r-', label="Loss")
-                self.line_accuracy, = self.accuracy_graph.plot(self.xdata, self.ydata_accuracy, 'r-', label="Accuracy")
+                line_loss, = loss_graph.plot(xdata, ydata_loss, 'r-', label="Loss")
+                line_accuracy, = accuracy_graph.plot(xdata, ydata_accuracy, 'r-', label="Accuracy")
                 #populate new line
-                self.line_loss.set_xdata(self.xdata)
-                self.line_accuracy.set_xdata(self.xdata)
-                self.line_loss.set_ydata(self.ydata_loss)
-                self.line_accuracy.set_ydata(self.ydata_accuracy)
+                line_loss.set_xdata(xdata)
+                line_accuracy.set_xdata(xdata)
+                line_loss.set_ydata(ydata_loss)
+                line_accuracy.set_ydata(ydata_accuracy)
                 #draw everything and briefly wait
                 plt.draw()
                 #commented out because I need this to run in the background so I can work on other stuff
@@ -273,10 +280,13 @@ class Trainer(object):
             gradients, _ = tf.clip_by_global_norm(gradients, self.grad_clip_norm)
             self.optimizer.apply_gradients(zip(gradients, self.agent.trainable_variables))        
 
-            if self.batch_counter >= self.total_iterations:
+            if use_RL and self.batch_counter >= self.total_iterations_rl:
                 #plt.savefig("C:\\Users\\owenb\\OneDrive\\Documents\\GitHub\\MINERVA_tf2\\hyperparameter testing results\\FB15K\\"+self.hp_type+"\\"+self.hp_level+"_cce.png")
-                plt.savefig("hyperparameter testing results/FB15K/"+self.hp_type+"/"+self.hp_level+"_cce.png")
-                break
+                # save updated labels
+                #self.train_environment.labeller.save_labels()
+                return xdata, ydata_accuracy, ydata_loss, accuracy_graph, loss_graph, line_loss, line_accuracy
+            elif not use_RL and self.batch_counter >= self.total_iterations_sl:
+                return xdata, ydata_accuracy, ydata_loss, accuracy_graph, loss_graph, line_loss, line_accuracy
 
     def test(self, beam=False, print_paths=False, save_model = True, auc = False):
         batch_counter = 0
@@ -521,7 +531,6 @@ class Trainer(object):
         return idx.reshape((-1))
 
 if __name__ == '__main__':
-#def setup():
     # read command line options
     options = read_options()
     # Set logging
@@ -563,7 +572,6 @@ if __name__ == '__main__':
     logger.info('reading vocab files...')
     vocab=Vocab_Gen(Datasets=[options['dataset']['train'],options['dataset']['test'],options['dataset']['graph']])
     options['relation_vocab'] = vocab.relation_vocab
-    
     options['entity_vocab'] = vocab.entity_vocab
     
     print(len(options['entity_vocab'] ))
@@ -574,30 +582,53 @@ if __name__ == '__main__':
     logger.info('Total number of entities {}'.format(len(options['entity_vocab'])))
     logger.info('Total number of relations {}'.format(len(options['relation_vocab'])))
     save_path = ''
+    
+    #set up loss graph, including x range since we already know the number of training iterations that will occur
+    figure, axes = plt.subplots(1,2)
+    loss_graph=axes[0]
+    accuracy_graph=axes[1]
+    loss_graph.set_xlim(0, options['total_iterations_sl'] + options['total_iterations_rl'])
+    loss_graph.set_ylim(0, 1) #since we don't want the y lim to get reset ever, even when we switch from SL to RL
+    accuracy_graph.set_xlim(0, options['total_iterations_sl'] + options['total_iterations_rl'])
+    accuracy_graph.set_ylim(0, 1)
 
-    #return options, env(options, 'train')
-    #return Trainer(options)
-    #Training
+    #reset loss graph to add another set of data
+    xdata = []
+    ydata_loss = []
+    ydata_accuracy = []
+
+    line_loss, = loss_graph.plot(xdata, ydata_loss, 'r-', label="Loss")
+    line_accuracy, = accuracy_graph.plot(xdata, ydata_accuracy, 'r-', label="Accuracy")
+
+    # Training
     if not options['load_model']:
         trainer = Trainer(options)
 
-        #one training pass supervised learning, one training pass reinforcement learning
-        print("training with supervised learning")
-        trainer.train(False)
-        #commented out because we will only be doing hyperparameter tuning on SL
-        #print("training with reinforcement learning")
-        #trainer.train(True)
+        # Training with supervised learning
+        options['beta']=0.002
+        options['Lambda']=2
+        options['learning_rate']=0.001
+        trainer.set_hpdependent(options)
+        xdata, ydata_accuracy, ydata_loss, accuracy_graph, loss_graph, line_loss, line_accuracy = trainer.train(False, xdata, ydata_accuracy, ydata_loss, accuracy_graph, loss_graph, line_loss, line_accuracy)
+
+        # Training with reinforcement learning
+        options['beta']=0.02
+        options['Lambda']=0.02
+        options['learning_rate']=1e-3
+        trainer.set_hpdependent(options)
+        xdata, ydata_accuracy, ydata_loss, accuracy_graph, loss_graph, line_loss, line_accuracy = trainer.train(True, xdata, ydata_accuracy, ydata_loss, accuracy_graph, loss_graph, line_loss, line_accuracy)
+
+        # with open("node_info_report.csv","w") as csvfile:
+        #     writer=csv.writer(csvfile, dialect='excel')
+        #     writer.writerow(["id", "truncated", "total connections", "actual connections", "appearance count", "correct appearances", "incorrect appearances"])
+        #     for x in list(trainer.train_environment.grapher.node_info_objects.keys()):
+        #         node = trainer.train_environment.grapher.node_info_objects[x]
+        #         writer.writerow([str(x), str(node.truncated), str(node.total_connections), str(node.actual_connections), str(node.appearance_count),str(node.correct_appearance_count),str(node.incorrect_appearance_count)])
+
+        # Saving graph
+        plt.savefig("hyperparameter testing results/FB15K/final_no_sl.png")
+        plt.close(figure)
+
         save_path = trainer.save_path
         path_logger_file = trainer.path_logger_file
         output_dir = trainer.output_dir
-
-# def train(options, env):
-#     trainer = Trainer(options, env)
-#     print("training with supervised learning")
-#     trainer.train(False)
-#     #commented out because we will only be doing hyperparameter tuning on SL
-#     #print("training with reinforcement learning")
-#     #trainer.train(True)
-#     save_path = trainer.save_path
-#     path_logger_file = trainer.path_logger_file
-#     output_dir = trainer.output_dir

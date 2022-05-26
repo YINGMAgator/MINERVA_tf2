@@ -10,7 +10,6 @@ import sys
 import pickle
 logger = logging.getLogger()
 
-
 class Episode(object):
 
     def __init__(self, graph, data, params):
@@ -109,6 +108,13 @@ class env(object):
         self.path_len = params['path_length']
         self.test_rollouts = params['test_rollouts']
         input_dir = params['data_input_dir']
+        ####self.total_no_examples = self.batcher.store.shape[0]
+        #create the whole graph which the agent will traverse along, allowing us to know what actions are possible next
+        self.grapher = RelationEntityGrapher(triple_store=params['dataset']['graph'],
+                                              max_num_actions=params['max_num_actions'],
+                                              entity_vocab=params['entity_vocab'],
+                                              relation_vocab=params['relation_vocab'])
+
         #create the batchers, which in turn create arrays for all triples and query answers. We call these to give us batches
         if mode == 'train':
             self.batcher = RelationEntityBatcher(dataset=params['dataset'],
@@ -123,46 +129,39 @@ class env(object):
                                                   relation_vocab=params['relation_vocab'],
                                                   mode=mode)
 
-        ####self.total_no_examples = self.batcher.store.shape[0]
-        #create the whole graph which the agent will traverse along, allowing us to know what actions are possible next
-        self.grapher = RelationEntityGrapher(triple_store=params['dataset']['graph'],
-                                              max_num_actions=params['max_num_actions'],
-                                              entity_vocab=params['entity_vocab'],
-                                              relation_vocab=params['relation_vocab'])
         #originally max num actions but will be expanded
         self.action_len = self.grapher.array_store.shape[1]
         #creates the filepath of the existing or yet to be generated correct labels csv
-        correct_filepath = "labels/"+params['dataset_name']+"_labeldict_allact_"+str(params['max_num_actions'])
+        self.correct_filepath = "labels/"+params['dataset_name']+"_labeldict_allact_"+str(params['max_num_actions'])
         #creates the labeller for the environment, which will find the best path by brute force
-        self.labeller = Labeller([self.grapher.array_store, params['entity_vocab']['PAD'], params['relation_vocab']['PAD'], params['label_gen'], correct_filepath, self.batcher.store_all_correct])
-        #Code to generate labels for all of the potential queries and save them to a CSV file
-        if(params['label_gen']):
-            self.correct={}
-            ####for x in range(len(self.batcher.store)):
-            for x in range(len(list(self.batcher.store_all_correct.keys()))):
-                ####key = str(self.batcher.store[x,:][0])+str(self.batcher.store[x,:][1])+str(self.batcher.store[x,:][2])
-                key = str(list(self.batcher.store_all_correct.keys())[x][0])+str(list(self.batcher.store_all_correct.keys())[x][1])
-                for pathgen in self.labeller.correct_path(list(self.batcher.store_all_correct.keys())[x]):
-                    for path in pathgen:
-                        if key in self.correct:
-                            self.correct[key][0]["N/A"] += [path[0]]
-                            if path[0] in self.correct[key][1]:
-                                self.correct[key][1][path[0]] += [path[1]]
-                            else:
-                                self.correct[key][1][path[0]] = [path[1]]
-                            if path[1] in self.correct[key][2]:
-                                self.correct[key][2][path[1]] += [path[2]]
-                            else:
-                                self.correct[key][2][path[1]] = [path[2]]
-                        else:
-                            self.correct[key] = {
-                                0: {"N/A" : [path[0]]},
-                                1: {path[0] : [path[1]]},
-                                2: {path[1] : [path[2]]}
-                            }
-            pickle.dump(self.correct, open(correct_filepath, "wb"))
-            sys.exit("Correct labels written to "+correct_filepath)
-
+        self.labeller = Labeller([self.grapher.array_store, params['entity_vocab']['PAD'], params['relation_vocab']['PAD'], params['label_gen'], self.correct_filepath, self.batcher.store_all_correct])
+        # #Code to generate labels for all of the potential queries and save them to a CSV file
+        # if(params['label_gen']):
+        #     self.correct={}
+        #     ####for x in range(len(self.batcher.store)):
+        #     for x in range(len(list(self.batcher.store_all_correct.keys()))):
+        #         ####key = str(self.batcher.store[x,:][0])+str(self.batcher.store[x,:][1])+str(self.batcher.store[x,:][2])
+        #         key = str(list(self.batcher.store_all_correct.keys())[x][0])+str(list(self.batcher.store_all_correct.keys())[x][1])
+        #         for pathgen in self.labeller.correct_path(list(self.batcher.store_all_correct.keys())[x]):
+        #             for path in pathgen:
+        #                 if key in self.correct:
+        #                     self.correct[key][0]["N/A"] += [path[0]]
+        #                     if path[0] in self.correct[key][1]:
+        #                         self.correct[key][1][path[0]] += [path[1]]
+        #                     else:
+        #                         self.correct[key][1][path[0]] = [path[1]]
+        #                     if path[1] in self.correct[key][2]:
+        #                         self.correct[key][2][path[1]] += [path[2]]
+        #                     else:
+        #                         self.correct[key][2][path[1]] = [path[2]]
+        #                 else:
+        #                     self.correct[key] = {
+        #                         0: {"N/A" : [path[0]]},
+        #                         1: {path[0] : [path[1]]},
+        #                         2: {path[1] : [path[2]]}
+        #                     }
+        #     pickle.dump(self.correct, open(correct_filepath, "wb"))
+        #     sys.exit("Correct labels written to "+correct_filepath)
 
     #returns an episode, a tool which the trainer can use to get current states from, take a step, and then give the actions back to to get another current state until we reach the end
     def get_episodes(self):

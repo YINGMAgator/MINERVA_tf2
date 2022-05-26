@@ -6,6 +6,9 @@ class Agent(tf.keras.Model):
 
     def __init__(self, params):
         super(Agent, self).__init__()
+        #stuff to save the model
+        self.saver = tf.train.Saver()
+        
         #attach all of the parameters passed to the trainer to the agent
         self.action_vocab_size = len(params['relation_vocab'])
         self.entity_vocab_size = len(params['entity_vocab'])
@@ -68,16 +71,16 @@ class Agent(tf.keras.Model):
             
         # rnn_cells = [tf.keras.layers.LSTMCell(self.m * self.hidden_size) for _ in range(self.LSTM_Layers)]
         # self.policy_step1 = tf.keras.layers.StackedRNNCells(rnn_cells)
-        
+        print("chkpt0")
         cells = []
         for _ in range(self.LSTM_Layers):
             #cells.append(tf.keras.layers.LSTMCell(self.m * self.hidden_size, use_peepholes=True, state_is_tuple=True))
             cells.append(tf.compat.v1.nn.rnn_cell.LSTMCell(self.m * self.hidden_size, use_peepholes=True, state_is_tuple=True))
         #LSTM to generate the history
-        
+        print("chkpt1")
         self.policy_step = tf.compat.v1.nn.rnn_cell.MultiRNNCell(cells, state_is_tuple=True)
         #self.policy_step = tf.keras.layers.StackedRNNCells(cells, state_is_tuple=True)
-        
+        print("chkpt2")
         self.state_init = self.policy_step.zero_state(batch_size=self.batch_size, dtype=tf.float32)
         self.relation_init = self.dummy_start_label
 

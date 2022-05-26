@@ -6,6 +6,17 @@ import numpy as np
 
 logger = logging.getLogger(__name__)
 
+class node_info():
+    def __init__(self):
+        self.truncated = False
+        self.total_connections = 0
+        self.actual_connections = 0
+        self.appearance_count = 0
+        self.correct_appearance_count = 0
+        self.incorrect_appearance_count = 0
+        self.starts = 0
+        self.correct_starts = 0
+        self.incorrect_starts = 0
 
 class RelationEntityGrapher:
     #UNDERSTOOD
@@ -26,6 +37,8 @@ class RelationEntityGrapher:
 
         self.rev_relation_vocab = dict([(v, k) for k, v in relation_vocab.items()])
         self.rev_entity_vocab = dict([(v, k) for k, v in entity_vocab.items()])
+        #create list to hold nodeinfo objects for error analysis
+        self.node_info_objects={}
         self.create_graph()
         print("KG constructed")
 
@@ -47,6 +60,8 @@ class RelationEntityGrapher:
             #edge 0 at node e1: relation is NO_OP and destination node is e1
             self.array_store[e1, 0, 1] = self.relation_vocab['NO_OP']
             self.array_store[e1, 0, 0] = e1
+            new_node = node_info()
+            new_node.total_connections = len(self.store[e1])
             for r, e2 in self.store[e1]:
                 if num_actions == self.array_store.shape[1]:
                     # expand the dimensions of the arraystore to hold everything
@@ -56,11 +71,14 @@ class RelationEntityGrapher:
                     # self.array_store[:,curlen:,:]=(self.ePAD, self.rPAD)
                     # print("Dimensions expanded. Now "+str(len(self.store[e1])-self.array_store.shape[1])+" connecting nodes are being ignored")
                     # print("The maximum number of connections to this node ("+str(self.max_num_actions)+") has been exceeded. "+str(len(self.store[e1])-200)+" connecting nodes are being ignored")
+                    new_node.truncated = True
                     break
                 #edge n at node e1: relation is relation r and destination node is e2
                 self.array_store[e1,num_actions,0] = e2
                 self.array_store[e1,num_actions,1] = r
                 num_actions += 1
+            new_node.actual_connections = num_actions
+            self.node_info_objects[e1] = new_node
         del self.store
         self.store = None
 

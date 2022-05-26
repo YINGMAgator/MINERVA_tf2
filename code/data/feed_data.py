@@ -51,6 +51,7 @@ class RelationEntityBatcher():
                 ####self.store.append([e1,r,e2])
                 self.store_all_correct[(e1, r)].add(e2)  #YM: there may exist multiple answers for the same query, i.e., same (e1,r) may mapping to different e2. store_all_correct will give all solution for the same query
             ####self.store = np.array(self.store)
+            self.queries=np.array(list(self.store_all_correct.keys()), int)
         else:
             if self.mode == 'test':
                 dataset = self.test_data
@@ -83,10 +84,10 @@ class RelationEntityBatcher():
     def yield_next_batch_train(self, labeller):
         while True:
             #randomly generates a list of indexes of facts in the training data the length of which is the batch size
-            batch_idx = np.random.randint(0, len(list(self.store_all_correct.keys())), size=self.batch_size)
+            batch_idx = np.random.randint(0, self.queries.shape[0], size=int(self.batch_size))
             #creates numpy array of the facts at those indexes
             ####batch = self.store[batch_idx, :]
-            batch = list(self.store_all_correct.keys())[batch_idx]
+            batch = self.queries[batch_idx, :]
             #generates correct paths
             labels=[[],[],[]]
             for i in range(len(batch)):
