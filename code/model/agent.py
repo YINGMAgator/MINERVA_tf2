@@ -6,9 +6,7 @@ class Agent(tf.keras.Model):
 
     def __init__(self, params):
         super(Agent, self).__init__()
-        #stuff to save the model
-        self.saver = tf.train.Saver()
-        
+        self.params=params
         #attach all of the parameters passed to the trainer to the agent
         self.action_vocab_size = len(params['relation_vocab'])
         self.entity_vocab_size = len(params['entity_vocab'])
@@ -85,6 +83,11 @@ class Agent(tf.keras.Model):
         self.relation_init = self.dummy_start_label
 
         print("done creating agent")
+
+    def get_config(self):
+        config = {
+            "params":self.params
+        }
     
     def get_query_embedding(self,query_relation):
         query_embedding = tf.nn.embedding_lookup(params=self.relation_lookup_table, ids=query_relation)  # [B, 2D]

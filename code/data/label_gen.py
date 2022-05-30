@@ -12,7 +12,7 @@ import pickle
 
 class Labeller(object):
     def __init__(self,params):
-        self.array_store, self.ePAD, self.rPAD, self.generate, self.correct_filepath, self.all_correct = params
+        self.array_store, self.ePAD, self.rPAD, self.generate, self.correct_filepath, self.all_correct, self.rwd = params
         # if not self.generate:
         #     print("loading correct labels")
         #     try:
@@ -36,13 +36,14 @@ class Labeller(object):
 
     def correct_path(self, line):
         # if this key is already in the dict, dont generate it again. Otherwise, generate the new key
-        if self.arr_2_key(line) in list(self.correct.keys()):
-            return self.correct[self.arr_2_key(line)]
-        else:
-            e1=line[0]
-            r=line[1]
-            key=self.arr_2_key(line)
-            for e2 in self.all_correct[(e1, r)]:
+        if self.rwd:
+            if self.arr_2_key(line) in list(self.correct.keys()):
+                return self.correct[self.arr_2_key(line)]
+            else:
+                e1 = line[0]
+                r = line[1]
+                e2 = line[2]
+                key=self.arr_2_key(line)
                 for path in self.correct_path_generate([e1,r,e2]):
                     if key in self.correct:
                         self.correct[key][0]["N/A"] += [path[0]]
@@ -60,18 +61,39 @@ class Labeller(object):
                             1: {path[0] : [path[1]]},
                             2: {path[1] : [path[2]]}
                         }
-            return self.correct[key]
-        # if self.generate:
-        #     e1 = line[0]
-        #     r = line[1]
-        #     for e2 in self.all_correct[(e1, r)]:
-        #         yield self.correct_path_generate([e1,r,e2])
-        # else:
-        #     return self.correct[self.arr_2_key(line)]
+                return self.correct[key]
+        else:
+            if self.arr_2_key(line) in list(self.correct.keys()):
+                return self.correct[self.arr_2_key(line)]
+            else:
+                e1=line[0]
+                r=line[1]
+                key=self.arr_2_key(line)
+                for e2 in self.all_correct[(e1, r)]:
+                    for path in self.correct_path_generate([e1,r,e2]):
+                        if key in self.correct:
+                            self.correct[key][0]["N/A"] += [path[0]]
+                            if path[0] in self.correct[key][1]:
+                                self.correct[key][1][path[0]] += [path[1]]
+                            else:
+                                self.correct[key][1][path[0]] = [path[1]]
+                            if path[1] in self.correct[key][2]:
+                                self.correct[key][2][path[1]] += [path[2]]
+                            else:
+                                self.correct[key][2][path[1]] = [path[2]]
+                        else:
+                            self.correct[key] = {
+                                0: {"N/A" : [path[0]]},
+                                1: {path[0] : [path[1]]},
+                                2: {path[1] : [path[2]]}
+                            }
+                return self.correct[key]
 
     def arr_2_key(self,arr):
-    ####    return str(arr[0])+str(arr[1])+str(arr[2])
-        return str(arr[0])+str(arr[1])
+        if self.rwd:
+            return str(arr[0])+str(arr[1])+str(arr[2])
+        else:
+            return str(arr[0])+str(arr[1])
         
     # generate label for the training data
     def mask_out_right_answer(self, ret,query_relations,answers):

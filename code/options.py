@@ -72,13 +72,26 @@ def read_options():
     parser.add_argument("--model_load_dir", default="", type=str)
     parser.add_argument("--load_model", default=0, type=int)
     parser.add_argument("--nell_evaluation", default=0, type=int)
-    # parser.add_argument("--nell_query", default='all', type=str)
+    # for controlling generating last results
+    parser.add_argument("--train_rwd", default=0, type=int)
+    parser.add_argument("--test", default=0, type=int)
+    parser.add_argument("--model_name", default="test", type=str)
+    parser.add_argument("--test_round", default=0, type=int) # not specified at cmd line; changed by code later
+    parser.add_argument("--sl", default=1, type=int)
+    parser.add_argument("--save_model", default=1, type=int)
+    parser.add_argument("--saved_model_dir", default="none", type=str)
 
     try:
         parsed = vars(parser.parse_args())
     except IOError as msg:
         parser.error(str(msg))
 
+    # ints to bools
+    parsed['train_rwd'] = parsed['train_rwd'] == 1
+    parsed['test'] = parsed['test'] == 1
+    parsed['test_round'] = parsed['test_round'] == 1
+    parsed['sl'] = parsed['sl'] == 1
+    parsed['save_model'] = parsed['save_model'] == 1
     #dataset name
     parsed['dataset_name']=parsed['base_output_dir'][7:-1]
 
@@ -91,7 +104,7 @@ def read_options():
     parsed['pretrained_embeddings_action'] = ""
     parsed['pretrained_embeddings_entity'] = ""
 
-    parsed['output_dir'] = parsed['base_output_dir'] + '/' + str(uuid.uuid4())[:4]+'_'+str(parsed['path_length'])+'_'+str(parsed['beta'])+'_'+str(parsed['test_rollouts'])+'_'+str(parsed['Lambda'])
+    parsed['output_dir'] = parsed['base_output_dir'] + '/' + str(uuid.uuid4())[:4]+'_'+parsed['model_name']
 
     parsed['model_dir'] = parsed['output_dir']+'/'+ 'model/'
 
@@ -103,7 +116,7 @@ def read_options():
         parsed['learning_rate']=schedule
 
     ##Logger##
-    parsed['path_logger_file'] = parsed['output_dir']
+    parsed['path_logger_file'] = parsed['output_dir']+'/path_info/path_logger'
     parsed['log_file_name'] = parsed['output_dir'] +'/log.txt'
     os.makedirs(parsed['output_dir'])
     os.mkdir(parsed['model_dir'])

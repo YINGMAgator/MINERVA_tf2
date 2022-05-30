@@ -17,7 +17,7 @@ import sys
 from code.model.baseline import ReactiveBaseline
 #from scipy.misc import logsumexp as lse
 from scipy.special import logsumexp as lse
-import pickle
+import dill
 from code.data.vocab_gen import Vocab_Gen
 import matplotlib
 import matplotlib.pyplot as plt
@@ -26,20 +26,30 @@ logging.basicConfig(stream=sys.stdout, level=logging.DEBUG)
 
 matplotlib.use('Agg') 
 class Trainer(object):
-    def __init__(self, params):
+    def __init__(self, params, agent = None):
         # transfer parameters to self
         for key, val in params.items(): setattr(self, key, val)
-
-        self.agent = Agent(params)
-        self.save_path = None
-        # self.train_environment = environment
-        self.train_environment = env(params, 'train')
+        self.rwd = self.train_rwd
+        self.test = self.test_round
+        if self.test:
+            self.rwd = True
+        if agent !=None:
+            self.agent = agent
+        else:
+            self.agent = Agent(params)
         # I don't want to load a 10gb file into memory 3 times so I'm just not creating these environemnts during this part of testing
         self.dev_test_environment = None #env(params, 'dev')
-        self.test_test_environment = None #env(params, 'test')
         self.test_environment = self.dev_test_environment
-        self.rev_relation_vocab = self.train_environment.grapher.rev_relation_vocab
-        self.rev_entity_vocab = self.train_environment.grapher.rev_entity_vocab
+        if self.test:
+            self.test_environment = env(params, True, 'test')
+            self.train_environment = None
+            self.rev_relation_vocab = self.test_environment.grapher.rev_relation_vocab
+            self.rev_entity_vocab = self.test_environment.grapher.rev_entity_vocab
+        else:
+            self.test_environment = None
+            self.train_environment = env(params, self.rwd, 'train')
+            self.rev_relation_vocab = self.train_environment.grapher.rev_relation_vocab
+            self.rev_entity_vocab = self.train_environment.grapher.rev_entity_vocab
         self.max_hits_at_10 = 0
         self.ePAD = self.entity_vocab['PAD']
         self.rPAD = self.relation_vocab['PAD']
@@ -121,6 +131,7 @@ class Trainer(object):
         scores = tf.divide(tf.subtract(scores, tf.reduce_min(scores)), tf.subtract(tf.reduce_max(scores), tf.reduce_min(scores)))
         return scores
 
+    #LEFT OFF HERE REINTRODUCING OLD REWARD!!!!!!!!!!!!!!!!!
     def train(self,use_RL, xdata, ydata_accuracy, ydata_loss, accuracy_graph, loss_graph, line_loss, line_accuracy):
         train_loss = 0.0
         self.batch_counter = 0
@@ -202,7 +213,7 @@ class Trainer(object):
 
                 # batch num # of rows, each holding a path
                 # path = [[x[batch] for x in paths] for batch in range(self.batch_size*self.num_rollouts)]
-                reward = episode.get_reward()
+                reward = episode.get_reward(self.rwd)
                 # update node info objects
                 # for batch, path in enumerate(path):
                 #     success = reward[batch] == 1
@@ -228,7 +239,7 @@ class Trainer(object):
                 # get the final reward from the environment and update the limits of the graphs accordingly
                 # plus add the new data to the dataset
                 if use_RL:
-                    rewards = episode.get_reward()
+                    rewards = episode.get_reward(self.rwd)
                     # computed cumulative discounted reward
                     cum_discounted_reward = self.calc_cum_discounted_reward(rewards)  # [B, T]
                     batch_total_loss = self.calc_reinforce_loss(cum_discounted_reward,loss_before_regularization,logits_all)
@@ -288,9 +299,10 @@ class Trainer(object):
             elif not use_RL and self.batch_counter >= self.total_iterations_sl:
                 return xdata, ydata_accuracy, ydata_loss, accuracy_graph, loss_graph, line_loss, line_accuracy
 
-    def test(self, beam=False, print_paths=False, save_model = True, auc = False):
+    def testing(self, beam=False, print_paths=True, save_model = False, auc = False):
         batch_counter = 0
         paths = defaultdict(list)
+        
         answers = []
         # feed_dict = {}
         all_final_reward_1 = 0
@@ -313,7 +325,7 @@ class Trainer(object):
             beam_probs = np.zeros((temp_batch_size * self.test_rollouts, 1))
             # get initial state
             state = episode.get_state()
-            
+
             mem = self.agent.get_mem_shape()
             agent_mem = np.zeros((mem[0], mem[1], temp_batch_size*self.test_rollouts, mem[3]) ).astype('float32')
             layer_state = tf.unstack(agent_mem, self.LSTM_layers)
@@ -335,8 +347,7 @@ class Trainer(object):
             for i in range(self.path_length):
                 if i == 0:
                     self.first_state_of_test = True
-
-                loss, agent_mem, test_scores, test_action_idx, chosen_relation = self.agent.step(state['next_relations'],
+                loss, agent_mem, test_scores, test_action_idx, chosen_relation, scores = self.agent.step(state['next_relations'],
                                                                               state['next_entities'],
                                                                               model_state, previous_relation, query_embedding,
                                                                               state['current_entities'],  
@@ -387,7 +398,6 @@ class Trainer(object):
                 self.log_probs += test_scores[np.arange(self.log_probs.shape[0]), test_action_idx]
             if beam:
                 self.log_probs = beam_probs
-
             ####Logger code####
 
             if print_paths:
@@ -396,7 +406,7 @@ class Trainer(object):
 
 
             # ask environment for final reward
-            rewards = episode.get_reward()  # [B*test_rollouts]
+            rewards = episode.get_reward(True)  # [B*test_rollouts]
             reward_reshape = np.reshape(rewards, (temp_batch_size, self.test_rollouts))  # [orig_batch, test_rollouts]
             self.log_probs = np.reshape(self.log_probs, (temp_batch_size, self.test_rollouts))
             sorted_indx = np.argsort(-self.log_probs)
@@ -453,7 +463,7 @@ class Trainer(object):
                 else:
                     AP += 1.0/((answer_pos+1))
                 if print_paths:
-                    qr = self.train_environment.grapher.rev_relation_vocab[self.qr[b * self.test_rollouts]]
+                    qr = self.test_environment.grapher.rev_relation_vocab[query_relation [b * self.test_rollouts]]
                     start_e = self.rev_entity_vocab[episode.start_entities[b * self.test_rollouts]]
                     end_e = self.rev_entity_vocab[episode.end_entities[b * self.test_rollouts]]
                     paths[str(qr)].append(str(start_e) + "\t" + str(end_e) + "\n")
@@ -490,15 +500,17 @@ class Trainer(object):
         #     if all_final_reward_10 >= self.max_hits_at_10:
         #         self.max_hits_at_10 = all_final_reward_10
         #         self.save_path = self.model_saver.save(sess, self.model_dir + "model" + '.ckpt')
-
+        print("len of paths and answers")
+        print(len(list(paths.keys())))
+        print(len(answers))
         if print_paths:
-            logger.info("[ printing paths at {} ]".format(self.output_dir+'/test_beam/'))
+            logger.info("[ printing paths at {} ]".format(self.output_dir))
             for q in paths:
                 j = q.replace('/', '-')
-                with codecs.open(self.path_logger_file_ + '_' + j, 'a', 'utf-8') as pos_file:
+                with codecs.open(self.path_logger_file + '_' + j, 'a', 'utf-8') as pos_file:
                     for p in paths[q]:
                         pos_file.write(p)
-            with open(self.path_logger_file_ + 'answers', 'w') as answer_file:
+            with open(self.path_logger_file + 'answers', 'w') as answer_file:
                 for a in answers:
                     answer_file.write(a)
 
@@ -603,13 +615,13 @@ if __name__ == '__main__':
     # Training
     if not options['load_model']:
         trainer = Trainer(options)
-
-        # Training with supervised learning
-        options['beta']=0.002
-        options['Lambda']=2
-        options['learning_rate']=0.001
-        trainer.set_hpdependent(options)
-        xdata, ydata_accuracy, ydata_loss, accuracy_graph, loss_graph, line_loss, line_accuracy = trainer.train(False, xdata, ydata_accuracy, ydata_loss, accuracy_graph, loss_graph, line_loss, line_accuracy)
+        if options['sl']:
+            # Training with supervised learning
+            options['beta']=0.002
+            options['Lambda']=2
+            options['learning_rate']=0.001
+            trainer.set_hpdependent(options)
+            xdata, ydata_accuracy, ydata_loss, accuracy_graph, loss_graph, line_loss, line_accuracy = trainer.train(False, xdata, ydata_accuracy, ydata_loss, accuracy_graph, loss_graph, line_loss, line_accuracy)
 
         # Training with reinforcement learning
         options['beta']=0.02
@@ -625,10 +637,22 @@ if __name__ == '__main__':
         #         node = trainer.train_environment.grapher.node_info_objects[x]
         #         writer.writerow([str(x), str(node.truncated), str(node.total_connections), str(node.actual_connections), str(node.appearance_count),str(node.correct_appearance_count),str(node.incorrect_appearance_count)])
 
+        output_dir = trainer.output_dir
+
         # Saving graph
-        plt.savefig("hyperparameter testing results/FB15K/final_no_sl.png")
+        plt.savefig(output_dir+'/'+options['model_name']+".png")
         plt.close(figure)
 
-        save_path = trainer.save_path
-        path_logger_file = trainer.path_logger_file
-        output_dir = trainer.output_dir
+        if options['test']:
+            options['test_round'] = True
+            tester = Trainer(options, trainer.agent)
+            tester.testing()
+
+        #save serialized class instance of agent
+        if options['save_model']:
+            with open(trainer.model_dir + options['model_name'] + ".dill", 'wb') as f:
+                dill.dump(trainer.agent, f)
+    else:
+        options['test_round'] = True
+        tester = Trainer(options, dill.load(open(options["saved_model_dir"],"rb")))
+        tester.testing()
