@@ -94,6 +94,7 @@ class RelationEntityBatcher():
             if self.rwd:
                 batch_idx = np.random.randint(0, self.store.shape[0], size=self.batch_size)
                 batch = self.store[batch_idx, :]
+
             else:
                 batch_idx = np.random.randint(0, self.queries.shape[0], size=int(self.batch_size))
                 batch = self.queries[batch_idx, :]
@@ -124,7 +125,7 @@ class RelationEntityBatcher():
                 assert e1.shape[0] == e2.shape[0] == r.shape[0] == len(all_e2s)
             assert e1.shape[0] == r.shape[0] == len(all_e2s)
             if self.rwd:
-                yield e1, r, e2, all_e2s, labels
+                yield e1, r, e2, all_e2s
             else:
                 yield e1, r, all_e2s, labels
 

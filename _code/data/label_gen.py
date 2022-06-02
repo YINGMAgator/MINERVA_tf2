@@ -9,10 +9,11 @@
 import numpy as np
 import csv
 import pickle
+import random
 
 class Labeller(object):
     def __init__(self,params):
-        self.array_store, self.ePAD, self.rPAD, self.generate, self.correct_filepath, self.all_correct, self.rwd = params
+        self.array_store, self.ePAD, self.rPAD, self.generate, self.correct_filepath, self.all_correct, self.rwd, self.masking = params
         # if not self.generate:
         #     print("loading correct labels")
         #     try:
@@ -69,7 +70,8 @@ class Labeller(object):
                 e1=line[0]
                 r=line[1]
                 key=self.arr_2_key(line)
-                for e2 in self.all_correct[(e1, r)]:
+                masked_out = random.sample(self.all_correct[(e1, r)], int(len(self.all_correct[(e1, r)])*self.masking))
+                for e2 in list(set(self.all_correct[(e1, r)]) - set(masked_out)):
                     for path in self.correct_path_generate([e1,r,e2]):
                         if key in self.correct:
                             self.correct[key][0]["N/A"] += [path[0]]
@@ -87,7 +89,7 @@ class Labeller(object):
                                 1: {path[0] : [path[1]]},
                                 2: {path[1] : [path[2]]}
                             }
-                return self.correct[key]
+                return self.correct[key], masked_out
 
     def arr_2_key(self,arr):
         if self.rwd:

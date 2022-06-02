@@ -59,7 +59,7 @@ def read_options():
     parser.add_argument("--base_output_dir", default='', type=str)
     parser.add_argument("--total_iterations_sl", default=2000, type=int)
     parser.add_argument("--total_iterations_rl", default=2000, type=int)
-
+    
     #not sure about this one
     parser.add_argument("--Lambda", default=0.0, type=float)
     #max pooling for the PATH-BASELINE
@@ -80,6 +80,9 @@ def read_options():
     parser.add_argument("--sl", default=1, type=int)
     parser.add_argument("--save_model", default=1, type=int)
     parser.add_argument("--saved_model_dir", default="none", type=str)
+    parser.add_argument("--order_swap", default=0, type=int)
+    # random masking parameter
+    parser.add_argument("--random_masking_coef", default=0.25, type=float)
 
     try:
         parsed = vars(parser.parse_args())
@@ -92,6 +95,7 @@ def read_options():
     parsed['test_round'] = parsed['test_round'] == 1
     parsed['sl'] = parsed['sl'] == 1
     parsed['save_model'] = parsed['save_model'] == 1
+    parsed['order_swap'] = parsed['order_swap'] == 1
     #dataset name
     parsed['dataset_name']=parsed['base_output_dir'][7:-1]
 
@@ -104,7 +108,7 @@ def read_options():
     parsed['pretrained_embeddings_action'] = ""
     parsed['pretrained_embeddings_entity'] = ""
 
-    parsed['output_dir'] = parsed['base_output_dir'] + '/' + str(uuid.uuid4())[:4]+'_'+parsed['model_name']
+    parsed['output_dir'] = parsed['base_output_dir'] + '/' + str(uuid.uuid4())[:4]+'_'+parsed['model_name']+"_"+str(parsed[total_iterations_sl])+"_"+str(parsed[total_iterations_rl])
 
     parsed['model_dir'] = parsed['output_dir']+'/'+ 'model/'
 
@@ -120,6 +124,7 @@ def read_options():
     parsed['log_file_name'] = parsed['output_dir'] +'/log.txt'
     os.makedirs(parsed['output_dir'])
     os.mkdir(parsed['model_dir'])
+    os.mkdir(parsed['output_dir']+'/path_info/')
     with open(parsed['output_dir']+'/config.txt', 'w') as out:
         pprint(parsed, stream=out)
 

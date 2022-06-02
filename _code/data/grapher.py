@@ -54,7 +54,6 @@ class RelationEntityGrapher:
             e2 = self.entity_vocab[line[2]]
             self.store[e1].append((r, e2))
 
-
         for e1 in self.store:
             num_actions = 1
             #edge 0 at node e1: relation is NO_OP and destination node is e1

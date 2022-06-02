@@ -115,9 +115,8 @@ class Agent(tf.keras.Model):
 
     #all the relations for all the queries in the batch, all the next states for all the queries in the batch, all the previous histories for the queries in the batch, all the relatinos tht attached the 
     #previous states to the current states, all of the current entities for all the queries in the batch
-    def step(self, next_relations, next_entities, prev_state, prev_relation, query_embedding, current_entities,
-              range_arr, first_step_of_test):
-
+    def call(self, inputs):
+        next_relations, next_entities, prev_state, prev_relation, query_embedding, current_entities, range_arr, first_step_of_test = inputs
         #concatenate last action/relation and current state ([at-1;ot] in the paper)
         prev_action_embedding = self.action_encoder(prev_relation, current_entities)
         # 1. one step of rnn

@@ -172,12 +172,12 @@ class Trainer(object):
                     #temporarily replace the idx with the brute force answer. Essentially, we mute the
                     #agent and just verify that the brute force algo. is correct, otherwise we cannot use
                     #it as a metric
-                    loss, model_state, logits, idx, prev_relation, scores = self.agent.step(state['next_relations'],
+                    loss, model_state, logits, idx, prev_relation, scores = self.agent.call([state['next_relations'],
                                                                                   state['next_entities'],
                                                                                   model_state, prev_relation, query_embedding,
                                                                                   state['current_entities'],  
-                                                                                  range_arr=self.range_arr,
-                                                                                  first_step_of_test = self.first_state_of_test)
+                                                                                  self.range_arr,
+                                                                                  self.first_state_of_test])
                     #Step 2:
                     #some code to calculate loss between loss and prediction
                     if use_RL:
@@ -347,12 +347,12 @@ class Trainer(object):
             for i in range(self.path_length):
                 if i == 0:
                     self.first_state_of_test = True
-                loss, agent_mem, test_scores, test_action_idx, chosen_relation, scores = self.agent.step(state['next_relations'],
+                loss, agent_mem, test_scores, test_action_idx, chosen_relation, scores = self.agent.call([state['next_relations'],
                                                                               state['next_entities'],
                                                                               model_state, previous_relation, query_embedding,
                                                                               state['current_entities'],  
-                                                                              range_arr=self.range_arr_test,
-                                                                              first_step_of_test = self.first_state_of_test)
+                                                                              self.range_arr_test,
+                                                                              self.first_state_of_test])
                 agent_mem = tf.stack(agent_mem)
                 agent_mem = agent_mem.numpy()
                 test_scores = test_scores.numpy()
@@ -615,7 +615,8 @@ if __name__ == '__main__':
     # Training
     if not options['load_model']:
         trainer = Trainer(options)
-        if options['sl']:
+        
+        if not options['order_swap']:
             # Training with supervised learning
             options['beta']=0.002
             options['Lambda']=2
@@ -623,13 +624,26 @@ if __name__ == '__main__':
             trainer.set_hpdependent(options)
             xdata, ydata_accuracy, ydata_loss, accuracy_graph, loss_graph, line_loss, line_accuracy = trainer.train(False, xdata, ydata_accuracy, ydata_loss, accuracy_graph, loss_graph, line_loss, line_accuracy)
 
-        # Training with reinforcement learning
-        options['beta']=0.02
-        options['Lambda']=0.02
-        options['learning_rate']=1e-3
-        trainer.set_hpdependent(options)
-        xdata, ydata_accuracy, ydata_loss, accuracy_graph, loss_graph, line_loss, line_accuracy = trainer.train(True, xdata, ydata_accuracy, ydata_loss, accuracy_graph, loss_graph, line_loss, line_accuracy)
-
+            # Training with reinforcement learning
+            options['beta']=0.02
+            options['Lambda']=0.02
+            options['learning_rate']=1e-3
+            trainer.set_hpdependent(options)
+            xdata, ydata_accuracy, ydata_loss, accuracy_graph, loss_graph, line_loss, line_accuracy = trainer.train(True, xdata, ydata_accuracy, ydata_loss, accuracy_graph, loss_graph, line_loss, line_accuracy)
+        else:
+            # Training with reinforcement learning
+            options['beta']=0.02
+            options['Lambda']=0.02
+            options['learning_rate']=1e-3
+            trainer.set_hpdependent(options)
+            xdata, ydata_accuracy, ydata_loss, accuracy_graph, loss_graph, line_loss, line_accuracy = trainer.train(True, xdata, ydata_accuracy, ydata_loss, accuracy_graph, loss_graph, line_loss, line_accuracy)
+            
+            # Training with supervised learning
+            options['beta']=0.002
+            options['Lambda']=2
+            options['learning_rate']=0.001
+            trainer.set_hpdependent(options)
+            xdata, ydata_accuracy, ydata_loss, accuracy_graph, loss_graph, line_loss, line_accuracy = trainer.train(False, xdata, ydata_accuracy, ydata_loss, accuracy_graph, loss_graph, line_loss, line_accuracy)
         # with open("node_info_report.csv","w") as csvfile:
         #     writer=csv.writer(csvfile, dialect='excel')
         #     writer.writerow(["id", "truncated", "total connections", "actual connections", "appearance count", "correct appearances", "incorrect appearances"])
@@ -649,9 +663,8 @@ if __name__ == '__main__':
             tester.testing()
 
         #save serialized class instance of agent
-        if options['save_model']:
-            with open(trainer.model_dir + options['model_name'] + ".dill", 'wb') as f:
-                dill.dump(trainer.agent, f)
+        # if options['save_model']:
+        #     trainer.agent.save(trainer.model_dir + options['model_name'])
     else:
         options['test_round'] = True
         tester = Trainer(options, dill.load(open(options["saved_model_dir"],"rb")))
