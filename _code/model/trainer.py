@@ -33,6 +33,7 @@ class Trainer(object):
         self.test = self.test_round
         if self.test:
             self.rwd = True
+        # allow passing an agent to the trainer for testing
         if agent !=None:
             self.agent = agent
         else:
@@ -131,21 +132,21 @@ class Trainer(object):
         scores = tf.divide(tf.subtract(scores, tf.reduce_min(scores)), tf.subtract(tf.reduce_max(scores), tf.reduce_min(scores)))
         return scores
 
-    #LEFT OFF HERE REINTRODUCING OLD REWARD!!!!!!!!!!!!!!!!!
     def train(self,use_RL, xdata, ydata_accuracy, ydata_loss, accuracy_graph, loss_graph, line_loss, line_accuracy):
         train_loss = 0.0
         self.batch_counter = 0
         self.first_state_of_test = False
         self.range_arr = np.arange(self.batch_size*self.num_rollouts)
-
-        #cross entropy that we will use in our supervised learning implementation
+        # cross entropy that we will use in our supervised learning implementation
         cce = tf.keras.losses.CategoricalCrossentropy(reduction=tf.keras.losses.Reduction.NONE)
 
-        for z, episode in enumerate(self.train_environment.get_episodes()):
+        for z, episode in enumerate(self.train_environment.get_episodes(use_RL)):
             # paths=[]
             # start rl graph from the end of the supervised learning run
-            if use_RL:
+            if use_RL and not self.order_swap:
                 z+=self.total_iterations_sl
+            elif not use_RL and self.order_swap:
+                z+=self.total_iterations_rl
 
             self.batch_counter += 1
             model_state = self.agent.state_init
@@ -618,32 +619,37 @@ if __name__ == '__main__':
         
         if not options['order_swap']:
             # Training with supervised learning
-            options['beta']=0.002
-            options['Lambda']=2
-            options['learning_rate']=0.001
-            trainer.set_hpdependent(options)
-            xdata, ydata_accuracy, ydata_loss, accuracy_graph, loss_graph, line_loss, line_accuracy = trainer.train(False, xdata, ydata_accuracy, ydata_loss, accuracy_graph, loss_graph, line_loss, line_accuracy)
+            if options['total_iterations_sl'] != 0:
+                options['beta']=0.002
+                options['Lambda']=2
+                options['learning_rate']=0.001
+                options['random_masking_coef']=0
+                trainer.set_hpdependent(options)
+                xdata, ydata_accuracy, ydata_loss, accuracy_graph, loss_graph, line_loss, line_accuracy = trainer.train(False, xdata, ydata_accuracy, ydata_loss, accuracy_graph, loss_graph, line_loss, line_accuracy)
 
             # Training with reinforcement learning
-            options['beta']=0.02
-            options['Lambda']=0.02
-            options['learning_rate']=1e-3
-            trainer.set_hpdependent(options)
-            xdata, ydata_accuracy, ydata_loss, accuracy_graph, loss_graph, line_loss, line_accuracy = trainer.train(True, xdata, ydata_accuracy, ydata_loss, accuracy_graph, loss_graph, line_loss, line_accuracy)
+            if options['total_iterations_rl'] != 0:
+                options['beta']=0.02
+                options['Lambda']=0.02
+                options['learning_rate']=1e-3
+                trainer.set_hpdependent(options)
+                xdata, ydata_accuracy, ydata_loss, accuracy_graph, loss_graph, line_loss, line_accuracy = trainer.train(True, xdata, ydata_accuracy, ydata_loss, accuracy_graph, loss_graph, line_loss, line_accuracy)
         else:
             # Training with reinforcement learning
-            options['beta']=0.02
-            options['Lambda']=0.02
-            options['learning_rate']=1e-3
-            trainer.set_hpdependent(options)
-            xdata, ydata_accuracy, ydata_loss, accuracy_graph, loss_graph, line_loss, line_accuracy = trainer.train(True, xdata, ydata_accuracy, ydata_loss, accuracy_graph, loss_graph, line_loss, line_accuracy)
-            
+            if options['total_iterations_rl'] != 0:
+                options['beta']=0.02
+                options['Lambda']=0.02
+                options['learning_rate']=1e-3
+                trainer.set_hpdependent(options)
+                xdata, ydata_accuracy, ydata_loss, accuracy_graph, loss_graph, line_loss, line_accuracy = trainer.train(True, xdata, ydata_accuracy, ydata_loss, accuracy_graph, loss_graph, line_loss, line_accuracy)
+
             # Training with supervised learning
-            options['beta']=0.002
-            options['Lambda']=2
-            options['learning_rate']=0.001
-            trainer.set_hpdependent(options)
-            xdata, ydata_accuracy, ydata_loss, accuracy_graph, loss_graph, line_loss, line_accuracy = trainer.train(False, xdata, ydata_accuracy, ydata_loss, accuracy_graph, loss_graph, line_loss, line_accuracy)
+            if options['total_iterations_sl'] != 0:
+                options['beta']=0.002
+                options['Lambda']=2
+                options['learning_rate']=0.001
+                trainer.set_hpdependent(options)
+                xdata, ydata_accuracy, ydata_loss, accuracy_graph, loss_graph, line_loss, line_accuracy = trainer.train(False, xdata, ydata_accuracy, ydata_loss, accuracy_graph, loss_graph, line_loss, line_accuracy)
         # with open("node_info_report.csv","w") as csvfile:
         #     writer=csv.writer(csvfile, dialect='excel')
         #     writer.writerow(["id", "truncated", "total connections", "actual connections", "appearance count", "correct appearances", "incorrect appearances"])

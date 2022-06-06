@@ -83,7 +83,7 @@ class RelationEntityGrapher:
 
     #UNDERSTOOD
     #receives a batch of states: (et, e1, rq, e2) for every query in the batch being pursued
-    def return_next_actions(self, current_entities, start_entities, query_relations, all_correct_answers, last_step, rollouts, rwd, answers=None):
+    def return_next_actions(self, current_entities, start_entities, query_relations, all_correct_answers, last_step, rollouts, rwd, answers = None, masking = None, rl = False):
         ret = self.array_store[current_entities, :, :].copy()
         #for query in batch
         for i in range(current_entities.shape[0]):
@@ -110,6 +110,17 @@ class RelationEntityGrapher:
                     for j in range(entities.shape[0]):
                         #print(i/rollouts,j,i,rollouts)
                         if entities[j] in all_correct_answers[int(i/rollouts)] and entities[j] != correct_e2:
+                            entities[j] = self.ePAD
+                            relations[j] = self.rPAD
+            if rl:
+                if last_step:
+                    entities = ret[i, :, 0]
+                    relations = ret[i, :, 1]
+                    
+                    #if an entity connected to the current node is a correct answer but not the correct answer, set it and the relation connecting it to the current node to the PAD value
+                    for j in range(entities.shape[0]):
+                        #print(i/rollouts,j,i,rollouts)
+                        if entities[j] in masking[int(i/rollouts)]:
                             entities[j] = self.ePAD
                             relations[j] = self.rPAD
 

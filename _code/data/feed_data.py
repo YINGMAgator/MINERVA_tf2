@@ -84,17 +84,18 @@ class RelationEntityBatcher():
                     r = self.relation_vocab[r]
                     e2 = self.entity_vocab[e2]
                     self.store_all_correct[(e1, r)].add(e2)
+            # self.queries=np.array(list(self.store_all_correct.keys()), int)
         
                     
     #UNDERSTOOD
-    def yield_next_batch_train(self, labeller):
+    def yield_next_batch_train(self, labeller, rl):
         while True:
             #randomly generates a list of indexes of facts in the training data the length of which is the batch size
             #creates numpy array of the facts at those indexes
             if self.rwd:
+                rl = False
                 batch_idx = np.random.randint(0, self.store.shape[0], size=self.batch_size)
                 batch = self.store[batch_idx, :]
-
             else:
                 batch_idx = np.random.randint(0, self.queries.shape[0], size=int(self.batch_size))
                 batch = self.queries[batch_idx, :]
@@ -103,15 +104,22 @@ class RelationEntityBatcher():
             labels=[[],[],[]]
             for i in range(len(batch)):
                 correct = labeller.correct_path(batch[i])
-                #handle rollouts
+                #handle rollouts 
                 for i in range(self.num_rollouts):
                     labels[0].append(correct[0])
                     labels[1].append(correct[1])
                     labels[2].append(correct[2])
+
             #get indices where no path was found and delete them from the batch
             indices=np.argwhere(labels==np.array([-1,-1]))
             np.delete(labels,indices)
             np.delete(batch,indices)
+
+            if rl:
+                masked = []
+                for i in range(len(batch)):
+                    masked.append(labeller.get_random_rl_masking(batch[i]))
+
             #split these facts into their component parts
             e1 = batch[:,0]
             r = batch[:,1]
@@ -119,15 +127,22 @@ class RelationEntityBatcher():
                 e2 = batch[:, 2]
             all_e2s = []
             #creates a list of all the right answers if (e1, r, ?) was the query. The reason for the for loop and not just assigning is making sure e1,r,e2,and all_e2s are in the same order
-            for i in range(e1.shape[0]):
-                all_e2s.append(self.store_all_correct[(e1[i], r[i])])
+            if rl:
+                for i in range(e1.shape[0]):
+                    all_e2s.append(list(set(self.store_all_correct[(e1[i], r[i])]) - set(masked[i])))
+            else:
+                for i in range(e1.shape[0]):
+                    all_e2s.append(self.store_all_correct[(e1[i], r[i])])
             if self.rwd:
                 assert e1.shape[0] == e2.shape[0] == r.shape[0] == len(all_e2s)
             assert e1.shape[0] == r.shape[0] == len(all_e2s)
             if self.rwd:
                 yield e1, r, e2, all_e2s
             else:
-                yield e1, r, all_e2s, labels
+                if rl:
+                    yield e1, r, all_e2s, labels, masked
+                else:
+                    yield e1, r, all_e2s, labels
 
     #UNDERSTOOD
     # doesnt check rwd since we always test with original reward

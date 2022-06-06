@@ -82,7 +82,7 @@ def read_options():
     parser.add_argument("--saved_model_dir", default="none", type=str)
     parser.add_argument("--order_swap", default=0, type=int)
     # random masking parameter
-    parser.add_argument("--random_masking_coef", default=0.25, type=float)
+    parser.add_argument("--random_masking_coef", default=0, type=float)
 
     try:
         parsed = vars(parser.parse_args())
@@ -108,7 +108,7 @@ def read_options():
     parsed['pretrained_embeddings_action'] = ""
     parsed['pretrained_embeddings_entity'] = ""
 
-    parsed['output_dir'] = parsed['base_output_dir'] + '/' + str(uuid.uuid4())[:4]+'_'+parsed['model_name']+"_"+str(parsed[total_iterations_sl])+"_"+str(parsed[total_iterations_rl])
+    parsed['output_dir'] = parsed['base_output_dir'] + '/' + str(uuid.uuid4())[:4]+'_'+parsed['model_name']+"_"+str(parsed['total_iterations_sl'])+"_"+str(parsed['total_iterations_rl'])
 
     parsed['model_dir'] = parsed['output_dir']+'/'+ 'model/'
 

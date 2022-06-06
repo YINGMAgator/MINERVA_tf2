@@ -35,6 +35,11 @@ class Labeller(object):
         with open(self.correct_filepath,'wb') as lf:
             pickle.dump(self.correct, lf)
 
+    def get_random_rl_masking(self, line):
+        e1=line[0]
+        r=line[1]
+        return random.sample(self.all_correct[(e1, r)], int(len(self.all_correct[(e1, r)])*self.masking))
+
     def correct_path(self, line):
         # if this key is already in the dict, dont generate it again. Otherwise, generate the new key
         if self.rwd:
@@ -70,8 +75,7 @@ class Labeller(object):
                 e1=line[0]
                 r=line[1]
                 key=self.arr_2_key(line)
-                masked_out = random.sample(self.all_correct[(e1, r)], int(len(self.all_correct[(e1, r)])*self.masking))
-                for e2 in list(set(self.all_correct[(e1, r)]) - set(masked_out)):
+                for e2 in self.all_correct[(e1, r)]:
                     for path in self.correct_path_generate([e1,r,e2]):
                         if key in self.correct:
                             self.correct[key][0]["N/A"] += [path[0]]
@@ -89,7 +93,7 @@ class Labeller(object):
                                 1: {path[0] : [path[1]]},
                                 2: {path[1] : [path[2]]}
                             }
-                return self.correct[key], masked_out
+                return self.correct[key]
 
     def arr_2_key(self,arr):
         if self.rwd:

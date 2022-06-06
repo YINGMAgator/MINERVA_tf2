@@ -12,7 +12,8 @@ logger = logging.getLogger()
 
 class Episode(object):
     #rwd flag turns on the old reward from the original paper with only 1 right answer
-    def __init__(self, graph, data, params, rwd):
+    def __init__(self, graph, data, params, rwd, rl_train=False):
+        self.use_RL = rl_train
         self.grapher = graph
         self.batch_size, self.path_len, num_rollouts, test_rollouts, positive_reward, negative_reward, mode, batcher = params
         self.mode = mode
@@ -25,7 +26,10 @@ class Episode(object):
         if rwd:
             start_entities, query_relation,  end_entities, all_answers = data
         else:
-            start_entities, query_relation,  all_answers, self.correct_path = data
+            if self.use_RL:
+                start_entities, query_relation,  all_answers, self.correct_path, self.masked = data
+            else:
+                start_entities, query_relation,  all_answers, self.correct_path = data
         self.no_examples = start_entities.shape[0]   #256
         self.positive_reward = positive_reward
         self.negative_reward = negative_reward
@@ -46,9 +50,14 @@ class Episode(object):
         if rwd:
             next_actions = self.grapher.return_next_actions(self.current_entities, self.start_entities, self.query_relation,
                                                         self.all_answers, self.current_hop == self.path_len - 1,
-                                                        self.num_rollouts, rwd, self.end_entities)
+                                                        self.num_rollouts, rwd, answers = self.end_entities)
         else:
-            next_actions = self.grapher.return_next_actions(self.current_entities, self.start_entities, self.query_relation,
+            if self.use_RL:
+                next_actions = self.grapher.return_next_actions(self.current_entities, self.start_entities, self.query_relation,
+                                                        self.all_answers, self.current_hop == self.path_len - 1,
+                                                        self.num_rollouts, rwd, masking = self.masked, rl = self.use_RL)
+            else:
+                next_actions = self.grapher.return_next_actions(self.current_entities, self.start_entities, self.query_relation,
                                                         self.all_answers, self.current_hop == self.path_len - 1,
                                                         self.num_rollouts, rwd)
         self.state = {}
@@ -100,9 +109,14 @@ class Episode(object):
         if self.rwd:
             next_actions = self.grapher.return_next_actions(self.current_entities, self.start_entities, self.query_relation,
                                                         self.all_answers, self.current_hop == self.path_len - 1,
-                                                        self.num_rollouts, self.rwd, self.end_entities)
+                                                        self.num_rollouts, self.rwd, answers=self.end_entities)
         else:
-            next_actions = self.grapher.return_next_actions(self.current_entities, self.start_entities, self.query_relation,
+            if self.use_RL:
+                next_actions = self.grapher.return_next_actions(self.current_entities, self.start_entities, self.query_relation,
+                                                        self.all_answers, self.current_hop == self.path_len - 1,
+                                                        self.num_rollouts, self.rwd, masking = self.masked, rl = self.use_RL)
+            else:
+                next_actions = self.grapher.return_next_actions(self.current_entities, self.start_entities, self.query_relation,
                                                         self.all_answers, self.current_hop == self.path_len - 1,
                                                         self.num_rollouts, self.rwd)
 
@@ -156,11 +170,14 @@ class env(object):
         self.labeller = Labeller([self.grapher.array_store, params['entity_vocab']['PAD'], params['relation_vocab']['PAD'], params['label_gen'], self.correct_filepath, self.batcher.store_all_correct, rwd, params['random_masking_coef']])
 
     #returns an episode, a tool which the trainer can use to get current states from, take a step, and then give the actions back to to get another current state until we reach the end
-    def get_episodes(self):
+    def get_episodes(self, use_RL = None):
         params = self.batch_size, self.path_len, self.num_rollouts, self.test_rollouts, self.positive_reward, self.negative_reward, self.mode, self.batcher
+        # ensure that the random masking is only enabled when both rl and training mode are on
+        if self.rwd:
+            use_RL = False
         if self.mode == 'train':
-            for data in self.batcher.yield_next_batch_train(self.labeller):
-                yield Episode(self.grapher, data, params, self.rwd)
+            for data in self.batcher.yield_next_batch_train(self.labeller, use_RL):
+                yield Episode(self.grapher, data, params, self.rwd, rl_train = use_RL)
         else:
             for data in self.batcher.yield_next_batch_test(self.labeller):
                 if data == None:
