@@ -21,6 +21,7 @@ import dill
 from code.data.vocab_gen import Vocab_Gen
 import matplotlib
 import matplotlib.pyplot as plt
+from tensorflow import keras
 logger = logging.getLogger()
 logging.basicConfig(stream=sys.stdout, level=logging.DEBUG)
 
@@ -32,7 +33,8 @@ class Trainer(object):
         self.rwd = self.train_rwd
         self.test = self.test_round
         if self.test:
-            self.rwd = True
+            ####self.rwd = True
+            self.rwd = False
         # allow passing an agent to the trainer for testing
         if agent !=None:
             self.agent = agent
@@ -42,7 +44,8 @@ class Trainer(object):
         self.dev_test_environment = None #env(params, 'dev')
         self.test_environment = self.dev_test_environment
         if self.test:
-            self.test_environment = env(params, True, 'test')
+            self.test_environment = env(params, False, 'test')
+            ####self.test_environment = env(params, True, 'test')
             self.train_environment = None
             self.rev_relation_vocab = self.test_environment.grapher.rev_relation_vocab
             self.rev_entity_vocab = self.test_environment.grapher.rev_entity_vocab
@@ -132,7 +135,7 @@ class Trainer(object):
         scores = tf.divide(tf.subtract(scores, tf.reduce_min(scores)), tf.subtract(tf.reduce_max(scores), tf.reduce_min(scores)))
         return scores
 
-    def train(self,use_RL, xdata, ydata_accuracy, ydata_loss, accuracy_graph, loss_graph, line_loss, line_accuracy):
+    def train(self, use_RL, xdata, ydata_accuracy, ydata_loss, accuracy_graph, loss_graph, line_loss, line_accuracy):
         train_loss = 0.0
         self.batch_counter = 0
         self.first_state_of_test = False
@@ -173,7 +176,7 @@ class Trainer(object):
                     #temporarily replace the idx with the brute force answer. Essentially, we mute the
                     #agent and just verify that the brute force algo. is correct, otherwise we cannot use
                     #it as a metric
-                    loss, model_state, logits, idx, prev_relation, scores = self.agent.call([state['next_relations'],
+                    loss, model_state, logits, idx, prev_relation, scores = self.agent([state['next_relations'],
                                                                                   state['next_entities'],
                                                                                   model_state, prev_relation, query_embedding,
                                                                                   state['current_entities'],  
@@ -348,7 +351,7 @@ class Trainer(object):
             for i in range(self.path_length):
                 if i == 0:
                     self.first_state_of_test = True
-                loss, agent_mem, test_scores, test_action_idx, chosen_relation, scores = self.agent.call([state['next_relations'],
+                loss, agent_mem, test_scores, test_action_idx, chosen_relation, scores = self.agent([state['next_relations'],
                                                                               state['next_entities'],
                                                                               model_state, previous_relation, query_embedding,
                                                                               state['current_entities'],  
@@ -466,7 +469,8 @@ class Trainer(object):
                 if print_paths:
                     qr = self.test_environment.grapher.rev_relation_vocab[query_relation [b * self.test_rollouts]]
                     start_e = self.rev_entity_vocab[episode.start_entities[b * self.test_rollouts]]
-                    end_e = self.rev_entity_vocab[episode.end_entities[b * self.test_rollouts]]
+                    ####end_e = self.rev_entity_vocab[episode.end_entities[b * self.test_rollouts]]
+                    end_e = [self.rev_entity_vocab[e2] for e2 in episode.all_answers[b * self.test_rollouts]]
                     paths[str(qr)].append(str(start_e) + "\t" + str(end_e) + "\n")
                     paths[str(qr)].append("Reward:" + str(1 if answer_pos != None and answer_pos < 10 else 0) + "\n")
                     for r in sorted_indx[b]:
@@ -616,7 +620,6 @@ if __name__ == '__main__':
     # Training
     if not options['load_model']:
         trainer = Trainer(options)
-        
         if not options['order_swap']:
             # Training with supervised learning
             if options['total_iterations_sl'] != 0:
@@ -663,15 +666,20 @@ if __name__ == '__main__':
         plt.savefig(output_dir+'/'+options['model_name']+".png")
         plt.close(figure)
 
+        #save serialized class instance of agent
+        if options['save_model']:
+            # trainer.agent.save(trainer.model_dir + options['model_name'] + ".h5")
+            trainer.agent.save_weights(trainer.model_dir + options['model_name'])
+            trainer.agent.load_weights(trainer.model_dir + options['model_name'])
+            print(trainer.model_dir + options['model_name'])
         if options['test']:
             options['test_round'] = True
             tester = Trainer(options, trainer.agent)
             tester.testing()
 
-        #save serialized class instance of agent
-        # if options['save_model']:
-        #     trainer.agent.save(trainer.model_dir + options['model_name'])
+        
     else:
         options['test_round'] = True
-        tester = Trainer(options, dill.load(open(options["saved_model_dir"],"rb")))
+        tester = Trainer(options)
+        tester.agent.load_weights(options['saved_model_dir'])
         tester.testing()

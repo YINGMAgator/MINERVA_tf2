@@ -28,6 +28,8 @@ class Episode(object):
         else:
             if self.use_RL:
                 start_entities, query_relation,  all_answers, self.correct_path, self.masked = data
+            elif self.mode == 'test':
+                start_entities, query_relation,  all_answers = data
             else:
                 start_entities, query_relation,  all_answers, self.correct_path = data
         self.no_examples = start_entities.shape[0]   #256
@@ -162,6 +164,8 @@ class env(object):
                                                   mode=mode)
         if self.rwd:
             self.total_no_examples = self.batcher.store.shape[0]
+        else:
+            self.total_no_examples = self.batcher.queries.shape[0]
         #originally max num actions but will be expanded
         self.action_len = self.grapher.array_store.shape[1]
         #creates the filepath of the existing or yet to be generated correct labels csv
@@ -170,7 +174,7 @@ class env(object):
         self.labeller = Labeller([self.grapher.array_store, params['entity_vocab']['PAD'], params['relation_vocab']['PAD'], params['label_gen'], self.correct_filepath, self.batcher.store_all_correct, rwd, params['random_masking_coef']])
 
     #returns an episode, a tool which the trainer can use to get current states from, take a step, and then give the actions back to to get another current state until we reach the end
-    def get_episodes(self, use_RL = None):
+    def get_episodes(self, use_RL = False):
         params = self.batch_size, self.path_len, self.num_rollouts, self.test_rollouts, self.positive_reward, self.negative_reward, self.mode, self.batcher
         # ensure that the random masking is only enabled when both rl and training mode are on
         if self.rwd:

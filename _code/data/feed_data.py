@@ -62,6 +62,7 @@ class RelationEntityBatcher():
             if self.mode == 'dev':
                 dataset = self.dev_data
             #same as above but on the test or dev dataset
+            self.query_answers = defaultdict(set)
             for line in dataset:
                 e1 = line[0]
                 r = line[1]
@@ -72,6 +73,7 @@ class RelationEntityBatcher():
                     e2 = self.entity_vocab[e2]
                     if self.rwd:
                         self.store.append([e1,r,e2])
+                    self.query_answers[(e1,r)].add(e2)
             if self.rwd:
                 self.store = np.array(self.store)
             #stores all the correct answers for a query in a graph in a dictionary over the full graph. This just includes everything, not just training data, hence the different code
@@ -84,7 +86,8 @@ class RelationEntityBatcher():
                     r = self.relation_vocab[r]
                     e2 = self.entity_vocab[e2]
                     self.store_all_correct[(e1, r)].add(e2)
-            # self.queries=np.array(list(self.store_all_correct.keys()), int)
+            self.queries=np.array(list(self.query_answers.keys()), int)
+            ####
         
                     
     #UNDERSTOOD
@@ -118,7 +121,8 @@ class RelationEntityBatcher():
             if rl:
                 masked = []
                 for i in range(len(batch)):
-                    masked.append(labeller.get_random_rl_masking(batch[i]))
+                    temp = labeller.get_random_rl_masking(batch[i])
+                    masked.append(temp)
 
             #split these facts into their component parts
             e1 = batch[:,0]
@@ -147,29 +151,36 @@ class RelationEntityBatcher():
     #UNDERSTOOD
     # doesnt check rwd since we always test with original reward
     def yield_next_batch_test(self, labeller):
-        remaining_triples = self.store.shape[0]
+        remaining_queries = self.queries.shape[0]
         current_idx = 0
         while True:
             #return if we're out of queries
-            if remaining_triples == 0:
+            ####if remaining_triples == 0:
+            if remaining_queries == 0:
                 return
             #move forwards 1 batch if we have more remaining queries than the batch size
-            if remaining_triples - self.batch_size > 0:
+            ####if remaining_triples - self.batch_size > 0:
+            if remaining_queries - self.batch_size > 0:
                 batch_idx = np.arange(current_idx, current_idx+self.batch_size)
                 current_idx += self.batch_size
-                remaining_triples -= self.batch_size
+                ####remaining_triples -= self.batch_size
+                remaining_queries -= self.batch_size
             #use the remaining queries since we have fewer than 1 batch left
             else:
-                batch_idx = np.arange(current_idx, self.store.shape[0])
-                remaining_triples = 0
+                batch_idx = np.arange(current_idx, self.queries.shape[0])
+                ####remaining_triples = 0
+                remaining_queries = 0
             #get the facts that batch_idx points to as well as the potential right answers for the (e1, r, ?) query
-            batch = self.store[batch_idx, :]
+            ####batch = self.store[batch_idx, :]
+            batch = self.queries[batch_idx, :]
             e1 = batch[:,0]
             r = batch[:, 1]
-            e2 = batch[:, 2]
+            ####e2 = batch[:, 2]
             all_e2s = []
             for i in range(e1.shape[0]):
                 all_e2s.append(self.store_all_correct[(e1[i], r[i])])
-            assert e1.shape[0] == e2.shape[0] == r.shape[0] == len(all_e2s)
+            ####assert e1.shape[0] == e2.shape[0] == r.shape[0] == len(all_e2s)
+            assert e1.shape[0] == r.shape[0] == len(all_e2s)
             #return a list of facts and and query answers where the query is e1 and r of an arbitrary fact
-            yield e1, r, e2, all_e2s
+            ####yield e1, r, e2, all_e2s
+            yield e1, r, all_e2s
