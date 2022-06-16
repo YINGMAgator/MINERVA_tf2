@@ -95,7 +95,7 @@ def read_options():
     parsed['test_round'] = parsed['test_round'] == 1
     parsed['sl'] = parsed['sl'] == 1
     parsed['save_model'] = parsed['save_model'] == 1
-    parsed['order_swap'] = parsed['order_swap'] == 1
+    parsed['order_swap'] = parsed['order_swap'] == 1 
     #dataset name
     parsed['dataset_name']=parsed['base_output_dir'][7:-1]
 

@@ -33,8 +33,8 @@ class Trainer(object):
         self.rwd = self.train_rwd
         self.test = self.test_round
         if self.test:
-            ####self.rwd = True
-            self.rwd = False
+            self.rwd = True
+            ###self.rwd = False
         # allow passing an agent to the trainer for testing
         if agent !=None:
             self.agent = agent
@@ -44,8 +44,8 @@ class Trainer(object):
         self.dev_test_environment = None #env(params, 'dev')
         self.test_environment = self.dev_test_environment
         if self.test:
-            self.test_environment = env(params, False, 'test')
-            ####self.test_environment = env(params, True, 'test')
+            ###self.test_environment = env(params, False, 'test')
+            self.test_environment = env(params, True, 'test')
             self.train_environment = None
             self.rev_relation_vocab = self.test_environment.grapher.rev_relation_vocab
             self.rev_entity_vocab = self.test_environment.grapher.rev_entity_vocab
@@ -469,8 +469,8 @@ class Trainer(object):
                 if print_paths:
                     qr = self.test_environment.grapher.rev_relation_vocab[query_relation [b * self.test_rollouts]]
                     start_e = self.rev_entity_vocab[episode.start_entities[b * self.test_rollouts]]
-                    ####end_e = self.rev_entity_vocab[episode.end_entities[b * self.test_rollouts]]
-                    end_e = [self.rev_entity_vocab[e2] for e2 in episode.all_answers[b * self.test_rollouts]]
+                    end_e = self.rev_entity_vocab[episode.end_entities[b * self.test_rollouts]]
+                    ###end_e = [self.rev_entity_vocab[e2] for e2 in episode.all_answers[b * self.test_rollouts]]
                     paths[str(qr)].append(str(start_e) + "\t" + str(end_e) + "\n")
                     paths[str(qr)].append("Reward:" + str(1 if answer_pos != None and answer_pos < 10 else 0) + "\n")
                     for r in sorted_indx[b]:
@@ -653,13 +653,7 @@ if __name__ == '__main__':
                 options['learning_rate']=0.001
                 trainer.set_hpdependent(options)
                 xdata, ydata_accuracy, ydata_loss, accuracy_graph, loss_graph, line_loss, line_accuracy = trainer.train(False, xdata, ydata_accuracy, ydata_loss, accuracy_graph, loss_graph, line_loss, line_accuracy)
-        # with open("node_info_report.csv","w") as csvfile:
-        #     writer=csv.writer(csvfile, dialect='excel')
-        #     writer.writerow(["id", "truncated", "total connections", "actual connections", "appearance count", "correct appearances", "incorrect appearances"])
-        #     for x in list(trainer.train_environment.grapher.node_info_objects.keys()):
-        #         node = trainer.train_environment.grapher.node_info_objects[x]
-        #         writer.writerow([str(x), str(node.truncated), str(node.total_connections), str(node.actual_connections), str(node.appearance_count),str(node.correct_appearance_count),str(node.incorrect_appearance_count)])
-
+        
         output_dir = trainer.output_dir
 
         # Saving graph

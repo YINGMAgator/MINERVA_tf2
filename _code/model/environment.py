@@ -28,8 +28,8 @@ class Episode(object):
         else:
             if self.use_RL:
                 start_entities, query_relation,  all_answers, self.correct_path, self.masked = data
-            elif self.mode == 'test':
-                start_entities, query_relation,  all_answers = data
+            # elif self.mode == 'test':
+            #     start_entities, query_relation,  all_answers = data
             else:
                 start_entities, query_relation,  all_answers, self.correct_path = data
         self.no_examples = start_entities.shape[0]   #256
@@ -177,6 +177,8 @@ class env(object):
     def get_episodes(self, use_RL = False):
         params = self.batch_size, self.path_len, self.num_rollouts, self.test_rollouts, self.positive_reward, self.negative_reward, self.mode, self.batcher
         # ensure that the random masking is only enabled when both rl and training mode are on
+        # note that by this point the rl flag is already set to true in the trainer, so this 
+        # doesn't interfere with that
         if self.rwd:
             use_RL = False
         if self.mode == 'train':
