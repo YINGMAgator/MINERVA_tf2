@@ -23,15 +23,15 @@ class Episode(object):
             self.num_rollouts = test_rollouts
         self.current_hop = 0
         # we have correct path passed to the episode, which we will access later
-        if rwd:
-            start_entities, query_relation,  end_entities, all_answers = data
+        if self.mode == 'test':
+            start_entities, query_relation, end_entities,  all_answers = data
+        elif rwd:
+            start_entities, query_relation,  end_entities, all_answers, self.epoch = data
         else:
             if self.use_RL:
-                start_entities, query_relation,  all_answers, self.correct_path, self.masked = data
-            # elif self.mode == 'test':
-            #     start_entities, query_relation,  all_answers = data
+                start_entities, query_relation,  all_answers, self.masked, self.epoch = data
             else:
-                start_entities, query_relation,  all_answers, self.correct_path = data
+                start_entities, query_relation,  all_answers, self.correct_path, self.epoch = data
         self.no_examples = start_entities.shape[0]   #256
         self.positive_reward = positive_reward
         self.negative_reward = negative_reward
@@ -172,6 +172,7 @@ class env(object):
         self.correct_filepath = "labels/"+params['dataset_name']+"_labeldict_allact_"+str(params['max_num_actions'])
         #creates the labeller for the environment, which will find the best path by brute force
         self.labeller = Labeller([self.grapher.array_store, params['entity_vocab']['PAD'], params['relation_vocab']['PAD'], params['label_gen'], self.correct_filepath, self.batcher.store_all_correct, rwd, params['random_masking_coef']])
+        print("Done creating environment")
 
     #returns an episode, a tool which the trainer can use to get current states from, take a step, and then give the actions back to to get another current state until we reach the end
     def get_episodes(self, use_RL = False):

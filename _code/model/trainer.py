@@ -136,22 +136,22 @@ class Trainer(object):
         return scores
 
     def train(self, use_RL, xdata, ydata_accuracy, ydata_loss, accuracy_graph, loss_graph, line_loss, line_accuracy):
-        train_loss = 0.0
-        self.batch_counter = 0
+        print("Beginning Training")
         self.first_state_of_test = False
         self.range_arr = np.arange(self.batch_size*self.num_rollouts)
         # cross entropy that we will use in our supervised learning implementation
         cce = tf.keras.losses.CategoricalCrossentropy(reduction=tf.keras.losses.Reduction.NONE)
-
+        average_accuracy = []
+        average_loss = []
         for z, episode in enumerate(self.train_environment.get_episodes(use_RL)):
+            graph_epoch = episode.epoch
             # paths=[]
             # start rl graph from the end of the supervised learning run
             if use_RL and not self.order_swap:
-                z+=self.total_iterations_sl
+                graph_epoch += self.total_epochs_sl + 1
             elif not use_RL and self.order_swap:
-                z+=self.total_iterations_rl
+                graph_epoch += self.total_epochs_rl + 1
 
-            self.batch_counter += 1
             model_state = self.agent.state_init
             prev_relation = self.agent.relation_init            
 
@@ -160,8 +160,6 @@ class Trainer(object):
             query_embedding = self.agent.get_query_embedding(query_relation)
             # get initial state
             state = episode.get_state()
-            # starting points in path
-            # paths.append(state['current_entities'])
             
             last_step = ["N/A"]*(self.batch_size*self.num_rollouts)
             
@@ -172,10 +170,6 @@ class Trainer(object):
                 
                 # for each time step
                 for i in range(self.path_length):
-                    #Step 1:
-                    #temporarily replace the idx with the brute force answer. Essentially, we mute the
-                    #agent and just verify that the brute force algo. is correct, otherwise we cannot use
-                    #it as a metric
                     loss, model_state, logits, idx, prev_relation, scores = self.agent([state['next_relations'],
                                                                                   state['next_entities'],
                                                                                   model_state, prev_relation, query_embedding,
@@ -187,11 +181,10 @@ class Trainer(object):
                     if use_RL:
                         loss_before_regularization.append(loss)
                         logits_all.append(logits)
-                        # action = np.squeeze(action, axis=1)  # [B,]
                     else: #use supervised learning
                         active_length=scores.shape[0]
                         choices=scores.shape[1]
-                        #assert choices == self.train_environment.action_len
+
                         correct=np.full((active_length,choices),0)
                         actions_test=np.array([], int)
                         for batch_num in range(len(episode.correct_path[i])):
@@ -212,33 +205,13 @@ class Trainer(object):
                         actions_test=actions_test.astype(int)
                     
                     state = episode(idx) #actions_test if verifying labels
-                    # paths.append(prev_relation)
-                    # paths.append(state['current_entities'])
 
                 # batch num # of rows, each holding a path
-                # path = [[x[batch] for x in paths] for batch in range(self.batch_size*self.num_rollouts)]
                 reward = episode.get_reward(self.rwd)
-                # update node info objects
-                # for batch, path in enumerate(path):
-                #     success = reward[batch] == 1
-                #     entities = [path[0], path[2], path[4], path[6]]
-                #     for x in entities:
-                #         self.train_environment.grapher.node_info_objects[x].appearance_count += 1
-                #         if success:
-                #             self.train_environment.grapher.node_info_objects[x].correct_appearance_count += 1
-                #         else:
-                #             self.train_environment.grapher.node_info_objects[x].incorrect_appearance_count += 1
+
                 #calculating the accuracy, or the portion of batches where the correct answer was found
                 accuracy = np.sum((np.sum(np.reshape(reward, (self.batch_size, self.num_rollouts)), axis=1) > 0))/self.batch_size
                 print("Accuracy "+ str(accuracy))
-
-                #change y of graph if needed for accuracy graph (same regardless of using RL or SL)
-                xdata.append(z)
-                if accuracy>accuracy_graph.get_ylim()[1]:
-                    accuracy_graph.set_ylim(accuracy_graph.get_ylim()[0],accuracy)
-                elif accuracy<accuracy_graph.get_ylim()[0]:
-                    accuracy_graph.set_ylim(accuracy,accuracy_graph.get_ylim()[1])
-                ydata_accuracy.append(accuracy)
                 
                 # get the final reward from the environment and update the limits of the graphs accordingly
                 # plus add the new data to the dataset
@@ -250,29 +223,51 @@ class Trainer(object):
                     print("Reinforcement Learning Total Loss:")
                     print(batch_total_loss)
 
-                    #change y of graph if needed for loss graph
-                    if batch_total_loss>loss_graph.get_ylim()[1]:
-                        loss_graph.set_ylim(loss_graph.get_ylim()[0],batch_total_loss)
-                    elif batch_total_loss<loss_graph.get_ylim()[0]:
-                        loss_graph.set_ylim(batch_total_loss,loss_graph.get_ylim()[1])
-
                     #append new data
-                    ydata_loss.append(batch_total_loss)
+                    average_loss.append(batch_total_loss)
 
                 else: #use supervised learning
                     supervised_learning_total_loss =  tf.math.reduce_mean(tf.math.square(tf.reduce_sum(supervised_learning_loss,0)))
                     print("Supervised Learning Total Loss:")
                     print(supervised_learning_total_loss)
 
-                    #change y of graph if needed
-                    if supervised_learning_total_loss>loss_graph.get_ylim()[1]:
-                        loss_graph.set_ylim(loss_graph.get_ylim()[0],supervised_learning_total_loss)
-                    elif supervised_learning_total_loss<loss_graph.get_ylim()[0]:
-                        loss_graph.set_ylim(supervised_learning_total_loss,loss_graph.get_ylim()[1])
-
                     #append new data
-                    ydata_loss.append(supervised_learning_total_loss)
+                    average_loss.append(supervised_learning_total_loss)
+
+                average_accuracy.append(accuracy)
+
+                # update graph at new epoch
+                if not graph_epoch in xdata:
+                    xdata.append(graph_epoch)
+
+                    # calculate averages
+                    average_accuracy = np.array(average_accuracy)
+                    average_loss = np.array(average_loss)
+
+                    mean_acc = np.mean(average_accuracy)
+                    mean_loss = np.mean(average_loss)
+
+                    # reset lists
+                    average_accuracy = []
+                    average_loss = []
+
+                    # update bounds
+                    if mean_acc>accuracy_graph.get_ylim()[1]:
+                        accuracy_graph.set_ylim(accuracy_graph.get_ylim()[0],mean_acc)
+                    elif mean_acc<accuracy_graph.get_ylim()[0]:
+                        accuracy_graph.set_ylim(mean_acc,accuracy_graph.get_ylim()[1])
+
+                    if mean_loss>loss_graph.get_ylim()[1]:
+                        loss_graph.set_ylim(loss_graph.get_ylim()[0],mean_loss)
+                    elif mean_loss<loss_graph.get_ylim()[0]:
+                        loss_graph.set_ylim(mean_loss,loss_graph.get_ylim()[1])
+
+                    # add to dataset
+                    ydata_accuracy.append(mean_acc)
+                    ydata_loss.append(mean_loss)
+                    
                 print("Episode: "+str(z))
+                print("Epoch: "+ str(episode.epoch))
                 
                 #regen line
                 line_loss, = loss_graph.plot(xdata, ydata_loss, 'r-', label="Loss")
@@ -284,23 +279,18 @@ class Trainer(object):
                 line_accuracy.set_ydata(ydata_accuracy)
                 #draw everything and briefly wait
                 plt.draw()
-                #commented out because I need this to run in the background so I can work on other stuff
-                #plt.pause(1e-17)
 
             if use_RL:
                 gradients = tape.gradient(batch_total_loss, self.agent.trainable_variables)
             else: #use supervised learning
                 gradients = tape.gradient(supervised_learning_total_loss, self.agent.trainable_variables)
-            # print(len(self.agent.trainable_variables),self.agent.trainable_variables)
+
             gradients, _ = tf.clip_by_global_norm(gradients, self.grad_clip_norm)
             self.optimizer.apply_gradients(zip(gradients, self.agent.trainable_variables))        
 
-            if use_RL and self.batch_counter >= self.total_iterations_rl:
-                #plt.savefig("C:\\Users\\owenb\\OneDrive\\Documents\\GitHub\\MINERVA_tf2\\hyperparameter testing results\\FB15K\\"+self.hp_type+"\\"+self.hp_level+"_cce.png")
-                # save updated labels
-                #self.train_environment.labeller.save_labels()
+            if use_RL and episode.epoch >= self.total_epochs_rl:
                 return xdata, ydata_accuracy, ydata_loss, accuracy_graph, loss_graph, line_loss, line_accuracy
-            elif not use_RL and self.batch_counter >= self.total_iterations_sl:
+            elif not use_RL and episode.epoch >= self.total_epochs_sl:
                 return xdata, ydata_accuracy, ydata_loss, accuracy_graph, loss_graph, line_loss, line_accuracy
 
     def testing(self, beam=False, print_paths=True, save_model = False, auc = False):
@@ -337,7 +327,6 @@ class Trainer(object):
             previous_relation = np.ones((temp_batch_size * self.test_rollouts, ), dtype='int64') * self.relation_vocab[
                 'DUMMY_START_RELATION']
             self.range_arr_test = np.arange(temp_batch_size * self.test_rollouts)
-            # feed_dict[self.input_path[0]] = np.zeros(temp_batch_size * self.test_rollouts)
 
             ####logger code####
             if print_paths:
@@ -501,10 +490,7 @@ class Trainer(object):
         all_final_reward_10 /= total_examples
         all_final_reward_20 /= total_examples
         auc /= total_examples
-        # if save_model:
-        #     if all_final_reward_10 >= self.max_hits_at_10:
-        #         self.max_hits_at_10 = all_final_reward_10
-        #         self.save_path = self.model_saver.save(sess, self.model_dir + "model" + '.ckpt')
+
         print("len of paths and answers")
         print(len(list(paths.keys())))
         print(len(answers))
@@ -600,13 +586,13 @@ if __name__ == '__main__':
     logger.info('Total number of relations {}'.format(len(options['relation_vocab'])))
     save_path = ''
     
-    #set up loss graph, including x range since we already know the number of training iterations that will occur
+    #set up loss graph, including x range since we already know the number of training epochs that will occur
     figure, axes = plt.subplots(1,2)
     loss_graph=axes[0]
     accuracy_graph=axes[1]
-    loss_graph.set_xlim(0, options['total_iterations_sl'] + options['total_iterations_rl'])
+    loss_graph.set_xlim(0, options['total_epochs_sl'] + options['total_epochs_rl'])
     loss_graph.set_ylim(0, 1) #since we don't want the y lim to get reset ever, even when we switch from SL to RL
-    accuracy_graph.set_xlim(0, options['total_iterations_sl'] + options['total_iterations_rl'])
+    accuracy_graph.set_xlim(0, options['total_epochs_sl'] + options['total_epochs_rl'])
     accuracy_graph.set_ylim(0, 1)
 
     #reset loss graph to add another set of data
@@ -622,7 +608,7 @@ if __name__ == '__main__':
         trainer = Trainer(options)
         if not options['order_swap']:
             # Training with supervised learning
-            if options['total_iterations_sl'] != 0:
+            if options['total_epochs_sl'] != 0:
                 options['beta']=0.002
                 options['Lambda']=2
                 options['learning_rate']=0.001
@@ -631,7 +617,7 @@ if __name__ == '__main__':
                 xdata, ydata_accuracy, ydata_loss, accuracy_graph, loss_graph, line_loss, line_accuracy = trainer.train(False, xdata, ydata_accuracy, ydata_loss, accuracy_graph, loss_graph, line_loss, line_accuracy)
 
             # Training with reinforcement learning
-            if options['total_iterations_rl'] != 0:
+            if options['total_epochs_rl'] != 0:
                 options['beta']=0.02
                 options['Lambda']=0.02
                 options['learning_rate']=1e-3
@@ -639,7 +625,7 @@ if __name__ == '__main__':
                 xdata, ydata_accuracy, ydata_loss, accuracy_graph, loss_graph, line_loss, line_accuracy = trainer.train(True, xdata, ydata_accuracy, ydata_loss, accuracy_graph, loss_graph, line_loss, line_accuracy)
         else:
             # Training with reinforcement learning
-            if options['total_iterations_rl'] != 0:
+            if options['total_epochs_rl'] != 0:
                 options['beta']=0.02
                 options['Lambda']=0.02
                 options['learning_rate']=1e-3
@@ -647,7 +633,7 @@ if __name__ == '__main__':
                 xdata, ydata_accuracy, ydata_loss, accuracy_graph, loss_graph, line_loss, line_accuracy = trainer.train(True, xdata, ydata_accuracy, ydata_loss, accuracy_graph, loss_graph, line_loss, line_accuracy)
 
             # Training with supervised learning
-            if options['total_iterations_sl'] != 0:
+            if options['total_epochs_sl'] != 0:
                 options['beta']=0.002
                 options['Lambda']=2
                 options['learning_rate']=0.001

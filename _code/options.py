@@ -57,8 +57,8 @@ def read_options():
     parser.add_argument("--LSTM_layers", default=1, type=int)
     parser.add_argument("--model_dir", default='', type=str)
     parser.add_argument("--base_output_dir", default='', type=str)
-    parser.add_argument("--total_iterations_sl", default=2000, type=int)
-    parser.add_argument("--total_iterations_rl", default=2000, type=int)
+    parser.add_argument("--total_epochs_sl", default=2000, type=int)
+    parser.add_argument("--total_epochs_rl", default=2000, type=int)
     
     #not sure about this one
     parser.add_argument("--Lambda", default=0.0, type=float)
@@ -80,7 +80,11 @@ def read_options():
     parser.add_argument("--sl", default=1, type=int)
     parser.add_argument("--save_model", default=1, type=int)
     parser.add_argument("--saved_model_dir", default="none", type=str)
+    # deprecated; we aren't doing order RL->SL tests anymore
     parser.add_argument("--order_swap", default=0, type=int)
+    parser.add_argument("--sl_start_checkpointing", default=4000, type=int)
+    parser.add_argument("--sl_checkpoints", default=8, type=int)
+    parser.add_argument("--sl_checkpoint_interval", default=2000, type=int)
     # random masking parameter
     parser.add_argument("--random_masking_coef", default=0, type=float)
 
@@ -108,7 +112,7 @@ def read_options():
     parsed['pretrained_embeddings_action'] = ""
     parsed['pretrained_embeddings_entity'] = ""
 
-    parsed['output_dir'] = parsed['base_output_dir'] + '/' + str(uuid.uuid4())[:4]+'_'+parsed['model_name']+"_"+str(parsed['total_iterations_sl'])+"_"+str(parsed['total_iterations_rl'])
+    parsed['output_dir'] = parsed['base_output_dir'] + '/' + str(uuid.uuid4())[:4]+'_'+parsed['model_name']+"_"+str(parsed['total_epochs_sl'])+"_"+str(parsed['total_epochs_rl'])
 
     parsed['model_dir'] = parsed['output_dir']+'/'+ 'model/'
 
@@ -116,7 +120,7 @@ def read_options():
 
     #handle lr schedule
     if parsed['schedule']==1:
-        schedule=keras.optimizers.schedules.ExponentialDecay(initial_learning_rate=parsed['learning_rate'],decay_steps=parsed['total_iterations'],decay_rate=parsed['rate'])
+        schedule=keras.optimizers.schedules.ExponentialDecay(initial_learning_rate=parsed['learning_rate'],decay_steps=parsed['total_epochs'],decay_rate=parsed['rate'])
         parsed['learning_rate']=schedule
 
     ##Logger##

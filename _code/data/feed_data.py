@@ -55,7 +55,10 @@ class RelationEntityBatcher():
                 self.store_all_correct[(e1, r)].add(e2)  #YM: there may exist multiple answers for the same query, i.e., same (e1,r) may mapping to different e2. store_all_correct will give all solution for the same query
             if self.rwd:
                 self.store = np.array(self.store)
-            self.queries=np.array(list(self.store_all_correct.keys()), int)
+                print(self.store.shape)
+            self.queries=np.array(list(self.store_all_correct.keys())[:400], int)
+            ##self.queries=np.array(list(self.store_all_correct.keys()), int)
+            print(self.queries.shape)
         else:
             if self.mode == 'test':
                 dataset = self.test_data
@@ -92,31 +95,63 @@ class RelationEntityBatcher():
                     
     #UNDERSTOOD
     def yield_next_batch_train(self, labeller, rl):
+        epoch = 0
+        current_idx = 0
+        if self.rwd:
+            remaining = self.store.shape[0]
+            random.shuffle(self.store)
+        else:
+            remaining = self.queries.shape[0]
+            random.shuffle(self.queries)
+        # shuffle list before beginning training
         while True:
-            #randomly generates a list of indexes of facts in the training data the length of which is the batch size
-            #creates numpy array of the facts at those indexes
+            # reset for new epoch
+            if remaining == 0:
+                if self.rwd:
+                    remaining = self.store.shape[0]
+                    random.shuffle(self.store)
+                else:
+                    remaining = self.queries.shape[0]
+                    random.shuffle(self.queries)
+                epoch += 1
+                current_idx = 0
+
+            # get batch indices
+            if remaining - self.batch_size > 0:
+                batch_idx = np.arange(current_idx, current_idx+self.batch_size)
+                current_idx += self.batch_size
+                remaining -= self.batch_size
+            else:
+                if self.rwd:
+                    batch_idx = np.arange(current_idx, self.store.shape[0])
+                else:
+                    batch_idx = np.arange(current_idx, self.queries.shape[0])
+                remaining = 0
+
+            # get batch
             if self.rwd:
                 rl = False
-                batch_idx = np.random.randint(0, self.store.shape[0], size=self.batch_size)
                 batch = self.store[batch_idx, :]
             else:
-                batch_idx = np.random.randint(0, self.queries.shape[0], size=int(self.batch_size))
                 batch = self.queries[batch_idx, :]
             
-            #generates correct paths
-            labels=[[],[],[]]
-            for i in range(len(batch)):
-                correct = labeller.correct_path(batch[i])
-                #handle rollouts 
-                for i in range(self.num_rollouts):
-                    labels[0].append(correct[0])
-                    labels[1].append(correct[1])
-                    labels[2].append(correct[2])
+            # if doing supervised learning, randomly generates a list of indices of facts in the training data the length of which is the batch size
+            # creates numpy array of the facts at those indexes
+            if not self.rwd and not rl:
+                #generates correct paths
+                labels=[[],[],[]]
+                for i in range(len(batch)):
+                    correct = labeller.correct_path(batch[i])
+                    #handle rollouts 
+                    for i in range(self.num_rollouts):
+                        labels[0].append(correct[0])
+                        labels[1].append(correct[1])
+                        labels[2].append(correct[2])
 
-            #get indices where no path was found and delete them from the batch
-            indices=np.argwhere(labels==np.array([-1,-1]))
-            np.delete(labels,indices)
-            np.delete(batch,indices)
+                #get indices where no path was found and delete them from the batch
+                indices=np.argwhere(labels==np.array([-1,-1]))
+                np.delete(labels,indices)
+                np.delete(batch,indices)
 
             if rl:
                 masked = []
@@ -141,12 +176,12 @@ class RelationEntityBatcher():
                 assert e1.shape[0] == e2.shape[0] == r.shape[0] == len(all_e2s)
             assert e1.shape[0] == r.shape[0] == len(all_e2s)
             if self.rwd:
-                yield e1, r, e2, all_e2s
+                yield e1, r, e2, all_e2s, epoch
             else:
                 if rl:
-                    yield e1, r, all_e2s, labels, masked
+                    yield e1, r, all_e2s, masked, epoch
                 else:
-                    yield e1, r, all_e2s, labels
+                    yield e1, r, all_e2s, labels, epoch
 
     #UNDERSTOOD
     # doesnt check rwd since we always test with original reward
