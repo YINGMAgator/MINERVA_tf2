@@ -74,17 +74,17 @@ def read_options():
     parser.add_argument("--nell_evaluation", default=0, type=int)
     # for controlling generating last results
     parser.add_argument("--train_rwd", default=0, type=int)
-    parser.add_argument("--test", default=0, type=int)
+    parser.add_argument("--test", default=1, type=int)
     parser.add_argument("--model_name", default="test", type=str)
     parser.add_argument("--test_round", default=0, type=int) # not specified at cmd line; changed by code later
     parser.add_argument("--sl", default=1, type=int)
     parser.add_argument("--save_model", default=1, type=int)
     parser.add_argument("--saved_model_dir", default="none", type=str)
     # deprecated; we aren't doing order RL->SL tests anymore
-    parser.add_argument("--order_swap", default=0, type=int)
-    parser.add_argument("--sl_start_checkpointing", default=4000, type=int)
+    # parser.add_argument("--order_swap", default=0, type=int)
+    parser.add_argument("--sl_start_checkpointing", default=2, type=int)
     parser.add_argument("--sl_checkpoints", default=8, type=int)
-    parser.add_argument("--sl_checkpoint_interval", default=2000, type=int)
+    parser.add_argument("--sl_checkpoint_interval", default=1, type=int)
     # random masking parameter
     parser.add_argument("--random_masking_coef", default=0, type=float)
 
@@ -99,7 +99,7 @@ def read_options():
     parsed['test_round'] = parsed['test_round'] == 1
     parsed['sl'] = parsed['sl'] == 1
     parsed['save_model'] = parsed['save_model'] == 1
-    parsed['order_swap'] = parsed['order_swap'] == 1 
+    # parsed['order_swap'] = parsed['order_swap'] == 1 
     #dataset name
     parsed['dataset_name']=parsed['base_output_dir'][7:-1]
 
@@ -128,7 +128,7 @@ def read_options():
     parsed['log_file_name'] = parsed['output_dir'] +'/log.txt'
     os.makedirs(parsed['output_dir'])
     os.mkdir(parsed['model_dir'])
-    os.mkdir(parsed['output_dir']+'/path_info/')
+    # os.mkdir(parsed['output_dir']+'/path_info/')
     with open(parsed['output_dir']+'/config.txt', 'w') as out:
         pprint(parsed, stream=out)
 

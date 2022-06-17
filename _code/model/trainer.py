@@ -21,7 +21,6 @@ import dill
 from code.data.vocab_gen import Vocab_Gen
 import matplotlib
 import matplotlib.pyplot as plt
-from tensorflow import keras
 logger = logging.getLogger()
 logging.basicConfig(stream=sys.stdout, level=logging.DEBUG)
 
@@ -135,7 +134,7 @@ class Trainer(object):
         scores = tf.divide(tf.subtract(scores, tf.reduce_min(scores)), tf.subtract(tf.reduce_max(scores), tf.reduce_min(scores)))
         return scores
 
-    def train(self, use_RL, xdata, ydata_accuracy, ydata_loss, accuracy_graph, loss_graph, line_loss, line_accuracy):
+    def train(self, use_RL, xdata, ydata_accuracy, ydata_loss, last_epoch):
         print("Beginning Training")
         self.first_state_of_test = False
         self.range_arr = np.arange(self.batch_size*self.num_rollouts)
@@ -144,13 +143,10 @@ class Trainer(object):
         average_accuracy = []
         average_loss = []
         for z, episode in enumerate(self.train_environment.get_episodes(use_RL)):
-            graph_epoch = episode.epoch
-            # paths=[]
-            # start rl graph from the end of the supervised learning run
-            if use_RL and not self.order_swap:
-                graph_epoch += self.total_epochs_sl + 1
-            elif not use_RL and self.order_swap:
-                graph_epoch += self.total_epochs_rl + 1
+            graph_epoch = episode.epoch + last_epoch
+
+            if (use_RL and episode.epoch > self.total_epochs_rl) or (not use_RL and episode.epoch > self.total_epochs_sl):
+                return xdata, ydata_accuracy, ydata_loss, graph_epoch - 1
 
             model_state = self.agent.state_init
             prev_relation = self.agent.relation_init            
@@ -251,34 +247,12 @@ class Trainer(object):
                     average_accuracy = []
                     average_loss = []
 
-                    # update bounds
-                    if mean_acc>accuracy_graph.get_ylim()[1]:
-                        accuracy_graph.set_ylim(accuracy_graph.get_ylim()[0],mean_acc)
-                    elif mean_acc<accuracy_graph.get_ylim()[0]:
-                        accuracy_graph.set_ylim(mean_acc,accuracy_graph.get_ylim()[1])
-
-                    if mean_loss>loss_graph.get_ylim()[1]:
-                        loss_graph.set_ylim(loss_graph.get_ylim()[0],mean_loss)
-                    elif mean_loss<loss_graph.get_ylim()[0]:
-                        loss_graph.set_ylim(mean_loss,loss_graph.get_ylim()[1])
-
                     # add to dataset
                     ydata_accuracy.append(mean_acc)
                     ydata_loss.append(mean_loss)
                     
                 print("Episode: "+str(z))
                 print("Epoch: "+ str(episode.epoch))
-                
-                #regen line
-                line_loss, = loss_graph.plot(xdata, ydata_loss, 'r-', label="Loss")
-                line_accuracy, = accuracy_graph.plot(xdata, ydata_accuracy, 'r-', label="Accuracy")
-                #populate new line
-                line_loss.set_xdata(xdata)
-                line_accuracy.set_xdata(xdata)
-                line_loss.set_ydata(ydata_loss)
-                line_accuracy.set_ydata(ydata_accuracy)
-                #draw everything and briefly wait
-                plt.draw()
 
             if use_RL:
                 gradients = tape.gradient(batch_total_loss, self.agent.trainable_variables)
@@ -287,11 +261,6 @@ class Trainer(object):
 
             gradients, _ = tf.clip_by_global_norm(gradients, self.grad_clip_norm)
             self.optimizer.apply_gradients(zip(gradients, self.agent.trainable_variables))        
-
-            if use_RL and episode.epoch >= self.total_epochs_rl:
-                return xdata, ydata_accuracy, ydata_loss, accuracy_graph, loss_graph, line_loss, line_accuracy
-            elif not use_RL and episode.epoch >= self.total_epochs_sl:
-                return xdata, ydata_accuracy, ydata_loss, accuracy_graph, loss_graph, line_loss, line_accuracy
 
     def testing(self, beam=False, print_paths=True, save_model = False, auc = False):
         batch_counter = 0
@@ -585,79 +554,94 @@ if __name__ == '__main__':
     logger.info('Total number of entities {}'.format(len(options['entity_vocab'])))
     logger.info('Total number of relations {}'.format(len(options['relation_vocab'])))
     save_path = ''
-    
-    #set up loss graph, including x range since we already know the number of training epochs that will occur
-    figure, axes = plt.subplots(1,2)
-    loss_graph=axes[0]
-    accuracy_graph=axes[1]
-    loss_graph.set_xlim(0, options['total_epochs_sl'] + options['total_epochs_rl'])
-    loss_graph.set_ylim(0, 1) #since we don't want the y lim to get reset ever, even when we switch from SL to RL
-    accuracy_graph.set_xlim(0, options['total_epochs_sl'] + options['total_epochs_rl'])
-    accuracy_graph.set_ylim(0, 1)
 
     #reset loss graph to add another set of data
     xdata = []
     ydata_loss = []
     ydata_accuracy = []
 
-    line_loss, = loss_graph.plot(xdata, ydata_loss, 'r-', label="Loss")
-    line_accuracy, = accuracy_graph.plot(xdata, ydata_accuracy, 'r-', label="Accuracy")
+    def make_checkpoint(last_epoch, agent, options, xdata, ydata_accuracy, ydata_loss):
+        # set rwd
+        options['train_rwd'] = True
+
+        # make checkpoint folder
+        options['output_dir'] += '/checkpoint_sl_epoch_'+str(last_epoch)
+        os.mkdir(options['output_dir'])
+
+        # make output folder
+        os.mkdir(options['output_dir']+'/path_info/')
+        options['path_logger_file'] = options['output_dir']+'/path_info/path_logger'
+        options['log_file_name'] = options['output_dir'] +'/log.txt'
+
+        # make model folder
+        os.mkdir(options['output_dir']+'/model_weights/')
+        options['model_dir'] = options['output_dir']+'/model_weights/'
+
+        # make trainer
+        trainer = Trainer(options, agent)
+        
+        # do RL training
+        options['beta']=0.02
+        options['Lambda']=0.02
+        options['learning_rate']=1e-3
+        trainer.set_hpdependent(options)
+        xdata, ydata_accuracy, ydata_loss, last_epoch = trainer.train(True, xdata, ydata_accuracy, ydata_loss, last_epoch)
+        
+        # create graph
+        figure, axes = plt.subplots(1,2)
+        loss_graph=axes[0]
+        accuracy_graph=axes[1]
+        loss_graph.set_xlim(1, last_epoch)
+        accuracy_graph.set_xlim(1, last_epoch)
+        loss_graph.set_ylim(min(0, min(ydata_loss)), max(ydata_loss))
+        accuracy_graph.set_ylim(min(0, min(ydata_accuracy)), max(ydata_accuracy))
+        line_loss, = loss_graph.plot(xdata, ydata_loss, 'r-', label="Loss")
+        line_accuracy, = accuracy_graph.plot(xdata, ydata_accuracy, 'r-', label="Accuracy")
+        line_loss.set_xdata(xdata)
+        line_accuracy.set_xdata(xdata)
+        line_loss.set_ydata(ydata_loss)
+        line_accuracy.set_ydata(ydata_accuracy)
+        plt.draw()
+        plt.savefig(options['output_dir']+'/'+options['model_name']+".png")
+        plt.close(figure)
+
+        # do testing
+        options['test_round'] = True
+        tester = Trainer(options, trainer.agent)
+        tester.testing()
+        
+        # save model
+        trainer.agent.save_weights(options['model_dir'] + options['model_name'])
 
     # Training
     if not options['load_model']:
         trainer = Trainer(options)
-        if not options['order_swap']:
-            # Training with supervised learning
-            if options['total_epochs_sl'] != 0:
-                options['beta']=0.002
-                options['Lambda']=2
-                options['learning_rate']=0.001
-                options['random_masking_coef']=0
-                trainer.set_hpdependent(options)
-                xdata, ydata_accuracy, ydata_loss, accuracy_graph, loss_graph, line_loss, line_accuracy = trainer.train(False, xdata, ydata_accuracy, ydata_loss, accuracy_graph, loss_graph, line_loss, line_accuracy)
 
-            # Training with reinforcement learning
-            if options['total_epochs_rl'] != 0:
-                options['beta']=0.02
-                options['Lambda']=0.02
-                options['learning_rate']=1e-3
-                trainer.set_hpdependent(options)
-                xdata, ydata_accuracy, ydata_loss, accuracy_graph, loss_graph, line_loss, line_accuracy = trainer.train(True, xdata, ydata_accuracy, ydata_loss, accuracy_graph, loss_graph, line_loss, line_accuracy)
-        else:
-            # Training with reinforcement learning
-            if options['total_epochs_rl'] != 0:
-                options['beta']=0.02
-                options['Lambda']=0.02
-                options['learning_rate']=1e-3
-                trainer.set_hpdependent(options)
-                xdata, ydata_accuracy, ydata_loss, accuracy_graph, loss_graph, line_loss, line_accuracy = trainer.train(True, xdata, ydata_accuracy, ydata_loss, accuracy_graph, loss_graph, line_loss, line_accuracy)
+        # Create checkpoint for no rl
+        last_epoch = 0
+        trainer.agent.save_weights(options['model_dir'])
+        make_checkpoint(last_epoch, trainer.agent, options.copy(), xdata.copy(), ydata_accuracy.copy(), ydata_loss.copy())
+        trainer.agent.load_weights(options['model_dir'])
 
-            # Training with supervised learning
-            if options['total_epochs_sl'] != 0:
-                options['beta']=0.002
-                options['Lambda']=2
-                options['learning_rate']=0.001
-                trainer.set_hpdependent(options)
-                xdata, ydata_accuracy, ydata_loss, accuracy_graph, loss_graph, line_loss, line_accuracy = trainer.train(False, xdata, ydata_accuracy, ydata_loss, accuracy_graph, loss_graph, line_loss, line_accuracy)
-        
-        output_dir = trainer.output_dir
+        # Create initial SL checkpoint
+        options['beta']=0.002
+        options['Lambda']=2
+        options['learning_rate']=0.001
+        options['random_masking_coef']=0
+        trainer.set_hpdependent(options)
+        trainer.total_epochs_sl = options['sl_start_checkpointing']
+        xdata, ydata_accuracy, ydata_loss, last_epoch = trainer.train(False, xdata, ydata_accuracy, ydata_loss, last_epoch)
+        trainer.agent.save_weights(options['model_dir'])
+        make_checkpoint(last_epoch, trainer.agent, options.copy(), xdata.copy(), ydata_accuracy.copy(), ydata_loss.copy())
+        trainer.agent.load_weights(options['model_dir'])
 
-        # Saving graph
-        plt.savefig(output_dir+'/'+options['model_name']+".png")
-        plt.close(figure)
-
-        #save serialized class instance of agent
-        if options['save_model']:
-            # trainer.agent.save(trainer.model_dir + options['model_name'] + ".h5")
-            trainer.agent.save_weights(trainer.model_dir + options['model_name'])
-            trainer.agent.load_weights(trainer.model_dir + options['model_name'])
-            print(trainer.model_dir + options['model_name'])
-        if options['test']:
-            options['test_round'] = True
-            tester = Trainer(options, trainer.agent)
-            tester.testing()
-
-        
+        # Create subsequent SL checkpoints
+        trainer.total_epochs_sl = options['sl_checkpoint_interval']
+        for ckpt in range(options['sl_checkpoints']):
+            xdata, ydata_accuracy, ydata_loss, last_epoch = trainer.train(False, xdata, ydata_accuracy, ydata_loss, last_epoch)
+            trainer.agent.save_weights(options['model_dir'])
+            make_checkpoint(last_epoch, trainer.agent, options.copy(), xdata.copy(), ydata_accuracy.copy(), ydata_loss.copy())
+            trainer.agent.load_weights(options['model_dir'])
     else:
         options['test_round'] = True
         tester = Trainer(options)

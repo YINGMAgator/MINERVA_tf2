@@ -54,10 +54,11 @@ class RelationEntityBatcher():
                     self.store.append([e1,r,e2])
                 self.store_all_correct[(e1, r)].add(e2)  #YM: there may exist multiple answers for the same query, i.e., same (e1,r) may mapping to different e2. store_all_correct will give all solution for the same query
             if self.rwd:
+                ##self.store = np.array(self.store[:400])
                 self.store = np.array(self.store)
                 print(self.store.shape)
-            self.queries=np.array(list(self.store_all_correct.keys())[:400], int)
-            ##self.queries=np.array(list(self.store_all_correct.keys()), int)
+            ##self.queries=np.array(list(self.store_all_correct.keys())[:400], int)
+            self.queries=np.array(list(self.store_all_correct.keys()), int)
             print(self.queries.shape)
         else:
             if self.mode == 'test':
@@ -95,7 +96,7 @@ class RelationEntityBatcher():
                     
     #UNDERSTOOD
     def yield_next_batch_train(self, labeller, rl):
-        epoch = 0
+        epoch = 1
         current_idx = 0
         if self.rwd:
             remaining = self.store.shape[0]
