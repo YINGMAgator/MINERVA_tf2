@@ -96,6 +96,8 @@ class RelationEntityGrapher:
                 if rwd:
                     mask = np.logical_and(relations == query_relations[i] , entities == answers[i])
                 else:
+                    print(entities[0])
+                    print(all_correct_answers[0])
                     mask = np.logical_and(relations == query_relations[i] ,[entities[j] in all_correct_answers[i] for j in range(len(entities))])
                 #for every e2 and r, if that action is true in the mask, set the values of r and of e2 to the pad value for entity and relation respectively
                 ret[i, :, 0][mask] = self.ePAD
@@ -123,5 +125,6 @@ class RelationEntityGrapher:
                         if entities[j] in masking[int(i/rollouts)]:
                             entities[j] = self.ePAD
                             relations[j] = self.rPAD
-
+        print("ret shape")
+        print(ret.shape)
         return ret

@@ -1,0 +1,2515 @@
+/m/059g4	/m/06ryl
+Reward:0
+/m/059g4	/m/09lxtg	/m/0fs29	/m/09lxtg
+/base/locations/continents/countries_within	/location/country/capital	/base/aareas/schema/administrative_area/administrative_parent
+-1
+-6.760064899921417
+___
+/m/059g4	/m/0162v	/m/024t0y	/m/09nqf
+/base/locations/continents/countries_within	_/people/person/spouse_s./people/marriage/location_of_ceremony	/base/schemastaging/person_extra/net_worth./measurement_unit/dated_money_value/currency
+-1
+-7.047101736068726
+___
+/m/059g4	/m/0162v	/m/05qbckf	/m/09c7w0
+/base/locations/continents/countries_within	_/film/film/release_date_s./film/film_regional_release_date/film_release_region	/film/film/country
+-1
+-7.170439720153809
+___
+/m/059g4	/m/0d04z6	/m/0d6hn	/m/0d04z6
+/base/locations/continents/countries_within	/location/country/capital	/location/administrative_division/country
+-1
+-7.198698461055756
+___
+/m/059g4	/m/06s0l	/m/06s0l	/m/01q20
+/base/locations/continents/countries_within	NO_OP	/location/country/form_of_government
+-1
+-7.300480008125305
+___
+/m/059g4	/m/03gyl	/m/0fs1v	/m/03gyl
+/base/locations/continents/countries_within	/location/location/contains	_/location/location/contains
+-1
+-7.340758144855499
+___
+/m/059g4	/m/0160w	/m/03r0g9	/m/0345h
+/base/locations/continents/countries_within	_/film/film/country	/film/film/country
+-1
+-7.344727516174316
+___
+/m/059g4	/m/0345_	/m/02k8k	/m/01d9r3
+/base/locations/continents/countries_within	_/location/location/adjoin_s./location/adjoining_relationship/adjoins	/location/country/form_of_government
+-1
+-7.965607643127441
+___
+/m/059g4	/m/0160w	/m/05hcy	/m/0160w
+/base/locations/continents/countries_within	_/base/biblioness/bibs_location/country	_/location/location/contains
+-1
+-8.075053006410599
+___
+/m/059g4	/m/06s6l	/m/059g4	/m/01p8s
+/base/locations/continents/countries_within	_/base/locations/continents/countries_within	/base/locations/continents/countries_within
+-1
+-8.197242975234985
+___
+/m/059g4	/m/06s6l	/m/059g4	/m/06s6l
+/base/locations/continents/countries_within	_/base/locations/continents/countries_within	/base/locations/continents/countries_within
+-1
+-8.197242975234985
+___
+/m/059g4	/m/01p8s	/m/03g90h	/m/09c7w0
+/base/locations/continents/countries_within	_/film/film/release_date_s./film/film_regional_release_date/film_release_region	/film/film/distributors./film/film_film_distributor_relationship/region
+-1
+-8.277119636535645
+___
+/m/059g4	/m/0160w	/m/01713c	/m/0170s4
+/base/locations/continents/countries_within	_/people/person/spouse_s./people/marriage/location_of_ceremony	_/award/award_winner/awards_won./award/award_honor/award_winner
+-1
+-8.309470653533936
+___
+/m/059g4	/m/035yg	/m/059g4	/m/01p8s
+/base/locations/continents/countries_within	_/base/locations/continents/countries_within	/base/locations/continents/countries_within
+-1
+-8.382838249206543
+___
+/m/059g4	/m/035yg	/m/059g4	/m/0b90_r
+/base/locations/continents/countries_within	_/base/locations/continents/countries_within	/base/locations/continents/countries_within
+-1
+-8.382838249206543
+___
+/m/059g4	/m/09c7w0	/m/06929s	/m/09c7w0
+/base/locations/continents/countries_within	_/film/film/release_date_s./film/film_regional_release_date/film_release_region	/film/film/country
+-1
+-8.595763504505157
+___
+/m/059g4	/m/06s0l	/m/0d1_f	/m/0l3h
+/base/locations/continents/countries_within	_/government/politician/government_positions_held./government/government_position_held/jurisdiction_of_office	/government/politician/government_positions_held./government/government_position_held/jurisdiction_of_office
+-1
+-8.703303575515747
+___
+/m/059g4	/m/027nb	/m/09nqf	/m/0288zy
+/base/locations/continents/countries_within	/location/statistical_region/gdp_nominal./measurement_unit/dated_money_value/currency	_/organization/endowed_organization/endowment./measurement_unit/dated_money_value/currency
+-1
+-8.768387079238892
+___
+/m/059g4	/m/027nb	/m/09nqf	/m/024y8p
+/base/locations/continents/countries_within	/location/statistical_region/gdp_nominal./measurement_unit/dated_money_value/currency	_/organization/endowed_organization/endowment./measurement_unit/dated_money_value/currency
+-1
+-8.768387079238892
+___
+/m/059g4	/m/0d04z6	/m/0d6hn	/m/0d04z6
+/base/locations/continents/countries_within	_/base/biblioness/bibs_location/country	/location/administrative_division/country
+-1
+-8.81103801727295
+___
+/m/059g4	/m/035yg	/m/09nqf	/m/0fnmz
+/base/locations/continents/countries_within	/location/statistical_region/gdp_nominal./measurement_unit/dated_money_value/currency	_/organization/endowed_organization/endowment./measurement_unit/dated_money_value/currency
+-1
+-8.837451219558716
+___
+/m/059g4	/m/0345_	/m/07gyv	/m/0kbvb
+/base/locations/continents/countries_within	_/olympics/olympic_sport/athletes./olympics/olympic_athlete_affiliation/country	_/olympics/olympic_games/sports
+-1
+-8.890262722969055
+___
+/m/059g4	/m/09lxtg	/m/059g4	/m/03gyl
+/base/locations/continents/countries_within	_/base/locations/continents/countries_within	/base/locations/continents/countries_within
+-1
+-9.001132011413574
+___
+/m/059g4	/m/06s6l	/m/09nqf	/m/02xpy5
+/base/locations/continents/countries_within	/location/statistical_region/gni_per_capita_in_ppp_dollars./measurement_unit/dated_money_value/currency	_/organization/endowed_organization/endowment./measurement_unit/dated_money_value/currency
+-1
+-9.17951488494873
+___
+/m/059g4	/m/0162v	/m/03_8r	/m/0l6m5
+/base/locations/continents/countries_within	_/olympics/olympic_sport/athletes./olympics/olympic_athlete_affiliation/country	_/user/jg/default_domain/olympic_games/sports
+-1
+-9.21824860572815
+___
+/m/059g4	/m/01p8s	/m/059g4	/m/02k8k
+/base/locations/continents/countries_within	_/base/locations/continents/countries_within	/base/locations/continents/countries_within
+-1
+-9.239167213439941
+___
+/m/059g4	/m/05qx1	/m/0dgst_d	/m/07ssc
+/base/locations/continents/countries_within	_/film/film/release_date_s./film/film_regional_release_date/film_release_region	/film/film/country
+-1
+-9.261050462722778
+___
+/m/059g4	/m/027nb	/m/041288	/m/04v09
+/base/locations/continents/countries_within	/organization/organization_member/member_of./organization/organization_membership/organization	_/organization/organization_member/member_of./organization/organization_membership/organization
+-1
+-9.367125988006592
+___
+/m/059g4	/m/027rn	/m/059g4	/m/0160w
+/base/locations/continents/countries_within	_/base/locations/continents/countries_within	/base/locations/continents/countries_within
+-1
+-9.42597246170044
+___
+/m/059g4	/m/09c7w0	/m/016dj8	/m/09c7w0
+/base/locations/continents/countries_within	_/film/film/release_date_s./film/film_regional_release_date/film_release_region	/film/film/country
+-1
+-9.467363119125366
+___
+/m/059g4	/m/05qx1	/m/0fpv_3_	/m/06f32
+/base/locations/continents/countries_within	_/film/film/release_date_s./film/film_regional_release_date/film_release_region	/film/film/country
+-1
+-9.479482412338257
+___
+/m/059g4	/m/09c7w0	/m/048yqf	/m/09c7w0
+/base/locations/continents/countries_within	_/film/film/country	/film/film/country
+-1
+-9.541589260101318
+___
+/m/059g4	/m/03gyl	/m/02lq5w	/m/015l4k
+/base/locations/continents/countries_within	/olympics/olympic_participating_country/medals_won./olympics/olympic_medal_honor/medal	_/olympics/olympic_games/medals_awarded./olympics/olympic_medal_honor/medal
+-1
+-9.542481422424316
+___
+/m/059g4	/m/06s0l	/m/01q20	/m/02psqkz
+/base/locations/continents/countries_within	/location/country/form_of_government	_/location/country/form_of_government
+-1
+-9.567617654800415
+___
+/m/059g4	/m/09lxtg	/m/027pfg	/m/01mjq
+/base/locations/continents/countries_within	_/film/film/release_date_s./film/film_regional_release_date/film_release_region	/film/film/release_date_s./film/film_regional_release_date/film_release_region
+-1
+-9.582022905349731
+___
+/m/059g4	/m/035yg	/m/09nqf	/m/02xpy5
+/base/locations/continents/countries_within	/location/statistical_region/gdp_nominal_per_capita./measurement_unit/dated_money_value/currency	_/organization/endowed_organization/endowment./measurement_unit/dated_money_value/currency
+-1
+-9.598687171936035
+___
+/m/059g4	/m/0162v	/m/03k50	/m/02tcgh
+/base/locations/continents/countries_within	_/language/human_language/countries_spoken_in	_/film/film/language
+-1
+-9.600009679794312
+___
+/m/059g4	/m/035yg	/m/01q20	/m/0161c
+/base/locations/continents/countries_within	/location/country/form_of_government	_/location/country/form_of_government
+-1
+-9.64090371131897
+___
+/m/059g4	/m/06s6l	/m/0bynt	/m/0l98s
+/base/locations/continents/countries_within	_/olympics/olympic_sport/athletes./olympics/olympic_athlete_affiliation/country	_/olympics/olympic_games/sports
+-1
+-9.717538356781006
+___
+/m/059g4	/m/06s0l	/m/06wrt	/m/0l998
+/base/locations/continents/countries_within	_/olympics/olympic_sport/athletes./olympics/olympic_athlete_affiliation/country	_/olympics/olympic_games/sports
+-1
+-9.724770545959473
+___
+/m/059g4	/m/06s6l	/m/0kbws	/m/01cgz
+/base/locations/continents/countries_within	_/olympics/olympic_games/participating_countries	_/olympics/olympic_sport/athletes./olympics/olympic_athlete_affiliation/olympics
+-1
+-9.733368873596191
+___
+/m/059g4	/m/01p8s	/m/062zm5h	/m/01crd5
+/base/locations/continents/countries_within	_/film/film/release_date_s./film/film_regional_release_date/film_release_region	/film/film/release_date_s./film/film_regional_release_date/film_release_region
+-1
+-9.815274238586426
+___
+/m/059g4	/m/0345_	/m/09nqf	/m/06pwq
+/base/locations/continents/countries_within	/location/statistical_region/gdp_nominal./measurement_unit/dated_money_value/currency	_/organization/endowed_organization/endowment./measurement_unit/dated_money_value/currency
+-1
+-9.850529193878174
+___
+/m/059g4	/m/0345_	/m/0dr3sl	/m/03rjj
+/base/locations/continents/countries_within	_/film/film/release_date_s./film/film_regional_release_date/film_release_region	/film/film/release_date_s./film/film_regional_release_date/film_release_region
+-1
+-9.893412828445435
+___
+/m/059g4	/m/027rn	/m/0gyfp9c	/m/03h64
+/base/locations/continents/countries_within	_/film/film/release_date_s./film/film_regional_release_date/film_release_region	/film/film/release_date_s./film/film_regional_release_date/film_release_region
+-1
+-9.898260593414307
+___
+/m/059g4	/m/0b90_r	/m/0h95zbp	/m/09c7w0
+/base/locations/continents/countries_within	_/film/film/release_date_s./film/film_regional_release_date/film_release_region	/film/film/country
+-1
+-9.933567643165588
+___
+/m/059g4	/m/0b90_r	/m/0by17xn	/m/09c7w0
+/base/locations/continents/countries_within	_/film/film/release_date_s./film/film_regional_release_date/film_release_region	/film/film/country
+-1
+-9.936553716659546
+___
+/m/059g4	/m/09c7w0	/m/06mz5	/m/09nqf
+/base/locations/continents/countries_within	_/location/administrative_division/first_level_division_of	/location/statistical_region/gdp_nominal./measurement_unit/dated_money_value/currency
+-1
+-9.939318895339966
+___
+/m/059g4	/m/0160w	/m/0c1j_	/m/01pb34
+/base/locations/continents/countries_within	/base/popstra/location/vacationers./base/popstra/vacation_choice/vacationer	/film/actor/film./film/performance/special_performance_type
+-1
+-9.940094232559204
+___
+/m/059g4	/m/03gyl	/m/01fpfn	/m/0hg5
+/base/locations/continents/countries_within	/location/country/form_of_government	_/location/country/form_of_government
+-1
+-9.957700490951538
+___
+/m/059g4	/m/027rn	/m/062zm5h	/m/01p1v
+/base/locations/continents/countries_within	_/film/film/release_date_s./film/film_regional_release_date/film_release_region	/film/film/release_date_s./film/film_regional_release_date/film_release_region
+-1
+-10.002079486846924
+___
+/m/059g4	/m/0160w	/m/0419kt	/m/09c7w0
+/base/locations/continents/countries_within	_/film/film/featured_film_locations	/film/film/country
+-1
+-10.022651195526123
+___
+/m/059g4	/m/0162v	/m/01cgz	/m/0l6mp
+/base/locations/continents/countries_within	_/olympics/olympic_sport/athletes./olympics/olympic_athlete_affiliation/country	_/user/jg/default_domain/olympic_games/sports
+-1
+-10.042141199111938
+___
+/m/059g4	/m/03gyl	/m/0kbws	/m/018w8
+/base/locations/continents/countries_within	_/olympics/olympic_games/participating_countries	_/olympics/olympic_sport/athletes./olympics/olympic_athlete_affiliation/olympics
+-1
+-10.059873819351196
+___
+/m/059g4	/m/06s6l	/m/02h40lc	/m/02py4c8
+/base/locations/continents/countries_within	_/language/human_language/countries_spoken_in	_/tv/tv_program/languages
+-1
+-10.098335981369019
+___
+/m/059g4	/m/06s6l	/m/02h40lc	/m/06f0k
+/base/locations/continents/countries_within	_/language/human_language/countries_spoken_in	_/tv/tv_program/languages
+-1
+-10.098335981369019
+___
+/m/059g4	/m/02k8k	/m/0w0d	/m/018qb4
+/base/locations/continents/countries_within	_/olympics/olympic_sport/athletes./olympics/olympic_athlete_affiliation/country	_/olympics/olympic_games/sports
+-1
+-10.111671686172485
+___
+/m/059g4	/m/0b90_r	/m/0gh6j94	/m/03rjj
+/base/locations/continents/countries_within	_/film/film/release_date_s./film/film_regional_release_date/film_release_region	/film/film/country
+-1
+-10.136024832725525
+___
+/m/059g4	/m/09lxtg	/m/01cgz	/m/018qb4
+/base/locations/continents/countries_within	_/olympics/olympic_sport/athletes./olympics/olympic_athlete_affiliation/country	_/user/jg/default_domain/olympic_games/sports
+-1
+-10.175548791885376
+___
+/m/059g4	/m/06s0l	/m/02h40lc	/m/06cs95
+/base/locations/continents/countries_within	_/language/human_language/countries_spoken_in	_/tv/tv_program/languages
+-1
+-10.210644721984863
+___
+/m/059g4	/m/0345_	/m/0fpv_3_	/m/0j1z8
+/base/locations/continents/countries_within	_/film/film/release_date_s./film/film_regional_release_date/film_release_region	/film/film/release_date_s./film/film_regional_release_date/film_release_region
+-1
+-10.252362489700317
+___
+/m/059g4	/m/01p8s	/m/02lq5w	/m/0blg2
+/base/locations/continents/countries_within	/olympics/olympic_participating_country/medals_won./olympics/olympic_medal_honor/medal	_/olympics/olympic_games/medals_awarded./olympics/olympic_medal_honor/medal
+-1
+-10.25790023803711
+___
+/m/059g4	/m/06s6l	/m/07t65	/m/06s9y
+/base/locations/continents/countries_within	/organization/organization_member/member_of./organization/organization_membership/organization	_/organization/organization_member/member_of./organization/organization_membership/organization
+-1
+-10.262423276901245
+___
+/m/059g4	/m/035yg	/m/02h40lc	/m/07s8z_l
+/base/locations/continents/countries_within	_/language/human_language/countries_spoken_in	_/tv/tv_program/languages
+-1
+-10.283931016921997
+___
+/m/059g4	/m/09lxtg	/m/02lq67	/m/0sx92
+/base/locations/continents/countries_within	/olympics/olympic_participating_country/medals_won./olympics/olympic_medal_honor/medal	_/olympics/olympic_games/medals_awarded./olympics/olympic_medal_honor/medal
+-1
+-10.310765981674194
+___
+/m/059g4	/m/09c7w0	/m/054187	/m/05zppz
+/base/locations/continents/countries_within	_/people/person/place_of_birth	/people/person/gender
+-1
+-10.318876028060913
+___
+/m/059g4	/m/027rn	/m/02vxq9m	/m/02k1b
+/base/locations/continents/countries_within	_/film/film/release_date_s./film/film_regional_release_date/film_release_region	/film/film/release_date_s./film/film_regional_release_date/film_release_region
+-1
+-10.347504615783691
+___
+/m/059g4	/m/0160w	/m/01fpfn	/m/05l8y
+/base/locations/continents/countries_within	/location/country/form_of_government	_/location/country/form_of_government
+-1
+-10.405399084091187
+___
+/m/059g4	/m/01p8s	/m/01cgz	/m/0lv1x
+/base/locations/continents/countries_within	_/olympics/olympic_sport/athletes./olympics/olympic_athlete_affiliation/country	_/user/jg/default_domain/olympic_games/sports
+-1
+-10.413583993911743
+___
+/m/059g4	/m/03gyl	/m/0hzc9wc	/m/09pmkv
+/base/locations/continents/countries_within	/base/aareas/schema/administrative_area/administrative_area_type	_/base/aareas/schema/administrative_area/administrative_area_type
+-1
+-10.417365074157715
+___
+/m/059g4	/m/03gyl	/m/0hzc9wc	/m/047lj
+/base/locations/continents/countries_within	/base/aareas/schema/administrative_area/administrative_area_type	_/base/aareas/schema/administrative_area/administrative_area_type
+-1
+-10.417365074157715
+___
+/m/059g4	/m/0345_	/m/09nqf	/m/0473m9
+/base/locations/continents/countries_within	/location/statistical_region/gdp_real./measurement_unit/adjusted_money_value/adjustment_currency	_/organization/endowed_organization/endowment./measurement_unit/dated_money_value/currency
+-1
+-10.433876037597656
+___
+/m/059g4	/m/035yg	/m/07t65	/m/056vv
+/base/locations/continents/countries_within	/organization/organization_member/member_of./organization/organization_membership/organization	_/organization/organization_member/member_of./organization/organization_membership/organization
+-1
+-10.448018550872803
+___
+/m/059g4	/m/0160w	/m/0bynt	/m/0l98s
+/base/locations/continents/countries_within	_/olympics/olympic_sport/athletes./olympics/olympic_athlete_affiliation/country	_/user/jg/default_domain/olympic_games/sports
+-1
+-10.450995445251465
+___
+/m/059g4	/m/03gyl	/m/02vk52z	/m/035dk
+/base/locations/continents/countries_within	/organization/organization_member/member_of./organization/organization_membership/organization	_/organization/organization_member/member_of./organization/organization_membership/organization
+-1
+-10.50707483291626
+___
+/m/059g4	/m/09c7w0	/m/02bm1v	/m/09nqf
+/base/locations/continents/countries_within	_/base/schemastaging/organization_extra/phone_number./base/schemastaging/phone_sandbox/service_location	/business/business_operation/revenue./measurement_unit/dated_money_value/currency
+-1
+-10.574499249458313
+___
+/m/059g4	/m/027rn	/m/01cgz	/m/0jhn7
+/base/locations/continents/countries_within	_/olympics/olympic_sport/athletes./olympics/olympic_athlete_affiliation/country	_/user/jg/default_domain/olympic_games/sports
+-1
+-10.600389242172241
+___
+/m/059g4	/m/027rn	/m/09nqf	/m/02y9bj
+/base/locations/continents/countries_within	/location/statistical_region/gdp_nominal_per_capita./measurement_unit/dated_money_value/currency	_/organization/endowed_organization/endowment./measurement_unit/dated_money_value/currency
+-1
+-10.641821146011353
+___
+/m/059g4	/m/0162v	/m/02vk52z	/m/0d0vqn
+/base/locations/continents/countries_within	/organization/organization_member/member_of./organization/organization_membership/organization	_/organization/organization_member/member_of./organization/organization_membership/organization
+-1
+-10.851051568984985
+___
+/m/059g4	/m/027nb	/m/064_8sq	/m/026p4q7
+/base/locations/continents/countries_within	_/language/human_language/countries_spoken_in	_/film/film/language
+-1
+-11.013403177261353
+___
+/m/059g4	/m/0b90_r	/m/014m1m	/m/0b90_r
+/base/locations/continents/countries_within	_/base/aareas/schema/administrative_area/administrative_parent	_/location/location/contains
+-1
+-11.309605836868286
+___
+/m/059g4	/m/0160w	/m/0kbws	/m/0bynt
+/base/locations/continents/countries_within	/olympics/olympic_participating_country/medals_won./olympics/olympic_medal_honor/olympics	/olympics/olympic_games/sports
+-1
+-11.317917585372925
+___
+/m/059g4	/m/0160w	/m/0kbws	/m/07gyv
+/base/locations/continents/countries_within	/olympics/olympic_participating_country/medals_won./olympics/olympic_medal_honor/olympics	/olympics/olympic_games/sports
+-1
+-11.317917585372925
+___
+/m/059g4	/m/05qx1	/m/0kv238	/m/05qhw
+/base/locations/continents/countries_within	_/film/film/release_date_s./film/film_regional_release_date/film_release_region	/film/film/release_date_s./film/film_regional_release_date/film_release_region
+-1
+-11.373878717422485
+___
+/m/059g4	/m/05qx1	/m/0hhggmy	/m/01p1v
+/base/locations/continents/countries_within	_/film/film/release_date_s./film/film_regional_release_date/film_release_region	/film/film/release_date_s./film/film_regional_release_date/film_release_region
+-1
+-11.457167863845825
+___
+/m/059g4	/m/03gyl	/m/06sks6	/m/07jbh
+/base/locations/continents/countries_within	/olympics/olympic_participating_country/athletes./olympics/olympic_athlete_affiliation/olympics	_/olympics/olympic_sport/athletes./olympics/olympic_athlete_affiliation/olympics
+-1
+-11.569338083267212
+___
+/m/059g4	/m/06s6l	/m/06sks6	/m/06wrt
+/base/locations/continents/countries_within	/olympics/olympic_participating_country/athletes./olympics/olympic_athlete_affiliation/olympics	/olympics/olympic_games/sports
+-1
+-11.660734415054321
+___
+/m/059g4	/m/05qx1	/m/0bs8s1p	/m/02vzc
+/base/locations/continents/countries_within	_/film/film/release_date_s./film/film_regional_release_date/film_release_region	/film/film/release_date_s./film/film_regional_release_date/film_release_region
+-1
+-11.69232726097107
+___
+/m/059g4	/m/06s0l	/m/02h40lc	/m/039cq4
+/base/locations/continents/countries_within	/location/country/official_language	_/tv/tv_program/languages
+-1
+-11.716249227523804
+___
+/m/059g4	/m/05qx1	/m/04w7rn	/m/06b_j
+/base/locations/continents/countries_within	_/film/film/release_date_s./film/film_regional_release_date/film_release_region	/film/film/language
+-1
+-11.733291864395142
+___
+/m/059g4	/m/09c7w0	/m/02ywwy	/m/05p1dby
+/base/locations/continents/countries_within	_/film/film/country	_/award/award_category/nominees./award/award_nomination/nominated_for
+-1
+-11.814183235168457
+___
+/m/059g4	/m/09c7w0	/m/02w9k1c	/m/02vs3x5
+/base/locations/continents/countries_within	_/film/film/release_date_s./film/film_regional_release_date/film_release_region	/film/film/other_crew./film/film_crew_gig/film_crew_role
+-1
+-12.028006315231323
+___
+/m/059g4	/m/06s6l	/m/02h40lc	/m/09p3_s
+/base/locations/continents/countries_within	_/language/human_language/countries_spoken_in	_/film/film/language
+-1
+-12.02840781211853
+___
+/m/059g4	/m/05qx1	/m/0bpm4yw	/m/03gj2
+/base/locations/continents/countries_within	_/film/film/release_date_s./film/film_regional_release_date/film_release_region	/film/film/release_date_s./film/film_regional_release_date/film_release_region
+-1
+-12.121367692947388
+___
+/m/059g4	/m/01p8s	/m/0fpv_3_	/m/07s9rl0
+/base/locations/continents/countries_within	_/film/film/release_date_s./film/film_regional_release_date/film_release_region	/film/film/genre
+-1
+-12.216411590576172
+___
+/m/059g4	/m/0b90_r	/m/0cmdwwg	/m/03gj2
+/base/locations/continents/countries_within	_/film/film/release_date_s./film/film_regional_release_date/film_release_region	/film/film/release_date_s./film/film_regional_release_date/film_release_region
+-1
+-12.22436809539795
+___
+/m/059g4	/m/0162v	/m/02h40lc	/m/0fqt1ns
+/base/locations/continents/countries_within	_/language/human_language/countries_spoken_in	_/film/film/language
+-1
+-12.698889255523682
+___
+/m/059g4	/m/0b90_r	/m/0gvvm6l	/m/03ryn
+/base/locations/continents/countries_within	_/film/film/release_date_s./film/film_regional_release_date/film_release_region	/film/film/release_date_s./film/film_regional_release_date/film_release_region
+-1
+-12.831923246383667
+___
+/m/059g4	/m/0b90_r	/m/0gxtknx	/m/09c7w0
+/base/locations/continents/countries_within	_/film/film/release_date_s./film/film_regional_release_date/film_release_region	/film/film/release_date_s./film/film_regional_release_date/film_release_region
+-1
+-12.836139917373657
+___
+/m/059g4	/m/027rn	/m/09889g	/m/02f5qb
+/base/locations/continents/countries_within	_/people/person/spouse_s./people/marriage/location_of_ceremony	/award/award_nominee/award_nominations./award/award_nomination/award
+-1
+-14.870489835739136
+___
+#####################
+/m/02j9z	/m/03rt9
+Reward:0
+/m/02j9z	/m/04fh3	/m/056vv	/m/06cx9
+/base/locations/continents/countries_within	_/location/location/adjoin_s./location/adjoining_relationship/adjoins	/location/country/form_of_government
+-1
+-6.610422909259796
+___
+/m/02j9z	/m/04j53	/m/01lb14	/m/0kbws
+/base/locations/continents/countries_within	_/olympics/olympic_sport/athletes./olympics/olympic_athlete_affiliation/country	/olympics/olympic_sport/athletes./olympics/olympic_athlete_affiliation/olympics
+-1
+-8.235385417938232
+___
+/m/02j9z	/m/0166b	/m/06n8j	/m/021yyx
+/base/locations/continents/countries_within	/location/country/capital	_/location/location/contains
+-1
+-8.379427790641785
+___
+/m/02j9z	/m/0166b	/m/0661m4p	/m/0j1z8
+/base/locations/continents/countries_within	_/film/film/release_date_s./film/film_regional_release_date/film_release_region	/film/film/country
+-1
+-8.434264659881592
+___
+/m/02j9z	/m/0163v	/m/0bwfwpj	/m/09c7w0
+/base/locations/continents/countries_within	_/film/film/release_date_s./film/film_regional_release_date/film_release_region	/film/film/country
+-1
+-9.023305535316467
+___
+/m/02j9z	/m/0d0kn	/m/0gtvpkw	/m/09c7w0
+/base/locations/continents/countries_within	_/film/film/release_date_s./film/film_regional_release_date/film_release_region	/film/film/country
+-1
+-9.28463625907898
+___
+/m/02j9z	/m/0d0kn	/m/05pdh86	/m/09c7w0
+/base/locations/continents/countries_within	_/film/film/release_date_s./film/film_regional_release_date/film_release_region	/film/film/country
+-1
+-9.467759251594543
+___
+/m/02j9z	/m/06sff	/m/0w0d	/m/0l6vl
+/base/locations/continents/countries_within	_/olympics/olympic_sport/athletes./olympics/olympic_athlete_affiliation/country	_/user/jg/default_domain/olympic_games/sports
+-1
+-9.469759225845337
+___
+/m/02j9z	/m/06t8v	/m/05dss7	/m/09c7w0
+/base/locations/continents/countries_within	_/film/film/release_date_s./film/film_regional_release_date/film_release_region	/film/film/country
+-1
+-9.852374076843262
+___
+/m/02j9z	/m/01pj7	/m/0c3xw46	/m/09c7w0
+/base/locations/continents/countries_within	_/film/film/release_date_s./film/film_regional_release_date/film_release_region	/film/film/country
+-1
+-9.87888765335083
+___
+/m/02j9z	/m/0hg5	/m/03_8r	/m/0l98s
+/base/locations/continents/countries_within	_/olympics/olympic_sport/athletes./olympics/olympic_athlete_affiliation/country	_/olympics/olympic_games/sports
+-1
+-9.93090033531189
+___
+/m/02j9z	/m/0h7x	/m/02x6dqb	/m/09c7w0
+/base/locations/continents/countries_within	_/film/film/release_date_s./film/film_regional_release_date/film_release_region	/film/film/country
+-1
+-10.011488437652588
+___
+/m/02j9z	/m/01pj7	/m/03yvf2	/m/0345h
+/base/locations/continents/countries_within	_/film/film/release_date_s./film/film_regional_release_date/film_release_region	/film/film/country
+-1
+-10.231544256210327
+___
+/m/02j9z	/m/06sff	/m/071t0	/m/018qb4
+/base/locations/continents/countries_within	_/olympics/olympic_sport/athletes./olympics/olympic_athlete_affiliation/country	_/olympics/olympic_games/sports
+-1
+-10.239352703094482
+___
+/m/02j9z	/m/03rj0	/m/072hx4	/m/0f8l9c
+/base/locations/continents/countries_within	_/film/film/release_date_s./film/film_regional_release_date/film_release_region	/film/film/country
+-1
+-10.313291549682617
+___
+/m/02j9z	/m/0h7x	/m/01rwpj	/m/09c7w0
+/base/locations/continents/countries_within	_/film/film/release_date_s./film/film_regional_release_date/film_release_region	/film/film/country
+-1
+-10.465124368667603
+___
+/m/02j9z	/m/05b4w	/m/014lc_	/m/09c7w0
+/base/locations/continents/countries_within	_/film/film/release_date_s./film/film_regional_release_date/film_release_region	/film/film/country
+-1
+-10.489842057228088
+___
+/m/02j9z	/m/03rj0	/m/03nm_fh	/m/09c7w0
+/base/locations/continents/countries_within	_/film/film/release_date_s./film/film_regional_release_date/film_release_region	/film/film/country
+-1
+-10.73317551612854
+___
+/m/02j9z	/m/0hg5	/m/09nqf	/m/0146hc
+/base/locations/continents/countries_within	/location/statistical_region/gdp_nominal_per_capita./measurement_unit/dated_money_value/currency	_/organization/endowed_organization/endowment./measurement_unit/dated_money_value/currency
+-1
+-10.755497455596924
+___
+/m/02j9z	/m/02vzc	/m/023gxx	/m/09c7w0
+/base/locations/continents/countries_within	_/film/film/release_date_s./film/film_regional_release_date/film_release_region	/film/film/country
+-1
+-10.772748947143555
+___
+/m/02j9z	/m/04w4s	/m/09nqf	/m/02zccd
+/base/locations/continents/countries_within	/location/statistical_region/gdp_real./measurement_unit/adjusted_money_value/adjustment_currency	_/organization/endowed_organization/endowment./measurement_unit/dated_money_value/currency
+-1
+-10.890097379684448
+___
+/m/02j9z	/m/0jhd	/m/0gj8nq2	/m/047lj
+/base/locations/continents/countries_within	_/film/film/release_date_s./film/film_regional_release_date/film_release_region	/film/film/release_date_s./film/film_regional_release_date/film_release_region
+-1
+-10.917627573013306
+___
+/m/02j9z	/m/0166b	/m/0661m4p	/m/05v8c
+/base/locations/continents/countries_within	_/film/film/release_date_s./film/film_regional_release_date/film_release_region	/film/film/release_date_s./film/film_regional_release_date/film_release_region
+-1
+-10.98201322555542
+___
+/m/02j9z	/m/0jhd	/m/0gd0c7x	/m/02vzc
+/base/locations/continents/countries_within	_/film/film/release_date_s./film/film_regional_release_date/film_release_region	/film/film/release_date_s./film/film_regional_release_date/film_release_region
+-1
+-11.101933240890503
+___
+/m/02j9z	/m/05qhw	/m/0by1wkq	/m/0d05w3
+/base/locations/continents/countries_within	_/film/film/release_date_s./film/film_regional_release_date/film_release_region	/film/film/country
+-1
+-11.108450174331665
+___
+/m/02j9z	/m/04w4s	/m/06f41	/m/0kbvb
+/base/locations/continents/countries_within	_/olympics/olympic_sport/athletes./olympics/olympic_athlete_affiliation/country	_/user/jg/default_domain/olympic_games/sports
+-1
+-11.132877826690674
+___
+/m/02j9z	/m/01znc_	/m/0gz6b6g	/m/07ww5
+/base/locations/continents/countries_within	_/film/film/release_date_s./film/film_regional_release_date/film_release_region	/film/film/country
+-1
+-11.228487253189087
+___
+/m/02j9z	/m/07ytt	/m/04306rv	/m/04fv5b
+/base/locations/continents/countries_within	_/language/human_language/countries_spoken_in	_/film/film/language
+-1
+-11.228646755218506
+___
+/m/02j9z	/m/04v3q	/m/0m63c	/m/03rt9
+/base/locations/continents/countries_within	_/film/film/release_date_s./film/film_regional_release_date/film_release_region	/film/film/release_date_s./film/film_regional_release_date/film_release_region
+1
+-11.241780042648315
+___
+/m/02j9z	/m/05qhw	/m/07jqjx	/m/0f8l9c
+/base/locations/continents/countries_within	_/film/film/release_date_s./film/film_regional_release_date/film_release_region	/film/film/country
+-1
+-11.246284246444702
+___
+/m/02j9z	/m/0d0vqn	/m/0bs8ndx	/m/0cj16
+/base/locations/continents/countries_within	_/film/film/release_date_s./film/film_regional_release_date/film_release_region	/film/film/film_format
+-1
+-11.280144929885864
+___
+/m/02j9z	/m/02vzc	/m/0gg8z1f	/m/05qhw
+/base/locations/continents/countries_within	_/film/film/release_date_s./film/film_regional_release_date/film_release_region	/film/film/country
+-1
+-11.321509599685669
+___
+/m/02j9z	/m/01pj7	/m/047msdk	/m/07ssc
+/base/locations/continents/countries_within	_/film/film/release_date_s./film/film_regional_release_date/film_release_region	/film/film/distributors./film/film_film_distributor_relationship/region
+-1
+-11.336075782775879
+___
+/m/02j9z	/m/0f8l9c	/m/0g9zljd	/m/0cj16
+/base/locations/continents/countries_within	_/film/film/release_date_s./film/film_regional_release_date/film_release_region	/film/film/film_format
+-1
+-11.585477828979492
+___
+/m/02j9z	/m/04w4s	/m/06b_j	/m/025n07
+/base/locations/continents/countries_within	_/language/human_language/countries_spoken_in	_/film/film/language
+-1
+-11.613888025283813
+___
+/m/02j9z	/m/06sff	/m/02qkt	/m/0h7x
+/base/locations/continents/countries_within	_/location/location/contains	/location/location/contains
+-1
+-11.677461862564087
+___
+/m/02j9z	/m/0h7x	/m/026p_bs	/m/02h40lc
+/base/locations/continents/countries_within	_/film/film/release_date_s./film/film_regional_release_date/film_release_region	/film/film/language
+-1
+-11.763617515563965
+___
+/m/02j9z	/m/04v3q	/m/0bmhvpr	/m/03h64
+/base/locations/continents/countries_within	_/film/film/release_date_s./film/film_regional_release_date/film_release_region	/film/film/release_date_s./film/film_regional_release_date/film_release_region
+-1
+-11.768346786499023
+___
+/m/02j9z	/m/0jhd	/m/0bynt	/m/0l6m5
+/base/locations/continents/countries_within	_/olympics/olympic_sport/athletes./olympics/olympic_athlete_affiliation/country	_/olympics/olympic_games/sports
+-1
+-11.78993844985962
+___
+/m/02j9z	/m/06npd	/m/02jxk	/m/0k6nt
+/base/locations/continents/countries_within	/organization/organization_member/member_of./organization/organization_membership/organization	_/organization/organization_member/member_of./organization/organization_membership/organization
+-1
+-11.79915738105774
+___
+/m/02j9z	/m/0d0kn	/m/01p7yb	/m/034np8
+/base/locations/continents/countries_within	_/people/person/places_lived./people/place_lived/location	_/award/award_nominee/award_nominations./award/award_nomination/award_nominee
+-1
+-11.805676460266113
+___
+/m/02j9z	/m/04w4s	/m/07t65	/m/09pmkv
+/base/locations/continents/countries_within	/organization/organization_member/member_of./organization/organization_membership/organization	_/organization/organization_member/member_of./organization/organization_membership/organization
+-1
+-11.917280673980713
+___
+/m/02j9z	/m/077qn	/m/0h63gl9	/m/05b4w
+/base/locations/continents/countries_within	_/film/film/release_date_s./film/film_regional_release_date/film_release_region	/film/film/release_date_s./film/film_regional_release_date/film_release_region
+-1
+-12.04697060585022
+___
+/m/02j9z	/m/077qn	/m/0ds1glg	/m/01znc_
+/base/locations/continents/countries_within	_/film/film/release_date_s./film/film_regional_release_date/film_release_region	/film/film/release_date_s./film/film_regional_release_date/film_release_region
+-1
+-12.05726957321167
+___
+/m/02j9z	/m/07t21	/m/0g5qs2k	/m/05c17
+/base/locations/continents/countries_within	_/film/film/release_date_s./film/film_regional_release_date/film_release_region	/film/film/release_date_s./film/film_regional_release_date/film_release_region
+-1
+-12.061514377593994
+___
+/m/02j9z	/m/0d0kn	/m/05qbckf	/m/09c7w0
+/base/locations/continents/countries_within	_/film/film/release_date_s./film/film_regional_release_date/film_release_region	/film/film/release_date_s./film/film_regional_release_date/film_release_region
+-1
+-12.076513051986694
+___
+/m/02j9z	/m/0d0kn	/m/07s846j	/m/0f8l9c
+/base/locations/continents/countries_within	_/film/film/release_date_s./film/film_regional_release_date/film_release_region	/film/film/release_date_s./film/film_regional_release_date/film_release_region
+-1
+-12.095988512039185
+___
+/m/02j9z	/m/04v3q	/m/02vxq9m	/m/0ctw_b
+/base/locations/continents/countries_within	_/film/film/release_date_s./film/film_regional_release_date/film_release_region	/film/film/release_date_s./film/film_regional_release_date/film_release_region
+-1
+-12.09720230102539
+___
+/m/02j9z	/m/0h7x	/m/09_bl	/m/0swbd
+/base/locations/continents/countries_within	_/olympics/olympic_sport/athletes./olympics/olympic_athlete_affiliation/country	_/user/jg/default_domain/olympic_games/sports
+-1
+-12.308924436569214
+___
+/m/02j9z	/m/01pj7	/m/0gwgn1k	/m/0chghy
+/base/locations/continents/countries_within	_/film/film/release_date_s./film/film_regional_release_date/film_release_region	/film/film/release_date_s./film/film_regional_release_date/film_release_region
+-1
+-12.343937873840332
+___
+/m/02j9z	/m/07t21	/m/0fpgp26	/m/077qn
+/base/locations/continents/countries_within	_/film/film/release_date_s./film/film_regional_release_date/film_release_region	/film/film/release_date_s./film/film_regional_release_date/film_release_region
+-1
+-12.345394611358643
+___
+/m/02j9z	/m/01pj7	/m/0gtsx8c	/m/01p1v
+/base/locations/continents/countries_within	_/film/film/release_date_s./film/film_regional_release_date/film_release_region	/film/film/release_date_s./film/film_regional_release_date/film_release_region
+-1
+-12.499885559082031
+___
+/m/02j9z	/m/015qh	/m/0g5838s	/m/04pyp5
+/base/locations/continents/countries_within	_/film/film/release_date_s./film/film_regional_release_date/film_release_region	/film/film/other_crew./film/film_crew_gig/film_crew_role
+-1
+-12.542126417160034
+___
+/m/02j9z	/m/03rj0	/m/024lt6	/m/064_8sq
+/base/locations/continents/countries_within	_/film/film/release_date_s./film/film_regional_release_date/film_release_region	/film/film/language
+-1
+-12.559278011322021
+___
+/m/02j9z	/m/06c1y	/m/0407yfx	/m/06c1y
+/base/locations/continents/countries_within	_/film/film/release_date_s./film/film_regional_release_date/film_release_region	/film/film/release_date_s./film/film_regional_release_date/film_release_region
+-1
+-12.625846862792969
+___
+/m/02j9z	/m/03rj0	/m/0cz8mkh	/m/09vw2b7
+/base/locations/continents/countries_within	_/film/film/release_date_s./film/film_regional_release_date/film_release_region	/film/film/other_crew./film/film_crew_gig/film_crew_role
+-1
+-12.696258068084717
+___
+/m/02j9z	/m/01znc_	/m/047fjjr	/m/02r96rf
+/base/locations/continents/countries_within	_/film/film/release_date_s./film/film_regional_release_date/film_release_region	/film/film/other_crew./film/film_crew_gig/film_crew_role
+-1
+-12.75005578994751
+___
+/m/02j9z	/m/06mzp	/m/07pd_j	/m/0345h
+/base/locations/continents/countries_within	_/film/film/release_date_s./film/film_regional_release_date/film_release_region	/film/film/release_date_s./film/film_regional_release_date/film_release_region
+-1
+-12.761847496032715
+___
+/m/02j9z	/m/06t8v	/m/05c26ss	/m/03spz
+/base/locations/continents/countries_within	_/film/film/release_date_s./film/film_regional_release_date/film_release_region	/film/film/release_date_s./film/film_regional_release_date/film_release_region
+-1
+-12.791953086853027
+___
+/m/02j9z	/m/03rj0	/m/0bh8tgs	/m/09zzb8
+/base/locations/continents/countries_within	_/film/film/release_date_s./film/film_regional_release_date/film_release_region	/film/film/other_crew./film/film_crew_gig/film_crew_role
+-1
+-12.806239604949951
+___
+/m/02j9z	/m/047lj	/m/0gmcwlb	/m/015fr
+/base/locations/continents/countries_within	_/film/film/release_date_s./film/film_regional_release_date/film_release_region	/film/film/release_date_s./film/film_regional_release_date/film_release_region
+-1
+-12.901252269744873
+___
+/m/02j9z	/m/05b4w	/m/024mpp	/m/09zzb8
+/base/locations/continents/countries_within	_/film/film/release_date_s./film/film_regional_release_date/film_release_region	/film/film/other_crew./film/film_crew_gig/film_crew_role
+-1
+-12.93781566619873
+___
+/m/02j9z	/m/0jhd	/m/0fpgp26	/m/0hcr
+/base/locations/continents/countries_within	_/film/film/release_date_s./film/film_regional_release_date/film_release_region	/film/film/genre
+-1
+-12.95394492149353
+___
+/m/02j9z	/m/0h7x	/m/045j3w	/m/05qhw
+/base/locations/continents/countries_within	_/film/film/release_date_s./film/film_regional_release_date/film_release_region	/film/film/release_date_s./film/film_regional_release_date/film_release_region
+-1
+-13.004684925079346
+___
+/m/02j9z	/m/06mzp	/m/03bx2lk	/m/02k1b
+/base/locations/continents/countries_within	_/film/film/release_date_s./film/film_regional_release_date/film_release_region	/film/film/release_date_s./film/film_regional_release_date/film_release_region
+-1
+-13.015528202056885
+___
+/m/02j9z	/m/0k6nt	/m/0bt4g	/m/029j_
+/base/locations/continents/countries_within	_/film/film/release_date_s./film/film_regional_release_date/film_release_region	/film/film/release_date_s./film/film_regional_release_date/film_release_distribution_medium
+-1
+-13.019844055175781
+___
+/m/02j9z	/m/0h7x	/m/0crc2cp	/m/06t2t
+/base/locations/continents/countries_within	_/film/film/release_date_s./film/film_regional_release_date/film_release_region	/film/film/release_date_s./film/film_regional_release_date/film_release_region
+-1
+-13.021193504333496
+___
+/m/02j9z	/m/0h7x	/m/0gh6j94	/m/07ssc
+/base/locations/continents/countries_within	_/film/film/release_date_s./film/film_regional_release_date/film_release_region	/film/film/release_date_s./film/film_regional_release_date/film_release_region
+-1
+-13.097389698028564
+___
+/m/02j9z	/m/0h7x	/m/064lsn	/m/059j2
+/base/locations/continents/countries_within	_/film/film/release_date_s./film/film_regional_release_date/film_release_region	/film/film/release_date_s./film/film_regional_release_date/film_release_region
+-1
+-13.157318115234375
+___
+/m/02j9z	/m/02vzc	/m/0ndsl1x	/m/09zzb8
+/base/locations/continents/countries_within	_/film/film/release_date_s./film/film_regional_release_date/film_release_region	/film/film/other_crew./film/film_crew_gig/film_crew_role
+-1
+-13.160045385360718
+___
+/m/02j9z	/m/0f8l9c	/m/0m491	/m/07twz
+/base/locations/continents/countries_within	_/film/film/release_date_s./film/film_regional_release_date/film_release_region	/film/film/release_date_s./film/film_regional_release_date/film_release_region
+-1
+-13.163228273391724
+___
+/m/02j9z	/m/03rj0	/m/0g56t9t	/m/06mzp
+/base/locations/continents/countries_within	_/film/film/release_date_s./film/film_regional_release_date/film_release_region	/film/film/release_date_s./film/film_regional_release_date/film_release_region
+-1
+-13.1677565574646
+___
+/m/02j9z	/m/03rj0	/m/0gx1bnj	/m/03rj0
+/base/locations/continents/countries_within	_/film/film/release_date_s./film/film_regional_release_date/film_release_region	/film/film/release_date_s./film/film_regional_release_date/film_release_region
+-1
+-13.192203044891357
+___
+/m/02j9z	/m/03rj0	/m/0fq7dv_	/m/03rjj
+/base/locations/continents/countries_within	_/film/film/release_date_s./film/film_regional_release_date/film_release_region	/film/film/release_date_s./film/film_regional_release_date/film_release_region
+-1
+-13.2099609375
+___
+/m/02j9z	/m/0k6nt	/m/047p7fr	/m/01xy5l_
+/base/locations/continents/countries_within	_/film/film/release_date_s./film/film_regional_release_date/film_release_region	/film/film/other_crew./film/film_crew_gig/film_crew_role
+-1
+-13.286702632904053
+___
+/m/02j9z	/m/0d0kn	/m/07t65	/m/02k54
+/base/locations/continents/countries_within	/organization/organization_member/member_of./organization/organization_membership/organization	_/organization/organization_member/member_of./organization/organization_membership/organization
+-1
+-13.291229724884033
+___
+/m/02j9z	/m/0154j	/m/03qnvdl	/m/06mkj
+/base/locations/continents/countries_within	_/film/film/release_date_s./film/film_regional_release_date/film_release_region	/film/film/release_date_s./film/film_regional_release_date/film_release_region
+-1
+-13.350822925567627
+___
+/m/02j9z	/m/01znc_	/m/064lsn	/m/02h40lc
+/base/locations/continents/countries_within	_/film/film/release_date_s./film/film_regional_release_date/film_release_region	/film/film/language
+-1
+-13.361916542053223
+___
+/m/02j9z	/m/01znc_	/m/0125xq	/m/03_3d
+/base/locations/continents/countries_within	_/film/film/release_date_s./film/film_regional_release_date/film_release_region	/film/film/release_date_s./film/film_regional_release_date/film_release_region
+-1
+-13.36999225616455
+___
+/m/02j9z	/m/0345h	/m/0g5qmbz	/m/0jgd
+/base/locations/continents/countries_within	_/film/film/release_date_s./film/film_regional_release_date/film_release_region	/film/film/release_date_s./film/film_regional_release_date/film_release_region
+-1
+-13.370092391967773
+___
+/m/02j9z	/m/0345h	/m/07k2mq	/m/01ls2
+/base/locations/continents/countries_within	_/film/film/release_date_s./film/film_regional_release_date/film_release_region	/film/film/release_date_s./film/film_regional_release_date/film_release_region
+-1
+-13.392054557800293
+___
+/m/02j9z	/m/059j2	/m/0hhggmy	/m/01xbgx
+/base/locations/continents/countries_within	_/film/film/release_date_s./film/film_regional_release_date/film_release_region	/film/film/release_date_s./film/film_regional_release_date/film_release_region
+-1
+-13.410269260406494
+___
+/m/02j9z	/m/06bnz	/m/02qyv3h	/m/02h40lc
+/base/locations/continents/countries_within	_/film/film/release_date_s./film/film_regional_release_date/film_release_region	/film/film/language
+-1
+-13.415649890899658
+___
+/m/02j9z	/m/06mzp	/m/047vnkj	/m/0154j
+/base/locations/continents/countries_within	_/film/film/release_date_s./film/film_regional_release_date/film_release_region	/film/film/release_date_s./film/film_regional_release_date/film_release_region
+-1
+-13.421029567718506
+___
+/m/02j9z	/m/059j2	/m/0g5838s	/m/0c_v2
+/base/locations/continents/countries_within	_/film/film/release_date_s./film/film_regional_release_date/film_release_region	/film/film/language
+-1
+-13.435956478118896
+___
+/m/02j9z	/m/03gj2	/m/02xbyr	/m/029j_
+/base/locations/continents/countries_within	_/film/film/release_date_s./film/film_regional_release_date/film_release_region	/film/film/release_date_s./film/film_regional_release_date/film_release_distribution_medium
+-1
+-13.43770170211792
+___
+/m/02j9z	/m/0154j	/m/0gtvrv3	/m/0345h
+/base/locations/continents/countries_within	_/film/film/release_date_s./film/film_regional_release_date/film_release_region	/film/film/release_date_s./film/film_regional_release_date/film_release_region
+-1
+-13.447937965393066
+___
+/m/02j9z	/m/06bnz	/m/0gtvpkw	/m/0bjv6
+/base/locations/continents/countries_within	_/film/film/release_date_s./film/film_regional_release_date/film_release_region	/film/film/release_date_s./film/film_regional_release_date/film_release_region
+-1
+-13.567413806915283
+___
+/m/02j9z	/m/01ppq	/m/06sks6	/m/01hp22
+/base/locations/continents/countries_within	/olympics/olympic_participating_country/athletes./olympics/olympic_athlete_affiliation/olympics	_/olympics/olympic_sport/athletes./olympics/olympic_athlete_affiliation/olympics
+-1
+-13.588716983795166
+___
+/m/02j9z	/m/059j2	/m/0gwlfnb	/m/0d060g
+/base/locations/continents/countries_within	_/film/film/country	/film/film/release_date_s./film/film_regional_release_date/film_release_region
+-1
+-13.634214401245117
+___
+/m/02j9z	/m/05r4w	/m/0bs8s1p	/m/03rj0
+/base/locations/continents/countries_within	_/film/film/release_date_s./film/film_regional_release_date/film_release_region	/film/film/release_date_s./film/film_regional_release_date/film_release_region
+-1
+-13.64096736907959
+___
+/m/02j9z	/m/03gj2	/m/0g9zljd	/m/03gj2
+/base/locations/continents/countries_within	_/film/film/release_date_s./film/film_regional_release_date/film_release_region	/film/film/release_date_s./film/film_regional_release_date/film_release_region
+-1
+-13.671870708465576
+___
+/m/02j9z	/m/0345h	/m/0gg8z1f	/m/077qn
+/base/locations/continents/countries_within	_/film/film/release_date_s./film/film_regional_release_date/film_release_region	/film/film/release_date_s./film/film_regional_release_date/film_release_region
+-1
+-13.725128650665283
+___
+/m/02j9z	/m/06bnz	/m/011yrp	/m/0gqng
+/base/locations/continents/countries_within	_/film/film/release_date_s./film/film_regional_release_date/film_release_region	_/award/award_category/nominees./award/award_nomination/nominated_for
+-1
+-13.796621322631836
+___
+/m/02j9z	/m/0154j	/m/0_2v	/m/02lx0
+/base/locations/continents/countries_within	/organization/organization_member/member_of./organization/organization_membership/organization	_/organization/organization_member/member_of./organization/organization_membership/organization
+-1
+-13.887443542480469
+___
+/m/02j9z	/m/06bnz	/m/0bpm4yw	/m/05qx1
+/base/locations/continents/countries_within	_/film/film/release_date_s./film/film_regional_release_date/film_release_region	/film/film/release_date_s./film/film_regional_release_date/film_release_region
+-1
+-13.911662578582764
+___
+/m/02j9z	/m/02vzc	/m/0193qj	/m/06npd
+/base/locations/continents/countries_within	/military/military_combatant/military_conflicts./military/military_combatant_group/combatants	_/military/military_combatant/military_conflicts./military/military_combatant_group/combatants
+-1
+-14.09700059890747
+___
+/m/02j9z	/m/0d0vqn	/m/017gl1	/m/01mjq
+/base/locations/continents/countries_within	_/film/film/release_date_s./film/film_regional_release_date/film_release_region	/film/film/release_date_s./film/film_regional_release_date/film_release_region
+-1
+-14.12224817276001
+___
+/m/02j9z	/m/06bnz	/m/0hzc9wc	/m/016wzw
+/base/locations/continents/countries_within	/base/aareas/schema/administrative_area/administrative_area_type	_/base/aareas/schema/administrative_area/administrative_area_type
+-1
+-14.854696273803711
+___
+/m/02j9z	/m/0154j	/m/0hzlz	/m/06bnz
+/base/locations/continents/countries_within	/military/military_combatant/military_conflicts./military/military_combatant_group/combatants	_/military/military_combatant/military_conflicts./military/military_combatant_group/combatants
+-1
+-17.972203731536865
+___
+#####################
+/m/02j9z	/m/06mkj
+Reward:0
+/m/02j9z	/m/0jhd	/m/01gf5	/m/0jhd
+/base/locations/continents/countries_within	_/base/aareas/schema/administrative_area/administrative_parent	/base/aareas/schema/administrative_area/administrative_parent
+-1
+-7.746784269809723
+___
+/m/02j9z	/m/0166b	/m/06x8y	/m/0166b
+/base/locations/continents/countries_within	_/language/human_language/countries_spoken_in	/language/human_language/countries_spoken_in
+-1
+-8.236104875802994
+___
+/m/02j9z	/m/0166b	/m/05z_kps	/m/059j2
+/base/locations/continents/countries_within	_/film/film/release_date_s./film/film_regional_release_date/film_release_region	/film/film/country
+-1
+-8.300243258476257
+___
+/m/02j9z	/m/04w4s	/m/01bkv	/m/01xq8v
+/base/locations/continents/countries_within	_/language/human_language/countries_spoken_in	_/film/film/language
+-1
+-8.421885251998901
+___
+/m/02j9z	/m/0166b	/m/08tq4x	/m/0f8l9c
+/base/locations/continents/countries_within	_/film/film/country	/film/film/country
+-1
+-8.919009685516357
+___
+/m/02j9z	/m/04fh3	/m/02j9z	/m/0d0kn
+/base/locations/continents/countries_within	_/base/locations/continents/countries_within	/base/locations/continents/countries_within
+-1
+-9.066118478775024
+___
+/m/02j9z	/m/077qn	/m/0bh8x1y	/m/07ssc
+/base/locations/continents/countries_within	_/film/film/release_date_s./film/film_regional_release_date/film_release_region	/film/film/country
+-1
+-9.401404738426208
+___
+/m/02j9z	/m/06sff	/m/01rz1	/m/0jhd
+/base/locations/continents/countries_within	/organization/organization_member/member_of./organization/organization_membership/organization	_/organization/organization_member/member_of./organization/organization_membership/organization
+-1
+-9.502074480056763
+___
+/m/02j9z	/m/077qn	/m/0dgpwnk	/m/03rt9
+/base/locations/continents/countries_within	_/film/film/release_date_s./film/film_regional_release_date/film_release_region	/film/film/country
+-1
+-9.552558660507202
+___
+/m/02j9z	/m/06c1y	/m/0gtsxr4	/m/09c7w0
+/base/locations/continents/countries_within	_/film/film/release_date_s./film/film_regional_release_date/film_release_region	/film/film/country
+-1
+-9.668911457061768
+___
+/m/02j9z	/m/04v3q	/m/0dscrwf	/m/015fr
+/base/locations/continents/countries_within	_/film/film/release_date_s./film/film_regional_release_date/film_release_region	/film/film/country
+-1
+-9.715636014938354
+___
+/m/02j9z	/m/0f8l9c	/m/02vl9ln	/m/0f8l9c
+/base/locations/continents/countries_within	_/film/film/country	/film/film/country
+-1
+-9.74736800789833
+___
+/m/02j9z	/m/04w4s	/m/07jbh	/m/0jhn7
+/base/locations/continents/countries_within	_/olympics/olympic_sport/athletes./olympics/olympic_athlete_affiliation/country	_/olympics/olympic_games/sports
+-1
+-9.758116483688354
+___
+/m/02j9z	/m/06c1y	/m/096gm	/m/06c1y
+/base/locations/continents/countries_within	/location/country/capital	/base/aareas/schema/administrative_area/administrative_parent
+-1
+-9.944011390209198
+___
+/m/02j9z	/m/0hg5	/m/09nqf	/m/0146hc
+/base/locations/continents/countries_within	/location/statistical_region/gdp_nominal./measurement_unit/dated_money_value/currency	_/organization/endowed_organization/endowment./measurement_unit/dated_money_value/currency
+-1
+-9.994267225265503
+___
+/m/02j9z	/m/04v3q	/m/0ds5_72	/m/02h40lc
+/base/locations/continents/countries_within	_/film/film/release_date_s./film/film_regional_release_date/film_release_region	/film/film/language
+-1
+-10.084024667739868
+___
+/m/02j9z	/m/01ppq	/m/01ppq	/m/01fpfn
+/base/locations/continents/countries_within	NO_OP	/location/country/form_of_government
+-1
+-10.094548344612122
+___
+/m/02j9z	/m/01pj7	/m/03yvf2	/m/09c7w0
+/base/locations/continents/countries_within	_/film/film/release_date_s./film/film_regional_release_date/film_release_region	/film/film/country
+-1
+-10.231544256210327
+___
+/m/02j9z	/m/05r4w	/m/0gt1k	/m/09c7w0
+/base/locations/continents/countries_within	_/film/film/release_date_s./film/film_regional_release_date/film_release_region	/film/film/country
+-1
+-10.262492060661316
+___
+/m/02j9z	/m/0f8l9c	/m/02x3y41	/m/0f8l9c
+/base/locations/continents/countries_within	_/film/film/country	/film/film/country
+-1
+-10.282065153121948
+___
+/m/02j9z	/m/0166b	/m/056vv	/m/01rz1
+/base/locations/continents/countries_within	/location/location/adjoin_s./location/adjoining_relationship/adjoins	/organization/organization_member/member_of./organization/organization_membership/organization
+-1
+-10.336682319641113
+___
+/m/02j9z	/m/06mzp	/m/0zqq	/m/06mzp
+/base/locations/continents/countries_within	_/location/administrative_division/first_level_division_of	/base/aareas/schema/administrative_area/administrative_parent
+-1
+-10.460021197795868
+___
+/m/02j9z	/m/04j53	/m/09wz9	/m/0swbd
+/base/locations/continents/countries_within	_/olympics/olympic_sport/athletes./olympics/olympic_athlete_affiliation/country	_/user/jg/default_domain/olympic_games/sports
+-1
+-10.524813890457153
+___
+/m/02j9z	/m/04j53	/m/02j9z	/m/0hg5
+/base/locations/continents/countries_within	_/base/locations/continents/countries_within	/base/locations/continents/countries_within
+-1
+-10.54682469367981
+___
+/m/02j9z	/m/05qhw	/m/0mzg2	/m/05qhw
+/base/locations/continents/countries_within	_/base/aareas/schema/administrative_area/administrative_parent	/base/aareas/schema/administrative_area/administrative_parent
+-1
+-10.547207564115524
+___
+/m/02j9z	/m/0345h	/m/0cp0ph6	/m/09c7w0
+/base/locations/continents/countries_within	_/film/film/release_date_s./film/film_regional_release_date/film_release_region	/film/film/country
+-1
+-10.814418077468872
+___
+/m/02j9z	/m/0166b	/m/05z_kps	/m/0k6nt
+/base/locations/continents/countries_within	_/film/film/release_date_s./film/film_regional_release_date/film_release_region	/film/film/release_date_s./film/film_regional_release_date/film_release_region
+-1
+-10.847991466522217
+___
+/m/02j9z	/m/01znc_	/m/0ddj0x	/m/03rt9
+/base/locations/continents/countries_within	_/film/film/release_date_s./film/film_regional_release_date/film_release_region	/film/film/country
+-1
+-10.914839744567871
+___
+/m/02j9z	/m/0d0vqn	/m/0h63gl9	/m/09c7w0
+/base/locations/continents/countries_within	_/film/film/release_date_s./film/film_regional_release_date/film_release_region	/film/film/country
+-1
+-10.963601112365723
+___
+/m/02j9z	/m/0166b	/m/0fpgp26	/m/01ls2
+/base/locations/continents/countries_within	_/film/film/release_date_s./film/film_regional_release_date/film_release_region	/film/film/release_date_s./film/film_regional_release_date/film_release_region
+-1
+-11.042080402374268
+___
+/m/02j9z	/m/04v3q	/m/024lt6	/m/02h40lc
+/base/locations/continents/countries_within	_/film/film/release_date_s./film/film_regional_release_date/film_release_region	/film/film/language
+-1
+-11.061299324035645
+___
+/m/02j9z	/m/06mzp	/m/0btpm6	/m/09c7w0
+/base/locations/continents/countries_within	_/film/film/release_date_s./film/film_regional_release_date/film_release_region	/film/film/country
+-1
+-11.068176746368408
+___
+/m/02j9z	/m/06mzp	/m/01vksx	/m/07fb8_
+/base/locations/continents/countries_within	_/film/film/release_date_s./film/film_regional_release_date/film_release_region	/film/film/film_format
+-1
+-11.071320295333862
+___
+/m/02j9z	/m/035qy	/m/0gg8z1f	/m/05qhw
+/base/locations/continents/countries_within	_/film/film/release_date_s./film/film_regional_release_date/film_release_region	/film/film/country
+-1
+-11.141646146774292
+___
+/m/02j9z	/m/0163v	/m/03_8r	/m/0l6vl
+/base/locations/continents/countries_within	_/olympics/olympic_sport/athletes./olympics/olympic_athlete_affiliation/country	_/user/jg/default_domain/olympic_games/sports
+-1
+-11.310691833496094
+___
+/m/02j9z	/m/01ppq	/m/05pdh86	/m/06mkj
+/base/locations/continents/countries_within	_/film/film/release_date_s./film/film_regional_release_date/film_release_region	/film/film/release_date_s./film/film_regional_release_date/film_release_region
+1
+-11.332584381103516
+___
+/m/02j9z	/m/0hg5	/m/0hzc9wc	/m/0jgd
+/base/locations/continents/countries_within	/base/aareas/schema/administrative_area/administrative_area_type	_/base/aareas/schema/administrative_area/administrative_area_type
+-1
+-11.433247089385986
+___
+/m/02j9z	/m/02vzc	/m/04w7rn	/m/09c7w0
+/base/locations/continents/countries_within	_/film/film/release_date_s./film/film_regional_release_date/film_release_region	/film/film/country
+-1
+-11.473886370658875
+___
+/m/02j9z	/m/0f8l9c	/m/05c26ss	/m/017fx5
+/base/locations/continents/countries_within	_/film/film/release_date_s./film/film_regional_release_date/film_release_region	/film/film/film_format
+-1
+-11.507116556167603
+___
+/m/02j9z	/m/0163v	/m/0fpgp26	/m/047lj
+/base/locations/continents/countries_within	_/film/film/release_date_s./film/film_regional_release_date/film_release_region	/film/film/release_date_s./film/film_regional_release_date/film_release_region
+-1
+-11.523672103881836
+___
+/m/02j9z	/m/04w4s	/m/06b_j	/m/05pbl56
+/base/locations/continents/countries_within	_/language/human_language/countries_spoken_in	_/film/film/language
+-1
+-11.600657224655151
+___
+/m/02j9z	/m/04v3q	/m/09nqf	/m/02kbtf
+/base/locations/continents/countries_within	/location/statistical_region/gdp_nominal./measurement_unit/dated_money_value/currency	_/organization/endowed_organization/endowment./measurement_unit/dated_money_value/currency
+-1
+-11.636960744857788
+___
+/m/02j9z	/m/0166b	/m/01cgz	/m/0kbvb
+/base/locations/continents/countries_within	_/olympics/olympic_sport/athletes./olympics/olympic_athlete_affiliation/country	_/user/jg/default_domain/olympic_games/sports
+-1
+-11.652992725372314
+___
+/m/02j9z	/m/0d0kn	/m/03z9585	/m/03h64
+/base/locations/continents/countries_within	_/film/film/release_date_s./film/film_regional_release_date/film_release_region	/film/film/release_date_s./film/film_regional_release_date/film_release_region
+-1
+-11.749490976333618
+___
+/m/02j9z	/m/0d0kn	/m/0bh8tgs	/m/0d060g
+/base/locations/continents/countries_within	_/film/film/release_date_s./film/film_regional_release_date/film_release_region	/film/film/release_date_s./film/film_regional_release_date/film_release_region
+-1
+-11.775057554244995
+___
+/m/02j9z	/m/047lj	/m/047fjjr	/m/0dxtw
+/base/locations/continents/countries_within	_/film/film/release_date_s./film/film_regional_release_date/film_release_region	/film/film/other_crew./film/film_crew_gig/film_crew_role
+-1
+-11.786969661712646
+___
+/m/02j9z	/m/05b4w	/m/01m13b	/m/0345h
+/base/locations/continents/countries_within	_/film/film/country	/film/film/country
+-1
+-11.787282228469849
+___
+/m/02j9z	/m/04v3q	/m/0ch26b_	/m/01p1v
+/base/locations/continents/countries_within	_/film/film/release_date_s./film/film_regional_release_date/film_release_region	/film/film/release_date_s./film/film_regional_release_date/film_release_region
+-1
+-11.851190567016602
+___
+/m/02j9z	/m/0d0kn	/m/0872p_c	/m/0f8l9c
+/base/locations/continents/countries_within	_/film/film/release_date_s./film/film_regional_release_date/film_release_region	/film/film/release_date_s./film/film_regional_release_date/film_release_region
+-1
+-11.907318353652954
+___
+/m/02j9z	/m/077qn	/m/0gj8t_b	/m/077qn
+/base/locations/continents/countries_within	_/film/film/release_date_s./film/film_regional_release_date/film_release_region	/film/film/release_date_s./film/film_regional_release_date/film_release_region
+-1
+-11.93163776397705
+___
+/m/02j9z	/m/07t21	/m/0_7w6	/m/06t2t
+/base/locations/continents/countries_within	_/film/film/release_date_s./film/film_regional_release_date/film_release_region	/film/film/release_date_s./film/film_regional_release_date/film_release_region
+-1
+-11.96790361404419
+___
+/m/02j9z	/m/0163v	/m/02lq5w	/m/0lk8j
+/base/locations/continents/countries_within	/olympics/olympic_participating_country/medals_won./olympics/olympic_medal_honor/medal	_/olympics/olympic_games/medals_awarded./olympics/olympic_medal_honor/medal
+-1
+-11.978901147842407
+___
+/m/02j9z	/m/04j53	/m/04306rv	/m/0bcp9b
+/base/locations/continents/countries_within	_/language/human_language/countries_spoken_in	_/film/film/language
+-1
+-11.994083166122437
+___
+/m/02j9z	/m/0h7x	/m/0gy4k	/m/0gr51
+/base/locations/continents/countries_within	_/film/film/release_date_s./film/film_regional_release_date/film_release_region	_/award/award_category/nominees./award/award_nomination/nominated_for
+-1
+-12.005553245544434
+___
+/m/02j9z	/m/06npd	/m/02vr3gz	/m/09zzb8
+/base/locations/continents/countries_within	_/film/film/release_date_s./film/film_regional_release_date/film_release_region	/film/film/other_crew./film/film_crew_gig/film_crew_role
+-1
+-12.018054962158203
+___
+/m/02j9z	/m/06c1y	/m/0hgnl3t	/m/02r96rf
+/base/locations/continents/countries_within	_/film/film/release_date_s./film/film_regional_release_date/film_release_region	/film/film/other_crew./film/film_crew_gig/film_crew_role
+-1
+-12.02621579170227
+___
+/m/02j9z	/m/07t21	/m/05d9y_	/m/06fvc
+/base/locations/continents/countries_within	/location/location/contains	/education/educational_institution/colors
+-1
+-12.061898827552795
+___
+/m/02j9z	/m/04v3q	/m/01vksx	/m/02g3v6
+/base/locations/continents/countries_within	_/film/film/release_date_s./film/film_regional_release_date/film_release_region	_/award/award_category/nominees./award/award_nomination/nominated_for
+-1
+-12.065265655517578
+___
+/m/02j9z	/m/06mzp	/m/04tng0	/m/030qb3t
+/base/locations/continents/countries_within	_/film/film/release_date_s./film/film_regional_release_date/film_release_region	/film/film/release_date_s./film/film_regional_release_date/film_release_region
+-1
+-12.283124923706055
+___
+/m/02j9z	/m/0166b	/m/0hzc9wc	/m/05r4w
+/base/locations/continents/countries_within	/base/aareas/schema/administrative_area/administrative_area_type	_/base/aareas/schema/administrative_area/administrative_area_type
+-1
+-12.372193336486816
+___
+/m/02j9z	/m/06bnz	/m/09146g	/m/0b90_r
+/base/locations/continents/countries_within	_/film/film/release_date_s./film/film_regional_release_date/film_release_region	/film/film/release_date_s./film/film_regional_release_date/film_release_region
+-1
+-12.413316249847412
+___
+/m/02j9z	/m/01pj7	/m/0dll_t2	/m/0f8l9c
+/base/locations/continents/countries_within	_/film/film/release_date_s./film/film_regional_release_date/film_release_region	/film/film/release_date_s./film/film_regional_release_date/film_release_region
+-1
+-12.520771980285645
+___
+/m/02j9z	/m/0163v	/m/04g5k	/m/09nqf
+/base/locations/continents/countries_within	_/location/location/adjoin_s./location/adjoining_relationship/adjoins	/location/statistical_region/gdp_real./measurement_unit/adjusted_money_value/adjustment_currency
+-1
+-12.528935194015503
+___
+/m/02j9z	/m/0hg5	/m/02j71	/m/0164v
+/base/locations/continents/countries_within	/base/aareas/schema/administrative_area/administrative_parent	_/base/aareas/schema/administrative_area/administrative_parent
+-1
+-12.655470132827759
+___
+/m/02j9z	/m/01pj7	/m/062zm5h	/m/05b4w
+/base/locations/continents/countries_within	_/film/film/release_date_s./film/film_regional_release_date/film_release_region	/film/film/release_date_s./film/film_regional_release_date/film_release_region
+-1
+-12.695618629455566
+___
+/m/02j9z	/m/06npd	/m/07s846j	/m/077qn
+/base/locations/continents/countries_within	_/film/film/release_date_s./film/film_regional_release_date/film_release_region	/film/film/release_date_s./film/film_regional_release_date/film_release_region
+-1
+-12.701401710510254
+___
+/m/02j9z	/m/07t21	/m/0bpm4yw	/m/05v8c
+/base/locations/continents/countries_within	_/film/film/release_date_s./film/film_regional_release_date/film_release_region	/film/film/release_date_s./film/film_regional_release_date/film_release_region
+-1
+-12.732473850250244
+___
+/m/02j9z	/m/03rj0	/m/0280061	/m/0f8l9c
+/base/locations/continents/countries_within	_/film/film/release_date_s./film/film_regional_release_date/film_release_region	/film/film/release_date_s./film/film_regional_release_date/film_release_region
+-1
+-12.796900987625122
+___
+/m/02j9z	/m/015qh	/m/047vnkj	/m/01xy5l_
+/base/locations/continents/countries_within	_/film/film/release_date_s./film/film_regional_release_date/film_release_region	/film/film/other_crew./film/film_crew_gig/film_crew_role
+-1
+-12.828070163726807
+___
+/m/02j9z	/m/0k6nt	/m/0dyb1	/m/0345h
+/base/locations/continents/countries_within	_/film/film/release_date_s./film/film_regional_release_date/film_release_region	/film/film/release_date_s./film/film_regional_release_date/film_release_region
+-1
+-12.895883083343506
+___
+/m/02j9z	/m/05r4w	/m/0cm2xh	/m/011zwl
+/base/locations/continents/countries_within	_/military/military_conflict/combatants./military/military_combatant_group/combatants	/base/culturalevent/event/entity_involved
+-1
+-12.910919904708862
+___
+/m/02j9z	/m/02vzc	/m/01f8gz	/m/03k50
+/base/locations/continents/countries_within	_/film/film/release_date_s./film/film_regional_release_date/film_release_region	/film/film/language
+-1
+-12.970730781555176
+___
+/m/02j9z	/m/06c1y	/m/05pdh86	/m/0d0kn
+/base/locations/continents/countries_within	_/film/film/release_date_s./film/film_regional_release_date/film_release_region	/film/film/release_date_s./film/film_regional_release_date/film_release_region
+-1
+-12.975356578826904
+___
+/m/02j9z	/m/03rj0	/m/0cc5mcj	/m/0jgx
+/base/locations/continents/countries_within	_/film/film/release_date_s./film/film_regional_release_date/film_release_region	/film/film/release_date_s./film/film_regional_release_date/film_release_region
+-1
+-13.062479496002197
+___
+/m/02j9z	/m/0f8l9c	/m/032clf	/m/0f8l9c
+/base/locations/continents/countries_within	_/film/film/release_date_s./film/film_regional_release_date/film_release_region	/film/film/release_date_s./film/film_regional_release_date/film_release_region
+-1
+-13.156579971313477
+___
+/m/02j9z	/m/03gj2	/m/023gxx	/m/016wzw
+/base/locations/continents/countries_within	_/film/film/release_date_s./film/film_regional_release_date/film_release_region	/film/film/release_date_s./film/film_regional_release_date/film_release_region
+-1
+-13.16735053062439
+___
+/m/02j9z	/m/0hg5	/m/06mkj	/m/02w86hz
+/base/locations/continents/countries_within	/location/location/adjoin_s./location/adjoining_relationship/adjoins	_/film/film/release_date_s./film/film_regional_release_date/film_release_region
+-1
+-13.247987508773804
+___
+/m/02j9z	/m/06bnz	/m/09gkx35	/m/0chghy
+/base/locations/continents/countries_within	_/film/film/release_date_s./film/film_regional_release_date/film_release_region	/film/film/release_date_s./film/film_regional_release_date/film_release_region
+-1
+-13.301254272460938
+___
+/m/02j9z	/m/047lj	/m/02lq67	/m/0jhn7
+/base/locations/continents/countries_within	/olympics/olympic_participating_country/medals_won./olympics/olympic_medal_honor/medal	_/olympics/olympic_games/medals_awarded./olympics/olympic_medal_honor/medal
+-1
+-13.309697151184082
+___
+/m/02j9z	/m/06npd	/m/02jxk	/m/03rt9
+/base/locations/continents/countries_within	_/user/ktrueman/default_domain/international_organization/member_states	_/organization/organization_member/member_of./organization/organization_membership/organization
+-1
+-13.323748350143433
+___
+/m/02j9z	/m/0154j	/m/0ddbjy4	/m/02r96rf
+/base/locations/continents/countries_within	_/film/film/release_date_s./film/film_regional_release_date/film_release_region	/film/film/other_crew./film/film_crew_gig/film_crew_role
+-1
+-13.33185338973999
+___
+/m/02j9z	/m/05qhw	/m/0g5qs2k	/m/03rk0
+/base/locations/continents/countries_within	_/film/film/release_date_s./film/film_regional_release_date/film_release_region	/film/film/release_date_s./film/film_regional_release_date/film_release_region
+-1
+-13.337269306182861
+___
+/m/02j9z	/m/01znc_	/m/0407yfx	/m/03rt9
+/base/locations/continents/countries_within	_/film/film/release_date_s./film/film_regional_release_date/film_release_region	/film/film/release_date_s./film/film_regional_release_date/film_release_region
+-1
+-13.40309762954712
+___
+/m/02j9z	/m/0k6nt	/m/0cp0ph6	/m/01ls2
+/base/locations/continents/countries_within	_/film/film/release_date_s./film/film_regional_release_date/film_release_region	/film/film/release_date_s./film/film_regional_release_date/film_release_region
+-1
+-13.444986820220947
+___
+/m/02j9z	/m/06mzp	/m/040b5k	/m/0dgshf6
+/base/locations/continents/countries_within	_/film/film/release_date_s./film/film_regional_release_date/film_release_region	_/award/award_category/nominees./award/award_nomination/nominated_for
+-1
+-13.455095291137695
+___
+/m/02j9z	/m/06mzp	/m/04hwbq	/m/02hsq3m
+/base/locations/continents/countries_within	_/film/film/release_date_s./film/film_regional_release_date/film_release_region	_/award/award_category/nominees./award/award_nomination/nominated_for
+-1
+-13.464319705963135
+___
+/m/02j9z	/m/05b4w	/m/0g56t9t	/m/03h64
+/base/locations/continents/countries_within	_/film/film/release_date_s./film/film_regional_release_date/film_release_region	/film/film/release_date_s./film/film_regional_release_date/film_release_region
+-1
+-13.479928970336914
+___
+/m/02j9z	/m/05r4w	/m/0bc1yhb	/m/06bnz
+/base/locations/continents/countries_within	_/film/film/release_date_s./film/film_regional_release_date/film_release_region	/film/film/release_date_s./film/film_regional_release_date/film_release_region
+-1
+-13.500958919525146
+___
+/m/02j9z	/m/0f8l9c	/m/0cz8mkh	/m/06mkj
+/base/locations/continents/countries_within	_/film/film/release_date_s./film/film_regional_release_date/film_release_region	/film/film/release_date_s./film/film_regional_release_date/film_release_region
+1
+-13.504611492156982
+___
+/m/02j9z	/m/05r4w	/m/0gtsx8c	/m/05qhw
+/base/locations/continents/countries_within	_/film/film/release_date_s./film/film_regional_release_date/film_release_region	/film/film/release_date_s./film/film_regional_release_date/film_release_region
+-1
+-13.529923915863037
+___
+/m/02j9z	/m/0k6nt	/m/0h95zbp	/m/0161c
+/base/locations/continents/countries_within	_/film/film/release_date_s./film/film_regional_release_date/film_release_region	/film/film/release_date_s./film/film_regional_release_date/film_release_region
+-1
+-13.534199237823486
+___
+/m/02j9z	/m/06t8v	/m/0gmcwlb	/m/0gr0m
+/base/locations/continents/countries_within	_/film/film/release_date_s./film/film_regional_release_date/film_release_region	_/award/award_category/nominees./award/award_nomination/nominated_for
+-1
+-13.544758319854736
+___
+/m/02j9z	/m/0d0vqn	/m/0qmfk	/m/0jgd
+/base/locations/continents/countries_within	_/film/film/release_date_s./film/film_regional_release_date/film_release_region	/film/film/release_date_s./film/film_regional_release_date/film_release_region
+-1
+-13.631663799285889
+___
+/m/02j9z	/m/05r4w	/m/0661m4p	/m/07ssc
+/base/locations/continents/countries_within	_/film/film/release_date_s./film/film_regional_release_date/film_release_region	/film/film/release_date_s./film/film_regional_release_date/film_release_region
+-1
+-13.652987003326416
+___
+/m/02j9z	/m/02vzc	/m/07bs0	/m/018wrk
+/base/locations/continents/countries_within	_/olympics/olympic_sport/athletes./olympics/olympic_athlete_affiliation/country	_/user/jg/default_domain/olympic_games/sports
+-1
+-13.713356733322144
+___
+/m/02j9z	/m/01znc_	/m/0dzlbx	/m/0154j
+/base/locations/continents/countries_within	_/film/film/release_date_s./film/film_regional_release_date/film_release_region	/film/film/release_date_s./film/film_regional_release_date/film_release_region
+-1
+-13.718238353729248
+___
+/m/02j9z	/m/05b4w	/m/06w839_	/m/02x1z2s
+/base/locations/continents/countries_within	_/film/film/release_date_s./film/film_regional_release_date/film_release_region	_/award/award_category/nominees./award/award_nomination/nominated_for
+-1
+-13.73457384109497
+___
+/m/02j9z	/m/05r4w	/m/05p1tzf	/m/0b90_r
+/base/locations/continents/countries_within	_/film/film/release_date_s./film/film_regional_release_date/film_release_region	/film/film/release_date_s./film/film_regional_release_date/film_release_region
+-1
+-13.793410301208496
+___
+/m/02j9z	/m/06mzp	/m/0661ql3	/m/019f4v
+/base/locations/continents/countries_within	_/film/film/release_date_s./film/film_regional_release_date/film_release_region	_/award/award_category/nominees./award/award_nomination/nominated_for
+-1
+-13.950383186340332
+___
+/m/02j9z	/m/015qh	/m/035qy	/m/0dt8xq
+/base/locations/continents/countries_within	_/location/location/adjoin_s./location/adjoining_relationship/adjoins	_/film/film/release_date_s./film/film_regional_release_date/film_release_region
+-1
+-16.012295246124268
+___
+#####################
+/m/02j9z	/m/03rjj
+Reward:0
+/m/02j9z	/m/04fh3	/m/0jdx	/m/04k4l
+/base/locations/continents/countries_within	_/location/location/adjoin_s./location/adjoining_relationship/adjoins	/organization/organization_member/member_of./organization/organization_membership/organization
+-1
+-7.283463358879089
+___
+/m/02j9z	/m/04fh3	/m/0jdx	/m/02vk52z
+/base/locations/continents/countries_within	_/location/location/adjoin_s./location/adjoining_relationship/adjoins	/organization/organization_member/member_of./organization/organization_membership/organization
+-1
+-7.283463358879089
+___
+/m/02j9z	/m/0jhd	/m/03shp	/m/01fpfn
+/base/locations/continents/countries_within	/location/location/adjoin_s./location/adjoining_relationship/adjoins	/location/country/form_of_government
+-1
+-8.912354469299316
+___
+/m/02j9z	/m/0hg5	/m/0hg5	/m/01fpfn
+/base/locations/continents/countries_within	NO_OP	/location/country/form_of_government
+-1
+-9.251448392868042
+___
+/m/02j9z	/m/0d0kn	/m/0gtvpkw	/m/06mkj
+/base/locations/continents/countries_within	_/film/film/release_date_s./film/film_regional_release_date/film_release_region	/film/film/country
+-1
+-9.28463625907898
+___
+/m/02j9z	/m/06npd	/m/072hx4	/m/0f8l9c
+/base/locations/continents/countries_within	_/film/film/release_date_s./film/film_regional_release_date/film_release_region	/film/film/country
+-1
+-9.464452266693115
+___
+/m/02j9z	/m/0hg5	/m/03_8r	/m/0l98s
+/base/locations/continents/countries_within	_/olympics/olympic_sport/athletes./olympics/olympic_athlete_affiliation/country	_/user/jg/default_domain/olympic_games/sports
+-1
+-9.890154123306274
+___
+/m/02j9z	/m/0154j	/m/04vh83	/m/07ssc
+/base/locations/continents/countries_within	_/film/film/release_date_s./film/film_regional_release_date/film_release_region	/film/film/country
+-1
+-10.156299412250519
+___
+/m/02j9z	/m/04fh3	/m/077qn	/m/0bq8tmw
+/base/locations/continents/countries_within	/location/location/adjoin_s./location/adjoining_relationship/adjoins	_/film/film/release_date_s./film/film_regional_release_date/film_release_region
+-1
+-10.393172264099121
+___
+/m/02j9z	/m/06npd	/m/03yvf2	/m/07fb8_
+/base/locations/continents/countries_within	_/film/film/release_date_s./film/film_regional_release_date/film_release_region	/film/film/film_format
+-1
+-10.422804594039917
+___
+/m/02j9z	/m/05b4w	/m/0ds6bmk	/m/07ssc
+/base/locations/continents/countries_within	_/film/film/release_date_s./film/film_regional_release_date/film_release_region	/film/film/country
+-1
+-10.450743675231934
+___
+/m/02j9z	/m/0k6nt	/m/03lfd_	/m/09c7w0
+/base/locations/continents/countries_within	_/film/film/release_date_s./film/film_regional_release_date/film_release_region	/film/film/country
+-1
+-10.474738121032715
+___
+/m/02j9z	/m/0154j	/m/0blpg	/m/09c7w0
+/base/locations/continents/countries_within	_/film/film/release_date_s./film/film_regional_release_date/film_release_region	/film/film/country
+-1
+-10.497322082519531
+___
+/m/02j9z	/m/04j53	/m/02j9z	/m/07ytt
+/base/locations/continents/countries_within	_/base/locations/continents/countries_within	/base/locations/continents/countries_within
+-1
+-10.54682469367981
+___
+/m/02j9z	/m/04v3q	/m/0bby9p5	/m/03rjj
+/base/locations/continents/countries_within	_/film/film/release_date_s./film/film_regional_release_date/film_release_region	/film/film/release_date_s./film/film_regional_release_date/film_release_region
+1
+-10.550729036331177
+___
+/m/02j9z	/m/03gj2	/m/02x6dqb	/m/09c7w0
+/base/locations/continents/countries_within	_/film/film/release_date_s./film/film_regional_release_date/film_release_region	/film/film/country
+-1
+-10.556147336959839
+___
+/m/02j9z	/m/04j53	/m/0lgxj	/m/02y8z
+/base/locations/continents/countries_within	_/olympics/olympic_games/participating_countries	_/olympics/olympic_sport/athletes./olympics/olympic_athlete_affiliation/olympics
+-1
+-10.570053100585938
+___
+/m/02j9z	/m/04j53	/m/09nqf	/m/05cwl_
+/base/locations/continents/countries_within	/location/statistical_region/gdp_real./measurement_unit/adjusted_money_value/adjustment_currency	_/organization/endowed_organization/endowment./measurement_unit/dated_money_value/currency
+-1
+-10.720662355422974
+___
+/m/02j9z	/m/06sff	/m/02vk52z	/m/07dvs
+/base/locations/continents/countries_within	/organization/organization_member/member_of./organization/organization_membership/organization	_/organization/organization_member/member_of./organization/organization_membership/organization
+-1
+-10.888647317886353
+___
+/m/02j9z	/m/06sff	/m/02vk52z	/m/06tgw
+/base/locations/continents/countries_within	/organization/organization_member/member_of./organization/organization_membership/organization	_/organization/organization_member/member_of./organization/organization_membership/organization
+-1
+-10.888647317886353
+___
+/m/02j9z	/m/0345h	/m/064n1pz	/m/0345h
+/base/locations/continents/countries_within	_/film/film/country	/film/film/country
+-1
+-10.913678526878357
+___
+/m/02j9z	/m/0jhd	/m/0gj8nq2	/m/0jgx
+/base/locations/continents/countries_within	_/film/film/release_date_s./film/film_regional_release_date/film_release_region	/film/film/release_date_s./film/film_regional_release_date/film_release_region
+-1
+-10.917627573013306
+___
+/m/02j9z	/m/01ppq	/m/03g90h	/m/05v8c
+/base/locations/continents/countries_within	_/film/film/release_date_s./film/film_regional_release_date/film_release_region	/film/film/release_date_s./film/film_regional_release_date/film_release_region
+-1
+-10.9340238571167
+___
+/m/02j9z	/m/02vzc	/m/0c3xw46	/m/09c7w0
+/base/locations/continents/countries_within	_/film/film/release_date_s./film/film_regional_release_date/film_release_region	/film/film/country
+-1
+-10.99752426147461
+___
+/m/02j9z	/m/0jhd	/m/0gd0c7x	/m/05qx1
+/base/locations/continents/countries_within	_/film/film/release_date_s./film/film_regional_release_date/film_release_region	/film/film/release_date_s./film/film_regional_release_date/film_release_region
+-1
+-11.101933240890503
+___
+/m/02j9z	/m/0163v	/m/07x4qr	/m/07f1x
+/base/locations/continents/countries_within	_/film/film/release_date_s./film/film_regional_release_date/film_release_region	/film/film/release_date_s./film/film_regional_release_date/film_release_region
+-1
+-11.13983154296875
+___
+/m/02j9z	/m/04w4s	/m/02lq67	/m/0sx92
+/base/locations/continents/countries_within	/olympics/olympic_participating_country/medals_won./olympics/olympic_medal_honor/medal	_/olympics/olympic_games/medals_awarded./olympics/olympic_medal_honor/medal
+-1
+-11.161734104156494
+___
+/m/02j9z	/m/0k6nt	/m/014knw	/m/0cj16
+/base/locations/continents/countries_within	_/film/film/release_date_s./film/film_regional_release_date/film_release_region	/film/film/film_format
+-1
+-11.18315577507019
+___
+/m/02j9z	/m/0f8l9c	/m/0fjyzt	/m/07ssc
+/base/locations/continents/countries_within	_/film/film/country	/film/film/country
+-1
+-11.373116970062256
+___
+/m/02j9z	/m/02vzc	/m/07jqjx	/m/0f8l9c
+/base/locations/continents/countries_within	_/film/film/release_date_s./film/film_regional_release_date/film_release_region	/film/film/country
+-1
+-11.42531669139862
+___
+/m/02j9z	/m/0166b	/m/0h03fhx	/m/05v10
+/base/locations/continents/countries_within	_/film/film/release_date_s./film/film_regional_release_date/film_release_region	/film/film/release_date_s./film/film_regional_release_date/film_release_region
+-1
+-11.426355838775635
+___
+/m/02j9z	/m/0jhd	/m/01cgz	/m/0kbvb
+/base/locations/continents/countries_within	_/olympics/olympic_sport/athletes./olympics/olympic_athlete_affiliation/country	_/user/jg/default_domain/olympic_games/sports
+-1
+-11.4440598487854
+___
+/m/02j9z	/m/0k6nt	/m/01f85k	/m/0cj16
+/base/locations/continents/countries_within	_/film/film/release_date_s./film/film_regional_release_date/film_release_region	/film/film/film_format
+-1
+-11.478118896484375
+___
+/m/02j9z	/m/0345h	/m/0459z	/m/0345h
+/base/locations/continents/countries_within	_/people/person/nationality	/people/person/nationality
+-1
+-11.568334549665451
+___
+/m/02j9z	/m/0jhd	/m/06z6r	/m/016r9z
+/base/locations/continents/countries_within	_/olympics/olympic_sport/athletes./olympics/olympic_athlete_affiliation/country	_/user/jg/default_domain/olympic_games/sports
+-1
+-11.574687957763672
+___
+/m/02j9z	/m/0d0kn	/m/0421v9q	/m/02k54
+/base/locations/continents/countries_within	_/film/film/release_date_s./film/film_regional_release_date/film_release_region	/film/film/release_date_s./film/film_regional_release_date/film_release_region
+-1
+-11.752913236618042
+___
+/m/02j9z	/m/06sff	/m/02j71	/m/06srk
+/base/locations/continents/countries_within	/base/aareas/schema/administrative_area/administrative_parent	_/base/aareas/schema/administrative_area/administrative_parent
+-1
+-12.02116060256958
+___
+/m/02j9z	/m/0f8l9c	/m/04f9r2	/m/0f8l9c
+/base/locations/continents/countries_within	_/people/person/nationality	/people/person/nationality
+-1
+-12.035200357437134
+___
+/m/02j9z	/m/077qn	/m/0h63gl9	/m/0ctw_b
+/base/locations/continents/countries_within	_/film/film/release_date_s./film/film_regional_release_date/film_release_region	/film/film/release_date_s./film/film_regional_release_date/film_release_region
+-1
+-12.04464054107666
+___
+/m/02j9z	/m/0hg5	/m/06nm1	/m/06823p
+/base/locations/continents/countries_within	_/language/human_language/countries_spoken_in	_/film/film/language
+-1
+-12.14661955833435
+___
+/m/02j9z	/m/04v3q	/m/0bmhvpr	/m/04dn09n
+/base/locations/continents/countries_within	_/film/film/release_date_s./film/film_regional_release_date/film_release_region	_/award/award_category/nominees./award/award_nomination/nominated_for
+-1
+-12.146622657775879
+___
+/m/02j9z	/m/047lj	/m/0cc5mcj	/m/02h40lc
+/base/locations/continents/countries_within	_/film/film/release_date_s./film/film_regional_release_date/film_release_region	/film/film/language
+-1
+-12.15933084487915
+___
+/m/02j9z	/m/0d0kn	/m/0bpm4yw	/m/01pj7
+/base/locations/continents/countries_within	_/film/film/release_date_s./film/film_regional_release_date/film_release_region	/film/film/release_date_s./film/film_regional_release_date/film_release_region
+-1
+-12.174445390701294
+___
+/m/02j9z	/m/077qn	/m/0h1cdwq	/m/04hqz
+/base/locations/continents/countries_within	_/film/film/release_date_s./film/film_regional_release_date/film_release_region	/film/film/release_date_s./film/film_regional_release_date/film_release_region
+-1
+-12.219295501708984
+___
+/m/02j9z	/m/04fh3	/m/060c4	/m/0g8rj
+/base/locations/continents/countries_within	_/government/government_office_category/officeholders./government/government_position_held/jurisdiction_of_office	/business/job_title/people_with_this_title./business/employment_tenure/company
+-1
+-12.219380855560303
+___
+/m/02j9z	/m/0f8l9c	/m/0l9rg	/m/0p0mx
+/base/locations/continents/countries_within	/location/location/contains	/base/aareas/schema/administrative_area/administrative_parent
+-1
+-12.237945020198822
+___
+/m/02j9z	/m/047lj	/m/0gjcrrw	/m/0d060g
+/base/locations/continents/countries_within	_/film/film/release_date_s./film/film_regional_release_date/film_release_region	/film/film/release_date_s./film/film_regional_release_date/film_release_region
+-1
+-12.248013019561768
+___
+/m/02j9z	/m/0jhd	/m/02vk52z	/m/01699
+/base/locations/continents/countries_within	/organization/organization_member/member_of./organization/organization_membership/organization	_/organization/organization_member/member_of./organization/organization_membership/organization
+-1
+-12.252969741821289
+___
+/m/02j9z	/m/07t21	/m/062zm5h	/m/06t2t
+/base/locations/continents/countries_within	_/film/film/release_date_s./film/film_regional_release_date/film_release_region	/film/film/release_date_s./film/film_regional_release_date/film_release_region
+-1
+-12.357997417449951
+___
+/m/02j9z	/m/015qh	/m/047p798	/m/02h40lc
+/base/locations/continents/countries_within	_/film/film/release_date_s./film/film_regional_release_date/film_release_region	/film/film/language
+-1
+-12.435924530029297
+___
+/m/02j9z	/m/0d0kn	/m/02lq67	/m/09x3r
+/base/locations/continents/countries_within	/olympics/olympic_participating_country/medals_won./olympics/olympic_medal_honor/medal	_/olympics/olympic_games/medals_awarded./olympics/olympic_medal_honor/medal
+-1
+-12.535683155059814
+___
+/m/02j9z	/m/0h7x	/m/02fqrf	/m/04pyp5
+/base/locations/continents/countries_within	_/film/film/release_date_s./film/film_regional_release_date/film_release_region	/film/film/other_crew./film/film_crew_gig/film_crew_role
+-1
+-12.711078882217407
+___
+/m/02j9z	/m/06t8v	/m/0gx1bnj	/m/059j2
+/base/locations/continents/countries_within	_/film/film/release_date_s./film/film_regional_release_date/film_release_region	/film/film/release_date_s./film/film_regional_release_date/film_release_region
+-1
+-12.793650150299072
+___
+/m/02j9z	/m/035qy	/m/0kv238	/m/01vx2h
+/base/locations/continents/countries_within	_/film/film/release_date_s./film/film_regional_release_date/film_release_region	/film/film/other_crew./film/film_crew_gig/film_crew_role
+-1
+-12.838308811187744
+___
+/m/02j9z	/m/0jhd	/m/0kbvb	/m/03hr1p
+/base/locations/continents/countries_within	/olympics/olympic_participating_country/medals_won./olympics/olympic_medal_honor/olympics	/olympics/olympic_games/sports
+-1
+-12.858689308166504
+___
+/m/02j9z	/m/01mjq	/m/07nt8p	/m/029j_
+/base/locations/continents/countries_within	_/film/film/country	/film/film/release_date_s./film/film_regional_release_date/film_release_distribution_medium
+-1
+-12.87897253036499
+___
+/m/02j9z	/m/06c1y	/m/0dzlbx	/m/05sb1
+/base/locations/continents/countries_within	_/film/film/release_date_s./film/film_regional_release_date/film_release_region	/film/film/release_date_s./film/film_regional_release_date/film_release_region
+-1
+-12.940987586975098
+___
+/m/02j9z	/m/0163v	/m/02vk52z	/m/03548
+/base/locations/continents/countries_within	/organization/organization_member/member_of./organization/organization_membership/organization	_/organization/organization_member/member_of./organization/organization_membership/organization
+-1
+-12.94349479675293
+___
+/m/02j9z	/m/0154j	/m/0gvrws1	/m/02r96rf
+/base/locations/continents/countries_within	_/film/film/release_date_s./film/film_regional_release_date/film_release_region	/film/film/other_crew./film/film_crew_gig/film_crew_role
+-1
+-12.955780982971191
+___
+/m/02j9z	/m/05b4w	/m/01sby_	/m/01znc_
+/base/locations/continents/countries_within	_/film/film/release_date_s./film/film_regional_release_date/film_release_region	/film/film/release_date_s./film/film_regional_release_date/film_release_region
+-1
+-13.002114534378052
+___
+/m/02j9z	/m/077qn	/m/03hr1p	/m/0jkvj
+/base/locations/continents/countries_within	_/olympics/olympic_sport/athletes./olympics/olympic_athlete_affiliation/country	_/user/jg/default_domain/olympic_games/sports
+-1
+-13.012370109558105
+___
+/m/02j9z	/m/035qy	/m/0bh8yn3	/m/05smlt
+/base/locations/continents/countries_within	_/film/film/release_date_s./film/film_regional_release_date/film_release_region	/film/film/other_crew./film/film_crew_gig/film_crew_role
+-1
+-13.013487100601196
+___
+/m/02j9z	/m/015qh	/m/01shy7	/m/016wzw
+/base/locations/continents/countries_within	_/film/film/release_date_s./film/film_regional_release_date/film_release_region	/film/film/release_date_s./film/film_regional_release_date/film_release_region
+-1
+-13.014240264892578
+___
+/m/02j9z	/m/04j53	/m/01lb14	/m/015fr
+/base/locations/continents/countries_within	_/olympics/olympic_sport/athletes./olympics/olympic_athlete_affiliation/country	/olympics/olympic_sport/athletes./olympics/olympic_athlete_affiliation/country
+-1
+-13.02216124534607
+___
+/m/02j9z	/m/01mjq	/m/09v9mks	/m/03rk0
+/base/locations/continents/countries_within	_/film/film/release_date_s./film/film_regional_release_date/film_release_region	/film/film/release_date_s./film/film_regional_release_date/film_release_region
+-1
+-13.072675228118896
+___
+/m/02j9z	/m/06t8v	/m/0fpv_3_	/m/0j1z8
+/base/locations/continents/countries_within	_/film/film/release_date_s./film/film_regional_release_date/film_release_region	/film/film/release_date_s./film/film_regional_release_date/film_release_region
+-1
+-13.13869047164917
+___
+/m/02j9z	/m/06t8v	/m/09n48	/m/09w1n
+/base/locations/continents/countries_within	_/olympics/olympic_games/participating_countries	_/olympics/olympic_sport/athletes./olympics/olympic_athlete_affiliation/olympics
+-1
+-13.238392353057861
+___
+/m/02j9z	/m/02vzc	/m/0cz8mkh	/m/01pvkk
+/base/locations/continents/countries_within	_/film/film/release_date_s./film/film_regional_release_date/film_release_region	/film/film/other_crew./film/film_crew_gig/film_crew_role
+-1
+-13.254104137420654
+___
+/m/02j9z	/m/01mjq	/m/02d44q	/m/03rt9
+/base/locations/continents/countries_within	_/film/film/release_date_s./film/film_regional_release_date/film_release_region	/film/film/release_date_s./film/film_regional_release_date/film_release_region
+-1
+-13.277556896209717
+___
+/m/02j9z	/m/077qn	/m/0bynt	/m/0lbd9
+/base/locations/continents/countries_within	_/olympics/olympic_sport/athletes./olympics/olympic_athlete_affiliation/country	_/user/jg/default_domain/olympic_games/sports
+-1
+-13.332165241241455
+___
+/m/02j9z	/m/01znc_	/m/0gkz3nz	/m/059j2
+/base/locations/continents/countries_within	_/film/film/release_date_s./film/film_regional_release_date/film_release_region	/film/film/release_date_s./film/film_regional_release_date/film_release_region
+-1
+-13.343154430389404
+___
+/m/02j9z	/m/059j2	/m/0gj8nq2	/m/01vx2h
+/base/locations/continents/countries_within	_/film/film/release_date_s./film/film_regional_release_date/film_release_region	/film/film/other_crew./film/film_crew_gig/film_crew_role
+-1
+-13.34879994392395
+___
+/m/02j9z	/m/0345h	/m/0gg5kmg	/m/015fr
+/base/locations/continents/countries_within	_/film/film/release_date_s./film/film_regional_release_date/film_release_region	/film/film/release_date_s./film/film_regional_release_date/film_release_region
+-1
+-13.368614196777344
+___
+/m/02j9z	/m/0345h	/m/0ddj0x	/m/03x42
+/base/locations/continents/countries_within	_/film/film/release_date_s./film/film_regional_release_date/film_release_region	/film/film/language
+-1
+-13.370615005493164
+___
+/m/02j9z	/m/06mzp	/m/03twd6	/m/04gzd
+/base/locations/continents/countries_within	_/film/film/release_date_s./film/film_regional_release_date/film_release_region	/film/film/release_date_s./film/film_regional_release_date/film_release_region
+-1
+-13.389151573181152
+___
+/m/02j9z	/m/059j2	/m/0bcp9b	/m/059j2
+/base/locations/continents/countries_within	_/film/film/release_date_s./film/film_regional_release_date/film_release_region	/film/film/release_date_s./film/film_regional_release_date/film_release_region
+-1
+-13.396003246307373
+___
+/m/02j9z	/m/06mzp	/m/0gz6b6g	/m/03h64
+/base/locations/continents/countries_within	_/film/film/release_date_s./film/film_regional_release_date/film_release_region	/film/film/release_date_s./film/film_regional_release_date/film_release_region
+-1
+-13.412611484527588
+___
+/m/02j9z	/m/0f8l9c	/m/02r8hh_	/m/03h64
+/base/locations/continents/countries_within	_/film/film/release_date_s./film/film_regional_release_date/film_release_region	/film/film/release_date_s./film/film_regional_release_date/film_release_region
+-1
+-13.4163236618042
+___
+/m/02j9z	/m/05qhw	/m/01ffx4	/m/02x2gy0
+/base/locations/continents/countries_within	_/film/film/release_date_s./film/film_regional_release_date/film_release_region	_/award/award_category/nominees./award/award_nomination/nominated_for
+-1
+-13.43891716003418
+___
+/m/02j9z	/m/01mjq	/m/08hmch	/m/06c1y
+/base/locations/continents/countries_within	_/film/film/release_date_s./film/film_regional_release_date/film_release_region	/film/film/release_date_s./film/film_regional_release_date/film_release_region
+-1
+-13.487551212310791
+___
+/m/02j9z	/m/06c1y	/m/02lq67	/m/01f1kd
+/base/locations/continents/countries_within	/olympics/olympic_participating_country/medals_won./olympics/olympic_medal_honor/medal	_/olympics/olympic_games/medals_awarded./olympics/olympic_medal_honor/medal
+-1
+-13.495532512664795
+___
+/m/02j9z	/m/01znc_	/m/0g5838s	/m/07ssc
+/base/locations/continents/countries_within	_/film/film/release_date_s./film/film_regional_release_date/film_release_region	/film/film/release_date_s./film/film_regional_release_date/film_release_region
+-1
+-13.523500919342041
+___
+/m/02j9z	/m/01znc_	/m/0bwfwpj	/m/05qx1
+/base/locations/continents/countries_within	_/film/film/release_date_s./film/film_regional_release_date/film_release_region	/film/film/release_date_s./film/film_regional_release_date/film_release_region
+-1
+-13.57403564453125
+___
+/m/02j9z	/m/0345h	/m/02mt51	/m/0k6nt
+/base/locations/continents/countries_within	_/film/film/release_date_s./film/film_regional_release_date/film_release_region	/film/film/release_date_s./film/film_regional_release_date/film_release_region
+-1
+-13.612578392028809
+___
+/m/02j9z	/m/0f8l9c	/m/0gg5qcw	/m/0154j
+/base/locations/continents/countries_within	_/film/film/release_date_s./film/film_regional_release_date/film_release_region	/film/film/release_date_s./film/film_regional_release_date/film_release_region
+-1
+-13.62701940536499
+___
+/m/02j9z	/m/06bnz	/m/0ddbjy4	/m/03rk0
+/base/locations/continents/countries_within	_/film/film/release_date_s./film/film_regional_release_date/film_release_region	/film/film/release_date_s./film/film_regional_release_date/film_release_region
+-1
+-13.678023338317871
+___
+/m/02j9z	/m/0d0vqn	/m/0gwjw0c	/m/077qn
+/base/locations/continents/countries_within	_/film/film/release_date_s./film/film_regional_release_date/film_release_region	/film/film/release_date_s./film/film_regional_release_date/film_release_region
+-1
+-13.730342864990234
+___
+/m/02j9z	/m/06bnz	/m/03twd6	/m/0k6nt
+/base/locations/continents/countries_within	_/film/film/release_date_s./film/film_regional_release_date/film_release_region	/film/film/release_date_s./film/film_regional_release_date/film_release_region
+-1
+-13.748194694519043
+___
+/m/02j9z	/m/0154j	/m/0gwjw0c	/m/0gr51
+/base/locations/continents/countries_within	_/film/film/release_date_s./film/film_regional_release_date/film_release_region	_/award/award_category/nominees./award/award_nomination/nominated_for
+-1
+-13.796629428863525
+___
+/m/02j9z	/m/0163v	/m/04gzd	/m/0g4vmj8
+/base/locations/continents/countries_within	/location/location/adjoin_s./location/adjoining_relationship/adjoins	_/film/film/release_date_s./film/film_regional_release_date/film_release_region
+-1
+-13.85572099685669
+___
+/m/02j9z	/m/0d0vqn	/m/0g9zljd	/m/059j2
+/base/locations/continents/countries_within	_/film/film/release_date_s./film/film_regional_release_date/film_release_region	/film/film/release_date_s./film/film_regional_release_date/film_release_region
+-1
+-13.902291774749756
+___
+/m/02j9z	/m/035qy	/m/048n7	/m/035qy
+/base/locations/continents/countries_within	_/military/military_conflict/combatants./military/military_combatant_group/combatants	/military/military_conflict/combatants./military/military_combatant_group/combatants
+-1
+-13.984100103378296
+___
+/m/02j9z	/m/035qy	/m/01shy7	/m/05zr6wv
+/base/locations/continents/countries_within	_/film/film/release_date_s./film/film_regional_release_date/film_release_region	_/award/award_category/nominees./award/award_nomination/nominated_for
+-1
+-13.987059593200684
+___
+/m/02j9z	/m/035qy	/m/064lsn	/m/09qv_s
+/base/locations/continents/countries_within	_/film/film/release_date_s./film/film_regional_release_date/film_release_region	_/award/award_category/nominees./award/award_nomination/nominated_for
+-1
+-14.023059368133545
+___
+/m/02j9z	/m/05r4w	/m/017jd9	/m/0d0vqn
+/base/locations/continents/countries_within	_/film/film/release_date_s./film/film_regional_release_date/film_release_region	/film/film/release_date_s./film/film_regional_release_date/film_release_region
+-1
+-14.239779949188232
+___
+/m/02j9z	/m/03gj2	/m/01cgz	/m/0nbjq
+/base/locations/continents/countries_within	_/olympics/olympic_sport/athletes./olympics/olympic_athlete_affiliation/country	_/user/jg/default_domain/olympic_games/sports
+-1
+-14.25941801071167
+___
+/m/02j9z	/m/015qh	/m/087vz	/m/015fr
+/base/locations/continents/countries_within	/military/military_combatant/military_conflicts./military/military_combatant_group/combatants	_/military/military_combatant/military_conflicts./military/military_combatant_group/combatants
+-1
+-14.93858528137207
+___
+/m/02j9z	/m/015qh	/m/0b90_r	/m/040b5k
+/base/locations/continents/countries_within	_/military/military_combatant/military_conflicts./military/military_combatant_group/combatants	_/film/film/release_date_s./film/film_regional_release_date/film_release_region
+-1
+-15.861326694488525
+___
+/m/02j9z	/m/0k6nt	/m/0sxrz	/m/03tmr
+/base/locations/continents/countries_within	/olympics/olympic_participating_country/athletes./olympics/olympic_athlete_affiliation/olympics	/olympics/olympic_games/sports
+-1
+-15.919066190719604
+___
+/m/02j9z	/m/0f8l9c	/m/015qh	/m/0fpv_3_
+/base/locations/continents/countries_within	_/military/military_combatant/military_conflicts./military/military_combatant_group/combatants	_/film/film/release_date_s./film/film_regional_release_date/film_release_region
+-1
+-16.087430477142334
+___
+#####################
+/m/02j9z	/m/07ssc
+Reward:0
+/m/02j9z	/m/04fh3	/m/056vv	/m/09nqf
+/base/locations/continents/countries_within	/location/location/adjoin_s./location/adjoining_relationship/adjoins	/location/statistical_region/gdp_nominal_per_capita./measurement_unit/dated_money_value/currency
+-1
+-8.949921131134033
+___
+/m/02j9z	/m/0hg5	/m/0sx8l	/m/09w1n
+/base/locations/continents/countries_within	_/olympics/olympic_games/participating_countries	_/olympics/olympic_sport/athletes./olympics/olympic_athlete_affiliation/olympics
+-1
+-9.3380686044693
+___
+/m/02j9z	/m/04fh3	/m/09nqf	/m/017zq0
+/base/locations/continents/countries_within	/location/statistical_region/gdp_nominal_per_capita./measurement_unit/dated_money_value/currency	_/organization/endowed_organization/endowment./measurement_unit/dated_money_value/currency
+-1
+-9.417826414108276
+___
+/m/02j9z	/m/04w4s	/m/04w4s	/m/09nqf
+/base/locations/continents/countries_within	NO_OP	/location/statistical_region/gdp_nominal./measurement_unit/dated_money_value/currency
+-1
+-9.490580797195435
+___
+/m/02j9z	/m/04fh3	/m/0bjv6	/m/02bg55
+/base/locations/continents/countries_within	/location/location/adjoin_s./location/adjoining_relationship/adjoins	_/film/film/release_date_s./film/film_regional_release_date/film_release_region
+-1
+-9.542458534240723
+___
+/m/02j9z	/m/06sff	/m/09nqf	/m/0288zy
+/base/locations/continents/countries_within	/location/statistical_region/gdp_real./measurement_unit/adjusted_money_value/adjustment_currency	_/organization/endowed_organization/endowment./measurement_unit/dated_money_value/currency
+-1
+-9.943317413330078
+___
+/m/02j9z	/m/06bnz	/m/03hjv97	/m/09c7w0
+/base/locations/continents/countries_within	_/film/film/release_date_s./film/film_regional_release_date/film_release_region	/film/film/country
+-1
+-10.092934966087341
+___
+/m/02j9z	/m/077qn	/m/09n70c	/m/077qn
+/base/locations/continents/countries_within	_/people/person/nationality	/people/person/nationality
+-1
+-10.099920734763145
+___
+/m/02j9z	/m/06t8v	/m/0j3d9tn	/m/0154j
+/base/locations/continents/countries_within	_/film/film/release_date_s./film/film_regional_release_date/film_release_region	/film/film/country
+-1
+-10.12039840221405
+___
+/m/02j9z	/m/015qh	/m/02bg55	/m/09c7w0
+/base/locations/continents/countries_within	_/film/film/release_date_s./film/film_regional_release_date/film_release_region	/film/film/country
+-1
+-10.35038697719574
+___
+/m/02j9z	/m/01pj7	/m/05pdh86	/m/09c7w0
+/base/locations/continents/countries_within	_/film/film/release_date_s./film/film_regional_release_date/film_release_region	/film/film/country
+-1
+-10.361221194267273
+___
+/m/02j9z	/m/01mjq	/m/0gj96ln	/m/09c7w0
+/base/locations/continents/countries_within	_/film/film/release_date_s./film/film_regional_release_date/film_release_region	/film/film/country
+-1
+-10.449826002120972
+___
+/m/02j9z	/m/0166b	/m/0k0sb	/m/0166b
+/base/locations/continents/countries_within	_/language/human_language/countries_spoken_in	_/location/country/official_language
+-1
+-10.482792615890503
+___
+/m/02j9z	/m/059j2	/m/0h21v2	/m/09c7w0
+/base/locations/continents/countries_within	_/film/film/release_date_s./film/film_regional_release_date/film_release_region	/film/film/country
+-1
+-10.529437065124512
+___
+/m/02j9z	/m/05r4w	/m/080lkt7	/m/09c7w0
+/base/locations/continents/countries_within	_/film/film/release_date_s./film/film_regional_release_date/film_release_region	/film/film/country
+-1
+-10.552342653274536
+___
+/m/02j9z	/m/04j53	/m/02lq5w	/m/015pkt
+/base/locations/continents/countries_within	/olympics/olympic_participating_country/medals_won./olympics/olympic_medal_honor/medal	_/olympics/olympic_games/medals_awarded./olympics/olympic_medal_honor/medal
+-1
+-10.701398611068726
+___
+/m/02j9z	/m/01znc_	/m/024mpp	/m/09c7w0
+/base/locations/continents/countries_within	_/film/film/release_date_s./film/film_regional_release_date/film_release_region	/film/film/country
+-1
+-10.783812761306763
+___
+/m/02j9z	/m/0hg5	/m/071t0	/m/0lk8j
+/base/locations/continents/countries_within	_/olympics/olympic_sport/athletes./olympics/olympic_athlete_affiliation/country	_/user/jg/default_domain/olympic_games/sports
+-1
+-10.832916021347046
+___
+/m/02j9z	/m/05qhw	/m/06w839_	/m/09c7w0
+/base/locations/continents/countries_within	_/film/film/release_date_s./film/film_regional_release_date/film_release_region	/film/film/country
+-1
+-10.905315041542053
+___
+/m/02j9z	/m/03rj0	/m/08hmch	/m/09c7w0
+/base/locations/continents/countries_within	_/film/film/release_date_s./film/film_regional_release_date/film_release_region	/film/film/country
+-1
+-10.916451215744019
+___
+/m/02j9z	/m/06sff	/m/02j9z	/m/0d0kn
+/base/locations/continents/countries_within	_/location/location/contains	/base/locations/continents/countries_within
+-1
+-10.932687282562256
+___
+/m/02j9z	/m/06bnz	/m/0p4wb	/m/04k4rt
+/base/locations/continents/countries_within	_/base/schemastaging/organization_extra/phone_number./base/schemastaging/phone_sandbox/service_location	/award/ranked_item/appears_in_ranked_lists./award/ranking/list
+-1
+-10.937752664089203
+___
+/m/02j9z	/m/04j53	/m/01q20	/m/01nty
+/base/locations/continents/countries_within	/location/country/form_of_government	_/location/country/form_of_government
+-1
+-10.940731048583984
+___
+/m/02j9z	/m/0hg5	/m/01fpfn	/m/04tr1
+/base/locations/continents/countries_within	/location/country/form_of_government	_/location/country/form_of_government
+-1
+-10.973582744598389
+___
+/m/02j9z	/m/01ppq	/m/09nqf	/m/016sd3
+/base/locations/continents/countries_within	/location/statistical_region/gdp_nominal./measurement_unit/dated_money_value/currency	_/organization/endowed_organization/endowment./measurement_unit/dated_money_value/currency
+-1
+-10.997763872146606
+___
+/m/02j9z	/m/05qhw	/m/02fqrf	/m/09c7w0
+/base/locations/continents/countries_within	_/film/film/release_date_s./film/film_regional_release_date/film_release_region	/film/film/country
+-1
+-11.10802948474884
+___
+/m/02j9z	/m/0163v	/m/07x4qr	/m/03_3d
+/base/locations/continents/countries_within	_/film/film/release_date_s./film/film_regional_release_date/film_release_region	/film/film/release_date_s./film/film_regional_release_date/film_release_region
+-1
+-11.13983154296875
+___
+/m/02j9z	/m/059j2	/m/02r1c18	/m/09c7w0
+/base/locations/continents/countries_within	_/film/film/release_date_s./film/film_regional_release_date/film_release_region	/film/film/country
+-1
+-11.173902988433838
+___
+/m/02j9z	/m/0163v	/m/0gj8nq2	/m/02rh1dz
+/base/locations/continents/countries_within	_/film/film/release_date_s./film/film_regional_release_date/film_release_region	/film/film/other_crew./film/film_crew_gig/film_crew_role
+-1
+-11.185082197189331
+___
+/m/02j9z	/m/04v3q	/m/080nwsb	/m/0k6nt
+/base/locations/continents/countries_within	_/film/film/release_date_s./film/film_regional_release_date/film_release_region	/film/film/release_date_s./film/film_regional_release_date/film_release_region
+-1
+-11.186201333999634
+___
+/m/02j9z	/m/04v3q	/m/024lt6	/m/09c7w0
+/base/locations/continents/countries_within	_/film/film/release_date_s./film/film_regional_release_date/film_release_region	/film/film/release_date_s./film/film_regional_release_date/film_release_region
+-1
+-11.282278299331665
+___
+/m/02j9z	/m/04v3q	/m/0dc_ms	/m/05smlt
+/base/locations/continents/countries_within	_/film/film/release_date_s./film/film_regional_release_date/film_release_region	/film/film/other_crew./film/film_crew_gig/film_crew_role
+-1
+-11.320631504058838
+___
+/m/02j9z	/m/01ppq	/m/05pdh86	/m/0154j
+/base/locations/continents/countries_within	_/film/film/release_date_s./film/film_regional_release_date/film_release_region	/film/film/release_date_s./film/film_regional_release_date/film_release_region
+-1
+-11.332584381103516
+___
+/m/02j9z	/m/01mjq	/m/01mgw	/m/03h64
+/base/locations/continents/countries_within	_/film/film/release_date_s./film/film_regional_release_date/film_release_region	/film/film/country
+-1
+-11.350817918777466
+___
+/m/02j9z	/m/0166b	/m/0h03fhx	/m/03spz
+/base/locations/continents/countries_within	_/film/film/release_date_s./film/film_regional_release_date/film_release_region	/film/film/release_date_s./film/film_regional_release_date/film_release_region
+-1
+-11.426355838775635
+___
+/m/02j9z	/m/015qh	/m/0cnztc4	/m/07ssc
+/base/locations/continents/countries_within	_/film/film/release_date_s./film/film_regional_release_date/film_release_region	/film/film/distributors./film/film_film_distributor_relationship/region
+1
+-11.513092517852783
+___
+/m/02j9z	/m/01ppq	/m/02lq5w	/m/0kbvb
+/base/locations/continents/countries_within	/olympics/olympic_participating_country/medals_won./olympics/olympic_medal_honor/medal	_/olympics/olympic_games/medals_awarded./olympics/olympic_medal_honor/medal
+-1
+-11.561859846115112
+___
+/m/02j9z	/m/0d0kn	/m/08hmch	/m/02r96rf
+/base/locations/continents/countries_within	_/film/film/release_date_s./film/film_regional_release_date/film_release_region	/film/film/other_crew./film/film_crew_gig/film_crew_role
+-1
+-11.586876630783081
+___
+/m/02j9z	/m/07ytt	/m/02qkt	/m/04w8f
+/base/locations/continents/countries_within	_/location/location/contains	/location/location/contains
+-1
+-11.681812524795532
+___
+/m/02j9z	/m/077qn	/m/0ndwt2w	/m/077qn
+/base/locations/continents/countries_within	_/film/film/release_date_s./film/film_regional_release_date/film_release_region	/film/film/release_date_s./film/film_regional_release_date/film_release_region
+-1
+-11.719848394393921
+___
+/m/02j9z	/m/04w4s	/m/0hzc9wc	/m/09c7w0
+/base/locations/continents/countries_within	/base/aareas/schema/administrative_area/administrative_area_type	_/base/aareas/schema/administrative_area/administrative_area_type
+-1
+-11.745717525482178
+___
+/m/02j9z	/m/05r4w	/m/0645k5	/m/07fb8_
+/base/locations/continents/countries_within	_/film/film/release_date_s./film/film_regional_release_date/film_release_region	/film/film/film_format
+-1
+-11.775723934173584
+___
+/m/02j9z	/m/015qh	/m/0c40vxk	/m/0dxtw
+/base/locations/continents/countries_within	_/film/film/release_date_s./film/film_regional_release_date/film_release_region	/film/film/other_crew./film/film_crew_gig/film_crew_role
+-1
+-11.95053482055664
+___
+/m/02j9z	/m/07ytt	/m/0c8wxp	/m/09h4b5
+/base/locations/continents/countries_within	/location/statistical_region/religions./location/religion_percentage/religion	_/people/person/religion
+-1
+-12.012828826904297
+___
+/m/02j9z	/m/0d0kn	/m/0_2v	/m/047t_
+/base/locations/continents/countries_within	/organization/organization_member/member_of./organization/organization_membership/organization	_/organization/organization_member/member_of./organization/organization_membership/organization
+-1
+-12.076892375946045
+___
+/m/02j9z	/m/0h7x	/m/0h1v19	/m/0k6nt
+/base/locations/continents/countries_within	_/film/film/release_date_s./film/film_regional_release_date/film_release_region	/film/film/release_date_s./film/film_regional_release_date/film_release_region
+-1
+-12.11627721786499
+___
+/m/02j9z	/m/077qn	/m/011yrp	/m/04306rv
+/base/locations/continents/countries_within	_/film/film/release_date_s./film/film_regional_release_date/film_release_region	/film/film/language
+-1
+-12.120485305786133
+___
+/m/02j9z	/m/06npd	/m/0193qj	/m/02vzc
+/base/locations/continents/countries_within	_/military/military_combatant/military_conflicts./military/military_combatant_group/combatants	_/military/military_combatant/military_conflicts./military/military_combatant_group/combatants
+-1
+-12.272507429122925
+___
+/m/02j9z	/m/0h7x	/m/0g57wgv	/m/0ch6mp2
+/base/locations/continents/countries_within	_/film/film/release_date_s./film/film_regional_release_date/film_release_region	/film/film/other_crew./film/film_crew_gig/film_crew_role
+-1
+-12.323343276977539
+___
+/m/02j9z	/m/07t21	/m/0fpgp26	/m/015qh
+/base/locations/continents/countries_within	_/film/film/release_date_s./film/film_regional_release_date/film_release_region	/film/film/release_date_s./film/film_regional_release_date/film_release_region
+-1
+-12.345394611358643
+___
+/m/02j9z	/m/0166b	/m/0hzc9wc	/m/01p8s
+/base/locations/continents/countries_within	/base/aareas/schema/administrative_area/administrative_area_type	_/base/aareas/schema/administrative_area/administrative_area_type
+-1
+-12.372193336486816
+___
+/m/02j9z	/m/03rj0	/m/0992d9	/m/01wgr
+/base/locations/continents/countries_within	_/film/film/release_date_s./film/film_regional_release_date/film_release_region	/film/film/language
+-1
+-12.39466643333435
+___
+/m/02j9z	/m/06npd	/m/0fpgp26	/m/07twz
+/base/locations/continents/countries_within	_/film/film/release_date_s./film/film_regional_release_date/film_release_region	/film/film/release_date_s./film/film_regional_release_date/film_release_region
+-1
+-12.394967079162598
+___
+/m/02j9z	/m/03rj0	/m/0gfh84d	/m/077qn
+/base/locations/continents/countries_within	_/film/film/release_date_s./film/film_regional_release_date/film_release_region	/film/film/release_date_s./film/film_regional_release_date/film_release_region
+-1
+-12.416406631469727
+___
+/m/02j9z	/m/06c1y	/m/087wc7n	/m/06mkj
+/base/locations/continents/countries_within	_/film/film/release_date_s./film/film_regional_release_date/film_release_region	/film/film/release_date_s./film/film_regional_release_date/film_release_region
+-1
+-12.422390460968018
+___
+/m/02j9z	/m/06npd	/m/04f52jw	/m/047lj
+/base/locations/continents/countries_within	_/film/film/release_date_s./film/film_regional_release_date/film_release_region	/film/film/release_date_s./film/film_regional_release_date/film_release_region
+-1
+-12.489666938781738
+___
+/m/02j9z	/m/0jhd	/m/064vjs	/m/0l998
+/base/locations/continents/countries_within	_/olympics/olympic_sport/athletes./olympics/olympic_athlete_affiliation/country	/olympics/olympic_sport/athletes./olympics/olympic_athlete_affiliation/olympics
+-1
+-12.49273681640625
+___
+/m/02j9z	/m/05qhw	/m/01jwxx	/m/02_286
+/base/locations/continents/countries_within	_/film/film/release_date_s./film/film_regional_release_date/film_release_region	/film/film/release_date_s./film/film_regional_release_date/film_regional_debut_venue
+-1
+-12.507642984390259
+___
+/m/02j9z	/m/06c1y	/m/0dc_ms	/m/04gzd
+/base/locations/continents/countries_within	_/film/film/release_date_s./film/film_regional_release_date/film_release_region	/film/film/release_date_s./film/film_regional_release_date/film_release_region
+-1
+-12.74727725982666
+___
+/m/02j9z	/m/015qh	/m/0gvrws1	/m/04gzd
+/base/locations/continents/countries_within	_/film/film/release_date_s./film/film_regional_release_date/film_release_region	/film/film/release_date_s./film/film_regional_release_date/film_release_region
+-1
+-12.774397850036621
+___
+/m/02j9z	/m/07ytt	/m/02h40lc	/m/011yqc
+/base/locations/continents/countries_within	_/language/human_language/countries_spoken_in	_/film/film/language
+-1
+-12.823442935943604
+___
+/m/02j9z	/m/06bnz	/m/06v9_x	/m/0d0vqn
+/base/locations/continents/countries_within	_/film/film/release_date_s./film/film_regional_release_date/film_release_region	/film/film/release_date_s./film/film_regional_release_date/film_release_region
+-1
+-12.852242708206177
+___
+/m/02j9z	/m/05b4w	/m/0gtxj2q	/m/05r4w
+/base/locations/continents/countries_within	_/film/film/release_date_s./film/film_regional_release_date/film_release_region	/film/film/release_date_s./film/film_regional_release_date/film_release_region
+-1
+-12.897818326950073
+___
+/m/02j9z	/m/01znc_	/m/05ldxl	/m/04pyp5
+/base/locations/continents/countries_within	_/film/film/release_date_s./film/film_regional_release_date/film_release_region	/film/film/other_crew./film/film_crew_gig/film_crew_role
+-1
+-12.971494197845459
+___
+/m/02j9z	/m/01znc_	/m/0hgnl3t	/m/02h40lc
+/base/locations/continents/countries_within	_/film/film/release_date_s./film/film_regional_release_date/film_release_region	/film/film/language
+-1
+-13.005558013916016
+___
+/m/02j9z	/m/0345h	/m/0bw20	/m/02r96rf
+/base/locations/continents/countries_within	_/film/film/country	/film/film/other_crew./film/film_crew_gig/film_crew_role
+-1
+-13.043105840682983
+___
+/m/02j9z	/m/0f8l9c	/m/0c_tl	/m/03hr1p
+/base/locations/continents/countries_within	_/olympics/olympic_games/participating_countries	_/olympics/olympic_sport/athletes./olympics/olympic_athlete_affiliation/olympics
+-1
+-13.054757833480835
+___
+/m/02j9z	/m/02vzc	/m/0c3xw46	/m/0ch6mp2
+/base/locations/continents/countries_within	_/film/film/release_date_s./film/film_regional_release_date/film_release_region	/film/film/other_crew./film/film_crew_gig/film_crew_role
+-1
+-13.122202157974243
+___
+/m/02j9z	/m/01mjq	/m/0pd64	/m/019f4v
+/base/locations/continents/countries_within	_/film/film/release_date_s./film/film_regional_release_date/film_release_region	_/award/award_category/nominees./award/award_nomination/nominated_for
+-1
+-13.155965805053711
+___
+/m/02j9z	/m/047lj	/m/0872p_c	/m/0735l
+/base/locations/continents/countries_within	_/film/film/release_date_s./film/film_regional_release_date/film_release_region	/film/film/distributors./film/film_film_distributor_relationship/film_distribution_medium
+-1
+-13.194754123687744
+___
+/m/02j9z	/m/0d0kn	/m/02vk52z	/m/07fb6
+/base/locations/continents/countries_within	/organization/organization_member/member_of./organization/organization_membership/organization	_/organization/organization_member/member_of./organization/organization_membership/organization
+-1
+-13.209376335144043
+___
+/m/02j9z	/m/035qy	/m/047tsx3	/m/059j2
+/base/locations/continents/countries_within	_/film/film/release_date_s./film/film_regional_release_date/film_release_region	/film/film/release_date_s./film/film_regional_release_date/film_release_region
+-1
+-13.249805927276611
+___
+/m/02j9z	/m/06mzp	/m/01jrbb	/m/07ssc
+/base/locations/continents/countries_within	_/film/film/release_date_s./film/film_regional_release_date/film_release_region	/film/film/release_date_s./film/film_regional_release_date/film_release_region
+1
+-13.250201225280762
+___
+/m/02j9z	/m/035qy	/m/0gy2y8r	/m/0jgd
+/base/locations/continents/countries_within	_/film/film/release_date_s./film/film_regional_release_date/film_release_region	/film/film/release_date_s./film/film_regional_release_date/film_release_region
+-1
+-13.315077304840088
+___
+/m/02j9z	/m/01znc_	/m/0125xq	/m/03h64
+/base/locations/continents/countries_within	_/film/film/release_date_s./film/film_regional_release_date/film_release_region	/film/film/release_date_s./film/film_regional_release_date/film_release_region
+-1
+-13.36999225616455
+___
+/m/02j9z	/m/0345h	/m/0g5qmbz	/m/06mzp
+/base/locations/continents/countries_within	_/film/film/release_date_s./film/film_regional_release_date/film_release_region	/film/film/release_date_s./film/film_regional_release_date/film_release_region
+-1
+-13.370092391967773
+___
+/m/02j9z	/m/0f8l9c	/m/0gvrws1	/m/03rk0
+/base/locations/continents/countries_within	_/film/film/release_date_s./film/film_regional_release_date/film_release_region	/film/film/release_date_s./film/film_regional_release_date/film_release_region
+-1
+-13.407835960388184
+___
+/m/02j9z	/m/06bnz	/m/09nqf	/m/0473m9
+/base/locations/continents/countries_within	/location/statistical_region/gdp_nominal./measurement_unit/dated_money_value/currency	_/organization/endowed_organization/endowment./measurement_unit/dated_money_value/currency
+-1
+-13.415716409683228
+___
+/m/02j9z	/m/06mzp	/m/047vnkj	/m/04gzd
+/base/locations/continents/countries_within	_/film/film/release_date_s./film/film_regional_release_date/film_release_region	/film/film/release_date_s./film/film_regional_release_date/film_release_region
+-1
+-13.421029567718506
+___
+/m/02j9z	/m/035qy	/m/0gwjw0c	/m/059j2
+/base/locations/continents/countries_within	_/film/film/release_date_s./film/film_regional_release_date/film_release_region	/film/film/release_date_s./film/film_regional_release_date/film_release_region
+-1
+-13.47350025177002
+___
+/m/02j9z	/m/05qhw	/m/02bg55	/m/0345h
+/base/locations/continents/countries_within	_/film/film/release_date_s./film/film_regional_release_date/film_release_region	/film/film/release_date_s./film/film_regional_release_date/film_release_region
+-1
+-13.523633480072021
+___
+/m/02j9z	/m/0jhd	/m/06z6r	/m/0l6mp
+/base/locations/continents/countries_within	_/olympics/olympic_sport/athletes./olympics/olympic_athlete_affiliation/country	/olympics/olympic_sport/athletes./olympics/olympic_athlete_affiliation/olympics
+-1
+-13.528208255767822
+___
+/m/02j9z	/m/06bnz	/m/0bmhvpr	/m/047lj
+/base/locations/continents/countries_within	_/film/film/release_date_s./film/film_regional_release_date/film_release_region	/film/film/release_date_s./film/film_regional_release_date/film_release_region
+-1
+-13.580350399017334
+___
+/m/02j9z	/m/0hg5	/m/0f8l9c	/m/0fphgb
+/base/locations/continents/countries_within	_/location/statistical_region/places_exported_to./location/imports_and_exports/exported_to	_/film/film/release_date_s./film/film_regional_release_date/film_release_region
+-1
+-13.679893970489502
+___
+/m/02j9z	/m/05r4w	/m/047p7fr	/m/05qhw
+/base/locations/continents/countries_within	_/film/film/release_date_s./film/film_regional_release_date/film_release_region	/film/film/release_date_s./film/film_regional_release_date/film_release_region
+-1
+-13.682483673095703
+___
+/m/02j9z	/m/0d0vqn	/m/024mpp	/m/0chghy
+/base/locations/continents/countries_within	_/film/film/release_date_s./film/film_regional_release_date/film_release_region	/film/film/release_date_s./film/film_regional_release_date/film_release_region
+-1
+-13.685406684875488
+___
+/m/02j9z	/m/0k6nt	/m/01fmys	/m/035qy
+/base/locations/continents/countries_within	_/film/film/release_date_s./film/film_regional_release_date/film_release_region	/film/film/release_date_s./film/film_regional_release_date/film_release_region
+-1
+-13.691356182098389
+___
+/m/02j9z	/m/06c1y	/m/015qh	/m/059dn
+/base/locations/continents/countries_within	_/location/location/adjoin_s./location/adjoining_relationship/adjoins	/organization/organization_member/member_of./organization/organization_membership/organization
+-1
+-13.771382808685303
+___
+/m/02j9z	/m/0345h	/m/0dtfn	/m/07ssc
+/base/locations/continents/countries_within	_/film/film/release_date_s./film/film_regional_release_date/film_release_region	/film/film/release_date_s./film/film_regional_release_date/film_release_region
+1
+-13.811929702758789
+___
+/m/02j9z	/m/01znc_	/m/01cmp9	/m/0gr4k
+/base/locations/continents/countries_within	_/film/film/runtime./film/film_cut/film_release_region	_/award/award_category/nominees./award/award_nomination/nominated_for
+-1
+-13.826493263244629
+___
+/m/02j9z	/m/01znc_	/m/043tvp3	/m/016wzw
+/base/locations/continents/countries_within	_/film/film/release_date_s./film/film_regional_release_date/film_release_region	/film/film/release_date_s./film/film_regional_release_date/film_release_region
+-1
+-13.886394023895264
+___
+/m/02j9z	/m/0d0vqn	/m/0h03fhx	/m/032f6
+/base/locations/continents/countries_within	_/film/film/release_date_s./film/film_regional_release_date/film_release_region	/film/film/language
+-1
+-14.043796062469482
+___
+/m/02j9z	/m/05qhw	/m/09nqf	/m/0gl5_
+/base/locations/continents/countries_within	/location/statistical_region/gdp_real./measurement_unit/adjusted_money_value/adjustment_currency	_/organization/endowed_organization/endowment./measurement_unit/dated_money_value/currency
+-1
+-14.095642566680908
+___
+/m/02j9z	/m/0f8l9c	/m/0k269	/m/0qf2t
+/base/locations/continents/countries_within	_/people/person/spouse_s./people/marriage/location_of_ceremony	_/award/award_winning_work/awards_won./award/award_honor/award_winner
+-1
+-14.200993776321411
+___
+/m/02j9z	/m/01znc_	/m/0lgxj	/m/071t0
+/base/locations/continents/countries_within	_/olympics/olympic_games/participating_countries	/olympics/olympic_games/sports
+-1
+-14.336110591888428
+___
+/m/02j9z	/m/06c1y	/m/0l6m5	/m/06f41
+/base/locations/continents/countries_within	/olympics/olympic_participating_country/medals_won./olympics/olympic_medal_honor/olympics	/olympics/olympic_games/sports
+-1
+-14.433396816253662
+___
+/m/02j9z	/m/0d0vqn	/m/01fpfn	/m/05l8y
+/base/locations/continents/countries_within	/location/country/form_of_government	_/location/country/form_of_government
+-1
+-14.750947952270508
+___
+/m/02j9z	/m/05qhw	/m/0ggbfwf	/m/05p553
+/base/locations/continents/countries_within	_/film/film/release_date_s./film/film_regional_release_date/film_release_region	/film/film/genre
+-1
+-15.239540576934814
+___
+/m/02j9z	/m/05qhw	/m/02qkt	/m/056vv
+/base/locations/continents/countries_within	_/location/location/contains	/location/location/contains
+-1
+-15.829786777496338
+___
+/m/02j9z	/m/0f8l9c	/m/06mkj	/m/0cnztc4
+/base/locations/continents/countries_within	/location/location/adjoin_s./location/adjoining_relationship/adjoins	_/film/film/release_date_s./film/film_regional_release_date/film_release_region
+-1
+-16.756346225738525
+___
+#####################

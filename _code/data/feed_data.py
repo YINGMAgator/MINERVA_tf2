@@ -15,7 +15,7 @@ class RelationEntityBatcher():
         # self.input_file = input_dir+'/{0}.txt'.format(mode)
         self.train_data = dataset['train']
         self.test_data = dataset['test']
-        self.dev_data = dataset['dev']
+        # self.dev_data = dataset['dev']
         self.graph_data = dataset['graph'] 
         self.batch_size = batch_size
         self.full_graph = dataset['full_graph']
@@ -41,7 +41,7 @@ class RelationEntityBatcher():
         if self.rwd:
             self.store = []
 
-        if self.mode == 'train':
+        if self.mode == 'train' or self.mode == 'fb60k':
             # with open(input_file) as raw_input_file:
                 # csv_file = csv.reader(raw_input_file, delimiter = '\t' )
             #goes through the training data and adds the encoding generated in vocab_gen.py for every fact to a list. Also creates a dictionary that for a query returns a list of correct answers
@@ -54,17 +54,17 @@ class RelationEntityBatcher():
                     self.store.append([e1,r,e2])
                 self.store_all_correct[(e1, r)].add(e2)  #YM: there may exist multiple answers for the same query, i.e., same (e1,r) may mapping to different e2. store_all_correct will give all solution for the same query
             if self.rwd:
-                ##self.store = np.array(self.store[:400])
+                ##self.store = np.array(self.store[:300])
                 self.store = np.array(self.store)
                 print(self.store.shape)
-            ##self.queries=np.array(list(self.store_all_correct.keys())[:400], int)
+            ##self.queries=np.array(list(self.store_all_correct.keys())[:300], int)
             self.queries=np.array(list(self.store_all_correct.keys()), int)
             print(self.queries.shape)
         else:
             if self.mode == 'test':
                 dataset = self.test_data
-            if self.mode == 'dev':
-                dataset = self.dev_data
+            # if self.mode == 'dev':
+            #     dataset = self.dev_data
             #same as above but on the test or dev dataset
             self.query_answers = defaultdict(set)
             for line in dataset:
@@ -106,6 +106,7 @@ class RelationEntityBatcher():
             random.shuffle(self.queries)
         # shuffle list before beginning training
         while True:
+            print(remaining)
             # reset for new epoch
             if remaining == 0:
                 if self.rwd:
@@ -123,11 +124,13 @@ class RelationEntityBatcher():
                 current_idx += self.batch_size
                 remaining -= self.batch_size
             else:
-                if self.rwd:
-                    batch_idx = np.arange(current_idx, self.store.shape[0])
-                else:
-                    batch_idx = np.arange(current_idx, self.queries.shape[0])
+                # if self.rwd:
+                #     batch_idx = np.arange(current_idx, self.store.shape[0])
+                # else:
+                #     batch_idx = np.arange(current_idx, self.queries.shape[0])
+                # partial batches mess with the agent, so we don't use them
                 remaining = 0
+                continue
 
             # get batch
             if self.rwd:
@@ -177,6 +180,10 @@ class RelationEntityBatcher():
                 assert e1.shape[0] == e2.shape[0] == r.shape[0] == len(all_e2s)
             assert e1.shape[0] == r.shape[0] == len(all_e2s)
             if self.rwd:
+                print("e1 shape")
+                print(e1.shape)
+                print("all e2 example")
+                print(all_e2s[0])
                 yield e1, r, e2, all_e2s, epoch
             else:
                 if rl:

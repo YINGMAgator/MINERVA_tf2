@@ -1,0 +1,1509 @@
+/m/0168t	/m/09nqf
+Reward:1
+/m/0168t	/m/07ww5	/m/0168t	/m/07ww5
+_/location/location/adjoin_s./location/adjoining_relationship/adjoins	_/location/location/adjoin_s./location/adjoining_relationship/adjoins	_/location/location/adjoin_s./location/adjoining_relationship/adjoins
+-1
+-3.724967047572136
+___
+/m/0168t	/m/07ww5	/m/0168t	/m/07ww5
+_/location/location/adjoin_s./location/adjoining_relationship/adjoins	_/location/location/adjoin_s./location/adjoining_relationship/adjoins	_/location/location/adjoin_s./location/adjoining_relationship/adjoins
+-1
+-3.724967047572136
+___
+/m/0168t	/m/07ww5	/m/0168t	/m/07ww5
+_/location/location/adjoin_s./location/adjoining_relationship/adjoins	_/location/location/adjoin_s./location/adjoining_relationship/adjoins	_/location/location/adjoin_s./location/adjoining_relationship/adjoins
+-1
+-3.724967047572136
+___
+/m/0168t	/m/07ww5	/m/0168t	/m/07ww5
+_/location/location/adjoin_s./location/adjoining_relationship/adjoins	_/location/location/adjoin_s./location/adjoining_relationship/adjoins	_/location/location/adjoin_s./location/adjoining_relationship/adjoins
+-1
+-3.724967047572136
+___
+/m/0168t	/m/0261m	/m/0261m	/m/02613
+_/location/location/contains	NO_OP	_/location/location/contains
+-1
+-3.7479087476385757
+___
+/m/0168t	/m/07c5l	/m/07c5l	/m/04n6k
+_/location/location/contains	NO_OP	/user/tsegaran/random/taxonomy_subject/entry./user/tsegaran/random/taxonomy_entry/taxonomy
+-1
+-4.538316816673614
+___
+/m/0168t	/m/07c5l	/m/07c5l	/m/04n6k
+_/location/location/contains	NO_OP	/user/tsegaran/random/taxonomy_subject/entry./user/tsegaran/random/taxonomy_entry/taxonomy
+-1
+-4.538316816673614
+___
+/m/0168t	/m/07c5l	/m/07c5l	/m/04n6k
+_/location/location/contains	NO_OP	/user/tsegaran/random/taxonomy_subject/entry./user/tsegaran/random/taxonomy_entry/taxonomy
+-1
+-4.538316816673614
+___
+/m/0168t	/m/01q20	/m/06v36	/m/09nqf
+/location/country/form_of_government	_/location/country/form_of_government	/location/statistical_region/gdp_nominal./measurement_unit/dated_money_value/currency
+1
+-4.950466198089998
+___
+/m/0168t	/m/01q20	/m/02wmy	/m/09nqf
+/location/country/form_of_government	_/location/country/form_of_government	/location/statistical_region/gdp_nominal_per_capita./measurement_unit/dated_money_value/currency
+1
+-4.950663035153411
+___
+/m/0168t	/m/01q20	/m/01n8qg	/m/09nqf
+/location/country/form_of_government	_/location/country/form_of_government	/location/statistical_region/gdp_real./measurement_unit/adjusted_money_value/adjustment_currency
+1
+-4.952789667528123
+___
+/m/0168t	/m/01q20	/m/06s0l	/m/09nqf
+/location/country/form_of_government	_/location/country/form_of_government	/location/statistical_region/gdp_real./measurement_unit/adjusted_money_value/adjustment_currency
+1
+-4.95278990524821
+___
+/m/0168t	/m/01q20	/m/047yc	/m/09nqf
+/location/country/form_of_government	_/location/country/form_of_government	/location/statistical_region/gdp_real./measurement_unit/adjusted_money_value/adjustment_currency
+1
+-4.952792996307835
+___
+/m/0168t	/m/01q20	/m/0j11	/m/09nqf
+/location/country/form_of_government	_/location/country/form_of_government	/location/statistical_region/gdp_real./measurement_unit/adjusted_money_value/adjustment_currency
+1
+-4.952804884873331
+___
+/m/0168t	/m/01q20	/m/02w9s	/m/09nqf
+/location/country/form_of_government	_/location/country/form_of_government	/location/statistical_region/gdp_real./measurement_unit/adjusted_money_value/adjustment_currency
+1
+-4.952994368271902
+___
+/m/0168t	/m/07ww5	/m/09nqf	/m/04wlh
+_/location/location/adjoin_s./location/adjoining_relationship/adjoins	/location/statistical_region/gdp_nominal./measurement_unit/dated_money_value/currency	_/location/statistical_region/gdp_nominal_per_capita./measurement_unit/dated_money_value/currency
+-1
+-4.953214034438133
+___
+/m/0168t	/m/07ww5	/m/09nqf	/m/09pmkv
+_/location/location/adjoin_s./location/adjoining_relationship/adjoins	/location/statistical_region/gdp_nominal./measurement_unit/dated_money_value/currency	_/location/statistical_region/gdp_nominal_per_capita./measurement_unit/dated_money_value/currency
+-1
+-4.953214034438133
+___
+/m/0168t	/m/07ww5	/m/09nqf	/m/0d0vqn
+_/location/location/adjoin_s./location/adjoining_relationship/adjoins	/location/statistical_region/gdp_nominal./measurement_unit/dated_money_value/currency	_/location/statistical_region/gdp_nominal_per_capita./measurement_unit/dated_money_value/currency
+-1
+-4.953214034438133
+___
+/m/0168t	/m/07ww5	/m/09nqf	/m/07dzf
+_/location/location/adjoin_s./location/adjoining_relationship/adjoins	/location/statistical_region/gdp_nominal./measurement_unit/dated_money_value/currency	_/location/statistical_region/gdp_nominal_per_capita./measurement_unit/dated_money_value/currency
+-1
+-4.953214034438133
+___
+/m/0168t	/m/07ww5	/m/09nqf	/m/0697s
+_/location/location/adjoin_s./location/adjoining_relationship/adjoins	/location/statistical_region/gdp_nominal./measurement_unit/dated_money_value/currency	_/location/statistical_region/gdp_nominal_per_capita./measurement_unit/dated_money_value/currency
+-1
+-4.953214034438133
+___
+/m/0168t	/m/07ww5	/m/09nqf	/m/07dzf
+_/location/location/adjoin_s./location/adjoining_relationship/adjoins	/location/statistical_region/gdp_nominal./measurement_unit/dated_money_value/currency	_/location/statistical_region/gdp_nominal_per_capita./measurement_unit/dated_money_value/currency
+-1
+-4.953214034438133
+___
+/m/0168t	/m/07ww5	/m/09nqf	/m/05br2
+_/location/location/adjoin_s./location/adjoining_relationship/adjoins	/location/statistical_region/gdp_nominal./measurement_unit/dated_money_value/currency	_/location/statistical_region/gdp_nominal_per_capita./measurement_unit/dated_money_value/currency
+-1
+-4.953214034438133
+___
+/m/0168t	/m/07ww5	/m/09nqf	/m/07fb6
+_/location/location/adjoin_s./location/adjoining_relationship/adjoins	/location/statistical_region/gdp_nominal./measurement_unit/dated_money_value/currency	_/location/statistical_region/gdp_nominal_per_capita./measurement_unit/dated_money_value/currency
+-1
+-4.953214034438133
+___
+/m/0168t	/m/07ww5	/m/09nqf	/m/0161c
+_/location/location/adjoin_s./location/adjoining_relationship/adjoins	/location/statistical_region/gdp_nominal./measurement_unit/dated_money_value/currency	_/location/statistical_region/gdp_nominal_per_capita./measurement_unit/dated_money_value/currency
+-1
+-4.953214034438133
+___
+/m/0168t	/m/07ww5	/m/09nqf	/m/0l3h
+_/location/location/adjoin_s./location/adjoining_relationship/adjoins	/location/statistical_region/gdp_nominal./measurement_unit/dated_money_value/currency	_/location/statistical_region/gdp_nominal_per_capita./measurement_unit/dated_money_value/currency
+-1
+-4.953214034438133
+___
+/m/0168t	/m/07ww5	/m/09nqf	/m/04wlh
+_/location/location/adjoin_s./location/adjoining_relationship/adjoins	/location/statistical_region/gdp_nominal./measurement_unit/dated_money_value/currency	_/location/statistical_region/gdp_nominal_per_capita./measurement_unit/dated_money_value/currency
+-1
+-4.953214034438133
+___
+/m/0168t	/m/01q20	/m/059j2	/m/09nqf
+/location/country/form_of_government	_/location/country/form_of_government	/location/statistical_region/gdp_real./measurement_unit/adjusted_money_value/adjustment_currency
+1
+-4.954109381418675
+___
+/m/0168t	/m/01q20	/m/059j2	/m/09nqf
+/location/country/form_of_government	_/location/country/form_of_government	/location/statistical_region/gdp_real./measurement_unit/adjusted_money_value/adjustment_currency
+1
+-4.954109381418675
+___
+/m/0168t	/m/01q20	/m/0165b	/m/09nqf
+/location/country/form_of_government	_/location/country/form_of_government	/location/statistical_region/gdp_real./measurement_unit/adjusted_money_value/adjustment_currency
+1
+-4.95569825777784
+___
+/m/0168t	/m/01q20	/m/04w58	/m/09nqf
+/location/country/form_of_government	_/location/country/form_of_government	/location/statistical_region/gdp_real./measurement_unit/adjusted_money_value/adjustment_currency
+1
+-4.955698376521468
+___
+/m/0168t	/m/01q20	/m/04w58	/m/09nqf
+/location/country/form_of_government	_/location/country/form_of_government	/location/statistical_region/gdp_real./measurement_unit/adjusted_money_value/adjustment_currency
+1
+-4.955698376521468
+___
+/m/0168t	/m/01q20	/m/06ryl	/m/09nqf
+/location/country/form_of_government	_/location/country/form_of_government	/location/statistical_region/gdp_real./measurement_unit/adjusted_money_value/adjustment_currency
+1
+-4.955699087586254
+___
+/m/0168t	/m/01q20	/m/06ryl	/m/09nqf
+/location/country/form_of_government	_/location/country/form_of_government	/location/statistical_region/gdp_real./measurement_unit/adjusted_money_value/adjustment_currency
+1
+-4.955699087586254
+___
+/m/0168t	/m/01q20	/m/06mkj	/m/09nqf
+/location/country/form_of_government	_/location/country/form_of_government	/location/statistical_region/gdp_real./measurement_unit/adjusted_money_value/adjustment_currency
+1
+-4.958118534646928
+___
+/m/0168t	/m/0261m	/m/04pnx	/m/07c5l
+_/location/location/contains	_/location/location/partially_contains	_/location/location/contains
+-1
+-5.031073932070285
+___
+/m/0168t	/m/01q20	/m/049nq	/m/09nqf
+/location/country/form_of_government	_/location/country/form_of_government	/location/statistical_region/gdp_nominal_per_capita./measurement_unit/dated_money_value/currency
+1
+-5.038772091269493
+___
+/m/0168t	/m/01q20	/m/049nq	/m/09nqf
+/location/country/form_of_government	_/location/country/form_of_government	/location/statistical_region/gdp_nominal_per_capita./measurement_unit/dated_money_value/currency
+1
+-5.038772091269493
+___
+/m/0168t	/m/018wl5	/m/015qh	/m/09nqf
+/location/country/form_of_government	_/location/country/form_of_government	/location/statistical_region/gdp_real./measurement_unit/adjusted_money_value/adjustment_currency
+1
+-5.041908740615327
+___
+/m/0168t	/m/018wl5	/m/015qh	/m/09nqf
+/location/country/form_of_government	_/location/country/form_of_government	/location/statistical_region/gdp_real./measurement_unit/adjusted_money_value/adjustment_currency
+1
+-5.041908740615327
+___
+/m/0168t	/m/018wl5	/m/06v36	/m/09nqf
+/location/country/form_of_government	_/location/country/form_of_government	/location/statistical_region/gdp_nominal./measurement_unit/dated_money_value/currency
+1
+-5.042273801926058
+___
+/m/0168t	/m/018wl5	/m/06v36	/m/09nqf
+/location/country/form_of_government	_/location/country/form_of_government	/location/statistical_region/gdp_nominal./measurement_unit/dated_money_value/currency
+1
+-5.042273801926058
+___
+/m/0168t	/m/018wl5	/m/0164b	/m/09nqf
+/location/country/form_of_government	_/location/country/form_of_government	/location/statistical_region/gdp_nominal./measurement_unit/dated_money_value/currency
+1
+-5.042955655488186
+___
+/m/0168t	/m/018wl5	/m/035v3	/m/09nqf
+/location/country/form_of_government	_/location/country/form_of_government	/location/statistical_region/gdp_nominal_per_capita./measurement_unit/dated_money_value/currency
+1
+-5.043691664002836
+___
+/m/0168t	/m/018wl5	/m/02w9s	/m/09nqf
+/location/country/form_of_government	_/location/country/form_of_government	/location/statistical_region/gdp_real./measurement_unit/adjusted_money_value/adjustment_currency
+1
+-5.044801972107962
+___
+/m/0168t	/m/018wl5	/m/0162v	/m/09nqf
+/location/country/form_of_government	_/location/country/form_of_government	/location/statistical_region/gdp_real./measurement_unit/adjusted_money_value/adjustment_currency
+1
+-5.045070681953803
+___
+/m/0168t	/m/018wl5	/m/0162v	/m/09nqf
+/location/country/form_of_government	_/location/country/form_of_government	/location/statistical_region/gdp_real./measurement_unit/adjusted_money_value/adjustment_currency
+1
+-5.045070681953803
+___
+/m/0168t	/m/018wl5	/m/0162v	/m/09nqf
+/location/country/form_of_government	_/location/country/form_of_government	/location/statistical_region/gdp_real./measurement_unit/adjusted_money_value/adjustment_currency
+1
+-5.045070681953803
+___
+/m/0168t	/m/018wl5	/m/0162v	/m/09nqf
+/location/country/form_of_government	_/location/country/form_of_government	/location/statistical_region/gdp_real./measurement_unit/adjusted_money_value/adjustment_currency
+1
+-5.045070681953803
+___
+/m/0168t	/m/018wl5	/m/0162b	/m/09nqf
+/location/country/form_of_government	_/location/country/form_of_government	/location/statistical_region/gdp_real./measurement_unit/adjusted_money_value/adjustment_currency
+1
+-5.045071632601321
+___
+/m/0168t	/m/018wl5	/m/04hqz	/m/09nqf
+/location/country/form_of_government	_/location/country/form_of_government	/location/statistical_region/gdp_real./measurement_unit/adjusted_money_value/adjustment_currency
+1
+-5.045407626079395
+___
+/m/0168t	/m/018wl5	/m/04hqz	/m/09nqf
+/location/country/form_of_government	_/location/country/form_of_government	/location/statistical_region/gdp_real./measurement_unit/adjusted_money_value/adjustment_currency
+1
+-5.045407626079395
+___
+/m/0168t	/m/018wl5	/m/04hqz	/m/09nqf
+/location/country/form_of_government	_/location/country/form_of_government	/location/statistical_region/gdp_real./measurement_unit/adjusted_money_value/adjustment_currency
+1
+-5.045407626079395
+___
+/m/0168t	/m/018wl5	/m/04j53	/m/09nqf
+/location/country/form_of_government	_/location/country/form_of_government	/location/statistical_region/gdp_real./measurement_unit/adjusted_money_value/adjustment_currency
+1
+-5.047505387570709
+___
+/m/0168t	/m/018wl5	/m/04j53	/m/09nqf
+/location/country/form_of_government	_/location/country/form_of_government	/location/statistical_region/gdp_real./measurement_unit/adjusted_money_value/adjustment_currency
+1
+-5.047505387570709
+___
+/m/0168t	/m/018wl5	/m/07bxhl	/m/09nqf
+/location/country/form_of_government	_/location/country/form_of_government	/location/statistical_region/gdp_real./measurement_unit/adjusted_money_value/adjustment_currency
+1
+-5.04750633565709
+___
+/m/0168t	/m/018wl5	/m/05qkp	/m/09nqf
+/location/country/form_of_government	_/location/country/form_of_government	/location/statistical_region/gdp_real./measurement_unit/adjusted_money_value/adjustment_currency
+1
+-5.047506454400718
+___
+/m/0168t	/m/018wl5	/m/06s9y	/m/09nqf
+/location/country/form_of_government	_/location/country/form_of_government	/location/statistical_region/gdp_real./measurement_unit/adjusted_money_value/adjustment_currency
+1
+-5.047506454400718
+___
+/m/0168t	/m/018wl5	/m/06s9y	/m/09nqf
+/location/country/form_of_government	_/location/country/form_of_government	/location/statistical_region/gdp_real./measurement_unit/adjusted_money_value/adjustment_currency
+1
+-5.047506454400718
+___
+/m/0168t	/m/018wl5	/m/0hg5	/m/09nqf
+/location/country/form_of_government	_/location/country/form_of_government	/location/statistical_region/gdp_real./measurement_unit/adjusted_money_value/adjustment_currency
+1
+-5.047506928443909
+___
+/m/0168t	/m/018wl5	/m/01pj7	/m/09nqf
+/location/country/form_of_government	_/location/country/form_of_government	/location/statistical_region/gdp_real./measurement_unit/adjusted_money_value/adjustment_currency
+1
+-5.047517597209662
+___
+/m/0168t	/m/018wl5	/m/07f1x	/m/09nqf
+/location/country/form_of_government	_/location/country/form_of_government	/location/statistical_region/gdp_real./measurement_unit/adjusted_money_value/adjustment_currency
+1
+-5.047525183763355
+___
+/m/0168t	/m/018wl5	/m/01xbgx	/m/09nqf
+/location/country/form_of_government	_/location/country/form_of_government	/location/statistical_region/gdp_real./measurement_unit/adjusted_money_value/adjustment_currency
+1
+-5.047776216175407
+___
+/m/0168t	/m/018wl5	/m/01xbgx	/m/09nqf
+/location/country/form_of_government	_/location/country/form_of_government	/location/statistical_region/gdp_real./measurement_unit/adjusted_money_value/adjustment_currency
+1
+-5.047776216175407
+___
+/m/0168t	/m/018wl5	/m/01xbgx	/m/09nqf
+/location/country/form_of_government	_/location/country/form_of_government	/location/statistical_region/gdp_real./measurement_unit/adjusted_money_value/adjustment_currency
+1
+-5.047776216175407
+___
+/m/0168t	/m/018wl5	/m/01xbgx	/m/09nqf
+/location/country/form_of_government	_/location/country/form_of_government	/location/statistical_region/gdp_real./measurement_unit/adjusted_money_value/adjustment_currency
+1
+-5.047776216175407
+___
+/m/0168t	/m/018wl5	/m/04wgh	/m/09nqf
+/location/country/form_of_government	_/location/country/form_of_government	/location/statistical_region/gdp_real./measurement_unit/adjusted_money_value/adjustment_currency
+1
+-5.048044128343463
+___
+/m/0168t	/m/018wl5	/m/06mkj	/m/09nqf
+/location/country/form_of_government	_/location/country/form_of_government	/location/statistical_region/gdp_real./measurement_unit/adjusted_money_value/adjustment_currency
+1
+-5.049926138482988
+___
+/m/0168t	/m/018wl5	/m/03spz	/m/09nqf
+/location/country/form_of_government	_/location/country/form_of_government	/location/statistical_region/gdp_real./measurement_unit/adjusted_money_value/adjustment_currency
+1
+-5.050197967328131
+___
+/m/0168t	/m/018wl5	/m/0hzlz	/m/09nqf
+/location/country/form_of_government	_/location/country/form_of_government	/location/statistical_region/gdp_real./measurement_unit/adjusted_money_value/adjustment_currency
+1
+-5.050221256911755
+___
+/m/0168t	/m/018wl5	/m/06jnv	/m/0m77m
+/location/country/form_of_government	_/location/country/form_of_government	_/people/person/places_lived./people/place_lived/location
+-1
+-5.202920585870743
+___
+/m/0168t	/m/018wl5	/m/05b4w	/m/09nqf
+/location/country/form_of_government	_/location/country/form_of_government	/location/statistical_region/gdp_nominal./measurement_unit/dated_money_value/currency
+1
+-5.309644997119904
+___
+/m/0168t	/m/018wl5	/m/03_r3	/m/09nqf
+/location/country/form_of_government	_/location/country/form_of_government	/location/statistical_region/gdp_nominal./measurement_unit/dated_money_value/currency
+1
+-5.510868489742279
+___
+/m/0168t	/m/01q20	/m/01nty	/m/09nqf
+/location/country/form_of_government	_/location/country/form_of_government	/location/statistical_region/gdp_nominal_per_capita./measurement_unit/dated_money_value/currency
+1
+-5.607840657234192
+___
+/m/0168t	/m/01q20	/m/0n3g	/m/09nqf
+/location/country/form_of_government	_/location/country/form_of_government	/location/statistical_region/gdp_nominal_per_capita./measurement_unit/dated_money_value/currency
+1
+-5.608097672462463
+___
+/m/0168t	/m/01q20	/m/03_xj	/m/09nqf
+/location/country/form_of_government	_/location/country/form_of_government	/location/statistical_region/gdp_nominal_per_capita./measurement_unit/dated_money_value/currency
+1
+-5.608478546142578
+___
+/m/0168t	/m/01q20	/m/0168t	/m/0261m
+/location/country/form_of_government	_/location/country/form_of_government	_/location/location/contains
+-1
+-5.665325939655304
+___
+/m/0168t	/m/01q20	/m/07fsv	/m/09nqf
+/location/country/form_of_government	_/location/country/form_of_government	/location/statistical_region/gdp_nominal./measurement_unit/dated_money_value/currency
+1
+-5.680168569087982
+___
+/m/0168t	/m/01q20	/m/07fb6	/m/09nqf
+/location/country/form_of_government	_/location/country/form_of_government	/location/statistical_region/gdp_nominal./measurement_unit/dated_money_value/currency
+1
+-5.680320382118225
+___
+/m/0168t	/m/018wl5	/m/07fb6	/m/09nqf
+/location/country/form_of_government	_/location/country/form_of_government	/location/statistical_region/gdp_nominal_per_capita./measurement_unit/dated_money_value/currency
+1
+-5.699856638908386
+___
+/m/0168t	/m/018wl5	/m/05r4w	/m/09nqf
+/location/country/form_of_government	_/location/country/form_of_government	/location/statistical_region/gdp_nominal_per_capita./measurement_unit/dated_money_value/currency
+1
+-5.699966549873352
+___
+/m/0168t	/m/018wl5	/m/05r4w	/m/09nqf
+/location/country/form_of_government	_/location/country/form_of_government	/location/statistical_region/gdp_nominal_per_capita./measurement_unit/dated_money_value/currency
+1
+-5.699966549873352
+___
+/m/0168t	/m/018wl5	/m/01nty	/m/09nqf
+/location/country/form_of_government	_/location/country/form_of_government	/location/statistical_region/gdp_nominal./measurement_unit/dated_money_value/currency
+1
+-5.77191960811615
+___
+/m/0168t	/m/07ww5	/m/0168t	/m/07ww5
+_/location/location/adjoin_s./location/adjoining_relationship/adjoins	/location/location/adjoin_s./location/adjoining_relationship/adjoins	_/location/location/adjoin_s./location/adjoining_relationship/adjoins
+-1
+-5.824202239513397
+___
+/m/0168t	/m/018wl5	/m/0k6nt	/m/09nqf
+/location/country/form_of_government	_/location/country/form_of_government	/location/statistical_region/gdp_nominal_per_capita./measurement_unit/dated_money_value/currency
+1
+-5.953933238983154
+___
+/m/0168t	/m/01q20	/m/014tss	/m/0kn4c
+/location/country/form_of_government	_/location/country/form_of_government	_/people/person/nationality
+-1
+-6.348796486854553
+___
+/m/0168t	/m/01q20	/m/014tss	/m/034rd
+/location/country/form_of_government	_/location/country/form_of_government	_/people/person/nationality
+-1
+-6.348796486854553
+___
+/m/0168t	/m/018wl5	/m/014tss	/m/03s9v
+/location/country/form_of_government	_/location/country/form_of_government	_/people/person/nationality
+-1
+-6.440604090690613
+___
+/m/0168t	/m/01q20	/m/012m_	/m/019r_1
+/location/country/form_of_government	_/location/country/form_of_government	_/people/person/nationality
+-1
+-6.5632946491241455
+___
+/m/0168t	/m/01q20	/m/088q1s	/m/0cm2xh
+/location/country/form_of_government	_/location/country/form_of_government	_/military/military_conflict/combatants./military/military_combatant_group/combatants
+-1
+-6.8453086614608765
+___
+/m/0168t	/m/018wl5	/m/088q1s	/m/0cm2xh
+/location/country/form_of_government	_/location/country/form_of_government	_/military/military_conflict/combatants./military/military_combatant_group/combatants
+-1
+-6.937116265296936
+___
+/m/0168t	/m/01q20	/m/07ssc	/m/09nqf
+/location/country/form_of_government	_/location/country/form_of_government	/location/statistical_region/gdp_nominal_per_capita./measurement_unit/dated_money_value/currency
+1
+-7.046627044677734
+___
+/m/0168t	/m/07c5l	/m/0165v	/m/09nqf
+_/location/location/contains	/location/location/contains	/location/statistical_region/gdp_real./measurement_unit/adjusted_money_value/adjustment_currency
+1
+-7.058148734737188
+___
+/m/0168t	/m/01q20	/m/02psqkz	/m/0d060g
+/location/country/form_of_government	_/location/country/form_of_government	_/military/military_combatant/military_conflicts./military/military_combatant_group/combatants
+-1
+-8.110759735107422
+___
+/m/0168t	/m/018wl5	/m/0d0vqn	/m/0bdt8
+/location/country/form_of_government	_/location/country/form_of_government	_/people/person/nationality
+-1
+-8.502536296844482
+___
+/m/0168t	/m/07ww5	/m/09nqf	/m/05br2
+/location/location/adjoin_s./location/adjoining_relationship/adjoins	/location/statistical_region/gdp_nominal./measurement_unit/dated_money_value/currency	_/location/statistical_region/gdp_nominal_per_capita./measurement_unit/dated_money_value/currency
+-1
+-8.587438829243183
+___
+/m/0168t	/m/07ww5	/m/0168t	/m/07ww5
+/location/location/adjoin_s./location/adjoining_relationship/adjoins	_/location/location/adjoin_s./location/adjoining_relationship/adjoins	_/location/location/adjoin_s./location/adjoining_relationship/adjoins
+-1
+-8.620501816272736
+___
+/m/0168t	/m/01q20	/m/07ssc	/m/04mhbh
+/location/country/form_of_government	_/location/country/form_of_government	_/people/person/nationality
+-1
+-9.425325632095337
+___
+/m/0168t	/m/01q20	/m/07ssc	/m/0131kb
+/location/country/form_of_government	_/location/country/form_of_government	_/people/person/nationality
+-1
+-9.425325632095337
+___
+/m/0168t	/m/018wl5	/m/07ssc	/m/021bk
+/location/country/form_of_government	_/location/country/form_of_government	_/people/person/nationality
+-1
+-9.517133235931396
+___
+/m/0168t	/m/01q20	/m/02jx1	/m/0dgskx
+/location/country/form_of_government	_/location/country/form_of_government	_/people/person/nationality
+-1
+-10.48773980140686
+___
+#####################
+/m/035hm	/m/09nqf
+Reward:1
+/m/035hm	/m/07ssc	/m/06q1r	/m/09nqf
+/location/administrative_division/country	_/base/aareas/schema/administrative_area/administrative_parent	/location/statistical_region/gdp_nominal./measurement_unit/dated_money_value/currency
+1
+-3.241548866033554
+___
+/m/035hm	/m/07ssc	/m/06q1r	/m/09nqf
+/location/administrative_division/country	_/base/aareas/schema/administrative_area/administrative_parent	/location/statistical_region/gdp_nominal./measurement_unit/dated_money_value/currency
+1
+-3.241548866033554
+___
+/m/035hm	/m/07ssc	/m/06q1r	/m/09nqf
+/location/administrative_division/country	_/base/aareas/schema/administrative_area/administrative_parent	/location/statistical_region/gdp_nominal./measurement_unit/dated_money_value/currency
+1
+-3.241548866033554
+___
+/m/035hm	/m/07ssc	/m/06q1r	/m/09nqf
+/location/administrative_division/country	_/base/aareas/schema/administrative_area/administrative_parent	/location/statistical_region/gdp_nominal./measurement_unit/dated_money_value/currency
+1
+-3.241548866033554
+___
+/m/035hm	/m/03v9w	/m/03v9w	/m/02j9z
+_/location/location/contains	NO_OP	_/location/location/contains
+-1
+-3.712337026838213
+___
+/m/035hm	/m/03v9w	/m/03v9w	/m/02j9z
+_/location/location/contains	NO_OP	_/location/location/contains
+-1
+-3.712337026838213
+___
+/m/035hm	/m/03v9w	/m/03v9w	/m/02j9z
+_/location/location/contains	NO_OP	_/location/location/contains
+-1
+-3.712337026838213
+___
+/m/035hm	/m/07ssc	/m/05v8c	/m/09nqf
+/location/administrative_division/country	_/military/military_combatant/military_conflicts./military/military_combatant_group/combatants	/location/statistical_region/gdp_real./measurement_unit/adjusted_money_value/adjustment_currency
+1
+-3.8435034174472094
+___
+/m/035hm	/m/07ssc	/m/05v8c	/m/09nqf
+/location/administrative_division/country	_/military/military_combatant/military_conflicts./military/military_combatant_group/combatants	/location/statistical_region/gdp_real./measurement_unit/adjusted_money_value/adjustment_currency
+1
+-3.8435034174472094
+___
+/m/035hm	/m/07ssc	/m/06qd3	/m/09nqf
+/location/administrative_division/country	_/military/military_combatant/military_conflicts./military/military_combatant_group/combatants	/location/statistical_region/gdp_nominal./measurement_unit/dated_money_value/currency
+1
+-3.88072969019413
+___
+/m/035hm	/m/07ssc	/m/06qd3	/m/09nqf
+/location/administrative_division/country	_/military/military_combatant/military_conflicts./military/military_combatant_group/combatants	/location/statistical_region/gdp_nominal./measurement_unit/dated_money_value/currency
+1
+-3.88072969019413
+___
+/m/035hm	/m/07ssc	/m/0k6nt	/m/09nqf
+/location/administrative_division/country	_/military/military_combatant/military_conflicts./military/military_combatant_group/combatants	/location/statistical_region/gdp_nominal./measurement_unit/dated_money_value/currency
+1
+-3.8807683810591698
+___
+/m/035hm	/m/07ssc	/m/06q1r	/m/01nv4h
+/location/administrative_division/country	_/base/aareas/schema/administrative_area/administrative_parent	/location/statistical_region/gdp_nominal_per_capita./measurement_unit/dated_money_value/currency
+-1
+-4.562828421592712
+___
+/m/035hm	/m/07ssc	/m/06q1r	/m/01nv4h
+/location/administrative_division/country	_/base/aareas/schema/administrative_area/administrative_parent	/location/statistical_region/gdp_nominal_per_capita./measurement_unit/dated_money_value/currency
+-1
+-4.562828421592712
+___
+/m/035hm	/m/03v9w	/m/05r4w	/m/09nqf
+_/location/location/contains	/location/location/partially_contains	/location/statistical_region/gdp_nominal./measurement_unit/dated_money_value/currency
+1
+-4.624085001647472
+___
+/m/035hm	/m/06mkj	/m/0f8l9c	/m/09nqf
+_/location/location/adjoin_s./location/adjoining_relationship/adjoins	_/location/location/adjoin_s./location/adjoining_relationship/adjoins	/location/statistical_region/gdp_real./measurement_unit/adjusted_money_value/adjustment_currency
+1
+-4.671530842646462
+___
+/m/035hm	/m/06mkj	/m/0f8l9c	/m/09nqf
+_/location/location/adjoin_s./location/adjoining_relationship/adjoins	_/location/location/adjoin_s./location/adjoining_relationship/adjoins	/location/statistical_region/gdp_real./measurement_unit/adjusted_money_value/adjustment_currency
+1
+-4.671530842646462
+___
+/m/035hm	/m/06mkj	/m/0f8l9c	/m/09nqf
+_/location/location/adjoin_s./location/adjoining_relationship/adjoins	_/location/location/adjoin_s./location/adjoining_relationship/adjoins	/location/statistical_region/gdp_real./measurement_unit/adjusted_money_value/adjustment_currency
+1
+-4.671530842646462
+___
+/m/035hm	/m/06mkj	/m/0f8l9c	/m/09nqf
+_/location/location/adjoin_s./location/adjoining_relationship/adjoins	_/location/location/adjoin_s./location/adjoining_relationship/adjoins	/location/statistical_region/gdp_real./measurement_unit/adjusted_money_value/adjustment_currency
+1
+-4.671530842646462
+___
+/m/035hm	/m/06mkj	/m/0f8l9c	/m/09nqf
+_/location/location/adjoin_s./location/adjoining_relationship/adjoins	_/location/location/adjoin_s./location/adjoining_relationship/adjoins	/location/statistical_region/gdp_real./measurement_unit/adjusted_money_value/adjustment_currency
+1
+-4.671530842646462
+___
+/m/035hm	/m/06mkj	/m/0hg5	/m/09nqf
+_/location/location/adjoin_s./location/adjoining_relationship/adjoins	_/location/location/adjoin_s./location/adjoining_relationship/adjoins	/location/statistical_region/gdp_real./measurement_unit/adjusted_money_value/adjustment_currency
+1
+-4.696102304384112
+___
+/m/035hm	/m/018wl5	/m/02lx0	/m/09nqf
+/location/country/form_of_government	_/location/country/form_of_government	/location/statistical_region/gdp_real./measurement_unit/adjusted_money_value/adjustment_currency
+1
+-5.013235568995697
+___
+/m/035hm	/m/018wl5	/m/015qh	/m/09nqf
+/location/country/form_of_government	_/location/country/form_of_government	/location/statistical_region/gdp_real./measurement_unit/adjusted_money_value/adjustment_currency
+1
+-5.013246774572508
+___
+/m/035hm	/m/018wl5	/m/01n8qg	/m/09nqf
+/location/country/form_of_government	_/location/country/form_of_government	/location/statistical_region/gdp_real./measurement_unit/adjusted_money_value/adjustment_currency
+1
+-5.015948775690049
+___
+/m/035hm	/m/018wl5	/m/01n8qg	/m/09nqf
+/location/country/form_of_government	_/location/country/form_of_government	/location/statistical_region/gdp_real./measurement_unit/adjusted_money_value/adjustment_currency
+1
+-5.015948775690049
+___
+/m/035hm	/m/018wl5	/m/0160w	/m/09nqf
+/location/country/form_of_government	_/location/country/form_of_government	/location/statistical_region/gdp_real./measurement_unit/adjusted_money_value/adjustment_currency
+1
+-5.016151217976585
+___
+/m/035hm	/m/018wl5	/m/06s6l	/m/09nqf
+/location/country/form_of_government	_/location/country/form_of_government	/location/statistical_region/gdp_real./measurement_unit/adjusted_money_value/adjustment_currency
+1
+-5.016152168856934
+___
+/m/035hm	/m/018wl5	/m/02w9s	/m/09nqf
+/location/country/form_of_government	_/location/country/form_of_government	/location/statistical_region/gdp_real./measurement_unit/adjusted_money_value/adjustment_currency
+1
+-5.0161534764338285
+___
+/m/035hm	/m/018wl5	/m/0162v	/m/09nqf
+/location/country/form_of_government	_/location/country/form_of_government	/location/statistical_region/gdp_real./measurement_unit/adjusted_money_value/adjustment_currency
+1
+-5.016422186279669
+___
+/m/035hm	/m/018wl5	/m/05c17	/m/09nqf
+/location/country/form_of_government	_/location/country/form_of_government	/location/statistical_region/gdp_real./measurement_unit/adjusted_money_value/adjustment_currency
+1
+-5.018857365939766
+___
+/m/035hm	/m/018wl5	/m/03t1s	/m/09nqf
+/location/country/form_of_government	_/location/country/form_of_government	/location/statistical_region/gdp_real./measurement_unit/adjusted_money_value/adjustment_currency
+1
+-5.018857365939766
+___
+/m/035hm	/m/018wl5	/m/06dfg	/m/09nqf
+/location/country/form_of_government	_/location/country/form_of_government	/location/statistical_region/gdp_real./measurement_unit/adjusted_money_value/adjustment_currency
+1
+-5.018857839982957
+___
+/m/035hm	/m/018wl5	/m/07bxhl	/m/09nqf
+/location/country/form_of_government	_/location/country/form_of_government	/location/statistical_region/gdp_real./measurement_unit/adjusted_money_value/adjustment_currency
+1
+-5.018857839982957
+___
+/m/035hm	/m/018wl5	/m/06dfg	/m/09nqf
+/location/country/form_of_government	_/location/country/form_of_government	/location/statistical_region/gdp_real./measurement_unit/adjusted_money_value/adjustment_currency
+1
+-5.018857839982957
+___
+/m/035hm	/m/018wl5	/m/06s9y	/m/09nqf
+/location/country/form_of_government	_/location/country/form_of_government	/location/statistical_region/gdp_real./measurement_unit/adjusted_money_value/adjustment_currency
+1
+-5.018857958726585
+___
+/m/035hm	/m/018wl5	/m/03__y	/m/09nqf
+/location/country/form_of_government	_/location/country/form_of_government	/location/statistical_region/gdp_real./measurement_unit/adjusted_money_value/adjustment_currency
+1
+-5.018859025556594
+___
+/m/035hm	/m/018wl5	/m/07f1x	/m/09nqf
+/location/country/form_of_government	_/location/country/form_of_government	/location/statistical_region/gdp_real./measurement_unit/adjusted_money_value/adjustment_currency
+1
+-5.018869812600315
+___
+/m/035hm	/m/018wl5	/m/09pmkv	/m/09nqf
+/location/country/form_of_government	_/location/country/form_of_government	/location/statistical_region/gdp_real./measurement_unit/adjusted_money_value/adjustment_currency
+1
+-5.019127246458083
+___
+/m/035hm	/m/018wl5	/m/035yg	/m/09nqf
+/location/country/form_of_government	_/location/country/form_of_government	/location/statistical_region/gdp_real./measurement_unit/adjusted_money_value/adjustment_currency
+1
+-5.019395987968892
+___
+/m/035hm	/m/018wl5	/m/07t21	/m/09nqf
+/location/country/form_of_government	_/location/country/form_of_government	/location/statistical_region/gdp_real./measurement_unit/adjusted_money_value/adjustment_currency
+1
+-5.019666434265673
+___
+/m/035hm	/m/018wl5	/m/03_3d	/m/09nqf
+/location/country/form_of_government	_/location/country/form_of_government	/location/statistical_region/gdp_real./measurement_unit/adjusted_money_value/adjustment_currency
+1
+-5.027970490977168
+___
+/m/035hm	/m/018wl5	/m/03rt9	/m/09nqf
+/location/country/form_of_government	_/location/country/form_of_government	/location/statistical_region/gdp_real./measurement_unit/adjusted_money_value/adjustment_currency
+1
+-5.0295703783631325
+___
+/m/035hm	/m/02j9z	/m/04swx	/m/02j9z
+_/location/location/contains	/location/location/adjoin_s./location/adjoining_relationship/adjoins	_/location/location/adjoin_s./location/adjoining_relationship/adjoins
+-1
+-5.0819822828052565
+___
+/m/035hm	/m/02j9z	/m/0dg3n1	/m/02j9z
+_/location/location/contains	/location/location/adjoin_s./location/adjoining_relationship/adjoins	_/location/location/adjoin_s./location/adjoining_relationship/adjoins
+-1
+-5.08683381928131
+___
+/m/035hm	/m/02j9z	/m/0dg3n1	/m/02j9z
+_/location/location/contains	/location/location/adjoin_s./location/adjoining_relationship/adjoins	_/location/location/adjoin_s./location/adjoining_relationship/adjoins
+-1
+-5.08683381928131
+___
+/m/035hm	/m/018wl5	/m/06jnv	/m/0m77m
+/location/country/form_of_government	_/location/country/form_of_government	_/people/person/places_lived./people/place_lived/location
+-1
+-5.1742720901966095
+___
+/m/035hm	/m/07ssc	/m/0bq0p9	/m/0mbhr
+/location/administrative_division/country	_/military/military_combatant/military_conflicts./military/military_combatant_group/combatants	_/people/person/nationality
+-1
+-5.363700032234192
+___
+/m/035hm	/m/02j9z	/m/04swx	/m/02j9z
+_/location/location/contains	_/location/location/adjoin_s./location/adjoining_relationship/adjoins	_/location/location/adjoin_s./location/adjoining_relationship/adjoins
+-1
+-5.381372952921083
+___
+/m/035hm	/m/02j9z	/m/0dg3n1	/m/02j9z
+_/location/location/contains	_/location/location/adjoin_s./location/adjoining_relationship/adjoins	_/location/location/adjoin_s./location/adjoining_relationship/adjoins
+-1
+-5.383019424043596
+___
+/m/035hm	/m/07ssc	/m/06bnz	/m/09nqf
+/location/administrative_division/country	/military/military_combatant/military_conflicts./military/military_combatant_group/combatants	/location/statistical_region/gdp_real./measurement_unit/adjusted_money_value/adjustment_currency
+1
+-5.517829813994467
+___
+/m/035hm	/m/06mkj	/m/09nqf	/m/04wgh
+_/location/location/adjoin_s./location/adjoining_relationship/adjoins	/location/statistical_region/gdp_real./measurement_unit/adjusted_money_value/adjustment_currency	_/location/statistical_region/gdp_nominal_per_capita./measurement_unit/dated_money_value/currency
+-1
+-5.531508564949036
+___
+/m/035hm	/m/06mkj	/m/09nqf	/m/05r7t
+_/location/location/adjoin_s./location/adjoining_relationship/adjoins	/location/statistical_region/gdp_real./measurement_unit/adjusted_money_value/adjustment_currency	_/location/statistical_region/gdp_nominal_per_capita./measurement_unit/dated_money_value/currency
+-1
+-5.531508564949036
+___
+/m/035hm	/m/06mkj	/m/09nqf	/m/0j1z8
+_/location/location/adjoin_s./location/adjoining_relationship/adjoins	/location/statistical_region/gdp_real./measurement_unit/adjusted_money_value/adjustment_currency	_/location/statistical_region/gdp_nominal_per_capita./measurement_unit/dated_money_value/currency
+-1
+-5.531508564949036
+___
+/m/035hm	/m/06mkj	/m/09nqf	/m/09pmkv
+_/location/location/adjoin_s./location/adjoining_relationship/adjoins	/location/statistical_region/gdp_real./measurement_unit/adjusted_money_value/adjustment_currency	_/location/statistical_region/gdp_nominal_per_capita./measurement_unit/dated_money_value/currency
+-1
+-5.531508564949036
+___
+/m/035hm	/m/06mkj	/m/09nqf	/m/01ppq
+_/location/location/adjoin_s./location/adjoining_relationship/adjoins	/location/statistical_region/gdp_real./measurement_unit/adjusted_money_value/adjustment_currency	_/location/statistical_region/gdp_nominal_per_capita./measurement_unit/dated_money_value/currency
+-1
+-5.531508564949036
+___
+/m/035hm	/m/06mkj	/m/09nqf	/m/0161c
+_/location/location/adjoin_s./location/adjoining_relationship/adjoins	/location/statistical_region/gdp_real./measurement_unit/adjusted_money_value/adjustment_currency	_/location/statistical_region/gdp_nominal_per_capita./measurement_unit/dated_money_value/currency
+-1
+-5.531508564949036
+___
+/m/035hm	/m/06mkj	/m/09nqf	/m/05l8y
+_/location/location/adjoin_s./location/adjoining_relationship/adjoins	/location/statistical_region/gdp_real./measurement_unit/adjusted_money_value/adjustment_currency	_/location/statistical_region/gdp_nominal_per_capita./measurement_unit/dated_money_value/currency
+-1
+-5.531508564949036
+___
+/m/035hm	/m/018wl5	/m/05r4w	/m/09nqf
+/location/country/form_of_government	_/location/country/form_of_government	/location/statistical_region/gdp_nominal_per_capita./measurement_unit/dated_money_value/currency
+1
+-5.671301007270813
+___
+/m/035hm	/m/018wl5	/m/0168t	/m/0261m
+/location/country/form_of_government	_/location/country/form_of_government	_/location/location/contains
+-1
+-5.72848504781723
+___
+/m/035hm	/m/06mkj	/m/09nqf	/m/07fb6
+_/location/location/adjoin_s./location/adjoining_relationship/adjoins	/location/statistical_region/gdp_nominal./measurement_unit/dated_money_value/currency	_/location/statistical_region/gdp_nominal_per_capita./measurement_unit/dated_money_value/currency
+-1
+-5.967604994773865
+___
+/m/035hm	/m/06mkj	/m/09nqf	/m/05r7t
+_/location/location/adjoin_s./location/adjoining_relationship/adjoins	/location/statistical_region/gdp_nominal./measurement_unit/dated_money_value/currency	_/location/statistical_region/gdp_nominal_per_capita./measurement_unit/dated_money_value/currency
+-1
+-5.967604994773865
+___
+/m/035hm	/m/06mkj	/m/09nqf	/m/09pmkv
+_/location/location/adjoin_s./location/adjoining_relationship/adjoins	/location/statistical_region/gdp_nominal./measurement_unit/dated_money_value/currency	_/location/statistical_region/gdp_nominal_per_capita./measurement_unit/dated_money_value/currency
+-1
+-5.967604994773865
+___
+/m/035hm	/m/018wl5	/m/0d0vqn	/m/09nqf
+/location/country/form_of_government	_/location/country/form_of_government	/location/statistical_region/gdp_nominal_per_capita./measurement_unit/dated_money_value/currency
+1
+-6.095186710357666
+___
+/m/035hm	/m/018wl5	/m/084n_	/m/01kx1j
+/location/country/form_of_government	_/location/country/form_of_government	_/people/person/nationality
+-1
+-6.112706899642944
+___
+/m/035hm	/m/018wl5	/m/084n_	/m/01kx1j
+/location/country/form_of_government	_/location/country/form_of_government	_/people/person/nationality
+-1
+-6.112706899642944
+___
+/m/035hm	/m/018wl5	/m/035hm	/m/03v9w
+/location/country/form_of_government	_/location/country/form_of_government	_/location/location/contains
+-1
+-6.113970160484314
+___
+/m/035hm	/m/03v9w	/m/04llb	/m/03v9w
+_/location/location/contains	/location/location/contains	_/location/location/contains
+-1
+-6.311287105083466
+___
+/m/035hm	/m/018wl5	/m/014tss	/m/0465_
+/location/country/form_of_government	_/location/country/form_of_government	_/people/person/nationality
+-1
+-6.4119555950164795
+___
+/m/035hm	/m/03v9w	/m/056_y	/m/03v9w
+_/location/location/contains	/location/location/contains	_/location/location/contains
+-1
+-6.510055691003799
+___
+/m/035hm	/m/03v9w	/m/056_y	/m/03v9w
+_/location/location/contains	/location/location/contains	_/location/location/contains
+-1
+-6.510055691003799
+___
+/m/035hm	/m/07ssc	/m/03b79	/m/027qpc
+/location/administrative_division/country	_/military/military_combatant/military_conflicts./military/military_combatant_group/combatants	_/military/military_combatant/military_conflicts./military/military_combatant_group/combatants
+-1
+-6.847485423088074
+___
+/m/035hm	/m/07ssc	/m/06nv27	/m/04jpl
+/location/administrative_division/country	_/music/artist/origin	/music/artist/origin
+-1
+-6.892547607421875
+___
+/m/035hm	/m/07ssc	/m/085bd1	/m/02h40lc
+/location/administrative_division/country	_/film/film/country	/film/film/language
+-1
+-7.147926047357032
+___
+/m/035hm	/m/07ssc	/m/0gh8zks	/m/02h40lc
+/location/administrative_division/country	_/film/film/country	/film/film/language
+-1
+-7.148460160009563
+___
+/m/035hm	/m/07ssc	/m/0dscrwf	/m/02h40lc
+/location/administrative_division/country	_/film/film/country	/film/film/language
+-1
+-7.149065412813798
+___
+/m/035hm	/m/07ssc	/m/01vw8k	/m/02h40lc
+/location/administrative_division/country	_/film/film/country	/film/film/language
+-1
+-7.149417822016403
+___
+/m/035hm	/m/07ssc	/m/089j8p	/m/02h40lc
+/location/administrative_division/country	_/film/film/country	/film/film/language
+-1
+-7.15270182909444
+___
+/m/035hm	/m/03v9w	/m/035hm	/m/02qkt
+_/location/location/contains	/location/location/contains	_/location/location/contains
+-1
+-7.3312482833862305
+___
+/m/035hm	/m/07ssc	/m/0ctw_b	/m/09nqf
+/location/administrative_division/country	_/location/statistical_region/places_exported_to./location/imports_and_exports/exported_to	/location/statistical_region/gdp_real./measurement_unit/adjusted_money_value/adjustment_currency
+1
+-7.345892638433725
+___
+/m/035hm	/m/06mkj	/m/035hm	/m/02qkt
+_/location/location/adjoin_s./location/adjoining_relationship/adjoins	/location/location/adjoin_s./location/adjoining_relationship/adjoins	_/location/location/contains
+-1
+-7.432987332344055
+___
+/m/035hm	/m/02j9z	/m/0j3b	/m/034m8
+_/location/location/contains	/location/location/adjoin_s./location/adjoining_relationship/adjoins	_/location/location/adjoin_s./location/adjoining_relationship/adjoins
+-1
+-7.56697678565979
+___
+/m/035hm	/m/02qkt	/m/0163v	/m/09nqf
+_/location/location/contains	/location/location/contains	/location/statistical_region/gdp_real./measurement_unit/adjusted_money_value/adjustment_currency
+1
+-7.610856982413679
+___
+/m/035hm	/m/02qkt	/m/03rt9	/m/09nqf
+_/location/location/contains	/location/location/contains	/location/statistical_region/gdp_real./measurement_unit/adjusted_money_value/adjustment_currency
+1
+-7.614620598498732
+___
+/m/035hm	/m/07ssc	/m/017kz7	/m/064_8sq
+/location/administrative_division/country	_/film/film/country	/film/film/language
+-1
+-7.8600680232048035
+___
+/m/035hm	/m/07ssc	/m/05q96q6	/m/064_8sq
+/location/administrative_division/country	_/film/film/country	/film/film/language
+-1
+-7.889922738075256
+___
+/m/035hm	/m/07ssc	/m/0dr3sl	/m/02h40lc
+/location/administrative_division/country	_/film/film/distributors./film/film_film_distributor_relationship/region	/film/film/language
+-1
+-7.937820948660374
+___
+/m/035hm	/m/02qkt	/m/04gzd	/m/09nqf
+_/location/location/contains	/location/location/contains	/location/statistical_region/gdp_nominal./measurement_unit/dated_money_value/currency
+1
+-8.091977715492249
+___
+/m/035hm	/m/018wl5	/m/0d0vqn	/m/02zmh5
+/location/country/form_of_government	_/location/country/form_of_government	_/people/person/nationality
+-1
+-8.4738849401474
+___
+/m/035hm	/m/02qkt	/m/0jhd	/m/09nqf
+_/location/location/contains	/location/location/contains	/location/statistical_region/gdp_nominal_per_capita./measurement_unit/dated_money_value/currency
+1
+-8.564864456653595
+___
+/m/035hm	/m/02j9z	/m/049nq	/m/09nqf
+_/location/location/contains	/location/location/partially_contains	/location/statistical_region/gdp_nominal_per_capita./measurement_unit/dated_money_value/currency
+1
+-8.891878472990356
+___
+/m/035hm	/m/018wl5	/m/0d060g	/m/073v6
+/location/country/form_of_government	_/location/country/form_of_government	_/people/person/nationality
+-1
+-9.45378291606903
+___
+/m/035hm	/m/018wl5	/m/07ssc	/m/01tsbmv
+/location/country/form_of_government	_/location/country/form_of_government	_/people/person/nationality
+-1
+-9.488420844078064
+___
+/m/035hm	/m/018wl5	/m/07ssc	/m/021bk
+/location/country/form_of_government	_/location/country/form_of_government	_/people/person/nationality
+-1
+-9.488420844078064
+___
+/m/035hm	/m/07ssc	/m/01l_vgt	/m/0qf3p
+/location/administrative_division/country	_/people/person/nationality	_/base/popstra/celebrity/dated./base/popstra/dated/participant
+-1
+-9.529170572757721
+___
+/m/035hm	/m/07ssc	/m/0flw86	/m/016zwt
+/location/administrative_division/country	/location/statistical_region/religions./location/religion_percentage/religion	_/location/statistical_region/religions./location/religion_percentage/religion
+-1
+-9.71903121471405
+___
+/m/035hm	/m/018wl5	/m/03rk0	/m/01n8_g
+/location/country/form_of_government	_/location/country/form_of_government	_/people/person/nationality
+-1
+-10.183998465538025
+___
+/m/035hm	/m/07ssc	/m/09sh8k	/m/080h2
+/location/administrative_division/country	_/film/film/country	/film/film/featured_film_locations
+-1
+-10.723695397377014
+___
+/m/035hm	/m/07ssc	/m/03t0k1	/m/09sb52
+/location/administrative_division/country	_/people/person/nationality	/award/award_nominee/award_nominations./award/award_nomination/award
+-1
+-11.349247813224792
+___
+/m/035hm	/m/06mkj	/m/07t65	/m/01crd5
+_/location/location/adjoin_s./location/adjoining_relationship/adjoins	/organization/organization_member/member_of./organization/organization_membership/organization	_/organization/organization_member/member_of./organization/organization_membership/organization
+-1
+-11.74862515926361
+___
+/m/035hm	/m/02qkt	/m/0167v	/m/09nqf
+_/location/location/contains	/location/location/contains	/location/statistical_region/gdp_nominal_per_capita./measurement_unit/dated_money_value/currency
+1
+-13.669344902038574
+___
+#####################
+/m/0chghy	/m/0kz1h
+Reward:0
+/m/0chghy	/m/09nqf	/m/0161c	/m/09nqf
+/location/statistical_region/gdp_nominal./measurement_unit/dated_money_value/currency	_/location/statistical_region/gdp_nominal_per_capita./measurement_unit/dated_money_value/currency	/location/statistical_region/gdp_real./measurement_unit/adjusted_money_value/adjustment_currency
+-1
+-2.9955840818497563
+___
+/m/0chghy	/m/09nqf	/m/0161c	/m/09nqf
+/location/statistical_region/gdp_nominal./measurement_unit/dated_money_value/currency	_/location/statistical_region/gdp_nominal_per_capita./measurement_unit/dated_money_value/currency	/location/statistical_region/gdp_real./measurement_unit/adjusted_money_value/adjustment_currency
+-1
+-2.9955840818497563
+___
+/m/0chghy	/m/09nqf	/m/0161c	/m/09nqf
+/location/statistical_region/gdp_nominal./measurement_unit/dated_money_value/currency	_/location/statistical_region/gdp_nominal_per_capita./measurement_unit/dated_money_value/currency	/location/statistical_region/gdp_real./measurement_unit/adjusted_money_value/adjustment_currency
+-1
+-2.9955840818497563
+___
+/m/0chghy	/m/09nqf	/m/05br2	/m/09nqf
+/location/statistical_region/gdp_nominal./measurement_unit/dated_money_value/currency	_/location/statistical_region/gdp_nominal_per_capita./measurement_unit/dated_money_value/currency	/location/statistical_region/gdp_nominal_per_capita./measurement_unit/dated_money_value/currency
+-1
+-2.995667405324639
+___
+/m/0chghy	/m/09nqf	/m/05br2	/m/09nqf
+/location/statistical_region/gdp_nominal./measurement_unit/dated_money_value/currency	_/location/statistical_region/gdp_nominal_per_capita./measurement_unit/dated_money_value/currency	/location/statistical_region/gdp_nominal_per_capita./measurement_unit/dated_money_value/currency
+-1
+-2.995667405324639
+___
+/m/0chghy	/m/09nqf	/m/05br2	/m/09nqf
+/location/statistical_region/gdp_nominal./measurement_unit/dated_money_value/currency	_/location/statistical_region/gdp_nominal_per_capita./measurement_unit/dated_money_value/currency	/location/statistical_region/gdp_nominal_per_capita./measurement_unit/dated_money_value/currency
+-1
+-2.995667405324639
+___
+/m/0chghy	/m/09nqf	/m/05br2	/m/09nqf
+/location/statistical_region/gdp_nominal./measurement_unit/dated_money_value/currency	_/location/statistical_region/gdp_nominal_per_capita./measurement_unit/dated_money_value/currency	/location/statistical_region/gdp_nominal_per_capita./measurement_unit/dated_money_value/currency
+-1
+-2.995667405324639
+___
+/m/0chghy	/m/09nqf	/m/05br2	/m/09nqf
+/location/statistical_region/gdp_nominal./measurement_unit/dated_money_value/currency	_/location/statistical_region/gdp_nominal_per_capita./measurement_unit/dated_money_value/currency	/location/statistical_region/gdp_nominal_per_capita./measurement_unit/dated_money_value/currency
+-1
+-2.995667405324639
+___
+/m/0chghy	/m/09nqf	/m/05br2	/m/09nqf
+/location/statistical_region/gdp_nominal./measurement_unit/dated_money_value/currency	_/location/statistical_region/gdp_nominal_per_capita./measurement_unit/dated_money_value/currency	/location/statistical_region/gdp_nominal_per_capita./measurement_unit/dated_money_value/currency
+-1
+-2.995667405324639
+___
+/m/0chghy	/m/09nqf	/m/04wlh	/m/09nqf
+/location/statistical_region/gdp_nominal./measurement_unit/dated_money_value/currency	_/location/statistical_region/gdp_nominal_per_capita./measurement_unit/dated_money_value/currency	/location/statistical_region/gdp_real./measurement_unit/adjusted_money_value/adjustment_currency
+-1
+-2.996301223174669
+___
+/m/0chghy	/m/09nqf	/m/0ctw_b	/m/09nqf
+/location/statistical_region/gdp_nominal./measurement_unit/dated_money_value/currency	_/location/statistical_region/gdp_nominal_per_capita./measurement_unit/dated_money_value/currency	/location/statistical_region/gdp_real./measurement_unit/adjusted_money_value/adjustment_currency
+-1
+-2.996301223174669
+___
+/m/0chghy	/m/09nqf	/m/0697s	/m/09nqf
+/location/statistical_region/gdp_nominal./measurement_unit/dated_money_value/currency	_/location/statistical_region/gdp_nominal_per_capita./measurement_unit/dated_money_value/currency	/location/statistical_region/gdp_real./measurement_unit/adjusted_money_value/adjustment_currency
+-1
+-2.996301223174669
+___
+/m/0chghy	/m/09nqf	/m/05l8y	/m/09nqf
+/location/statistical_region/gdp_nominal./measurement_unit/dated_money_value/currency	_/location/statistical_region/gdp_nominal_per_capita./measurement_unit/dated_money_value/currency	/location/statistical_region/gdp_real./measurement_unit/adjusted_money_value/adjustment_currency
+-1
+-2.996301223174669
+___
+/m/0chghy	/m/09nqf	/m/09pmkv	/m/09nqf
+/location/statistical_region/gdp_nominal./measurement_unit/dated_money_value/currency	_/location/statistical_region/gdp_nominal_per_capita./measurement_unit/dated_money_value/currency	/location/statistical_region/gdp_real./measurement_unit/adjusted_money_value/adjustment_currency
+-1
+-2.996301223174669
+___
+/m/0chghy	/m/09nqf	/m/0ctw_b	/m/09nqf
+/location/statistical_region/gdp_nominal./measurement_unit/dated_money_value/currency	_/location/statistical_region/gdp_nominal_per_capita./measurement_unit/dated_money_value/currency	/location/statistical_region/gdp_real./measurement_unit/adjusted_money_value/adjustment_currency
+-1
+-2.996301223174669
+___
+/m/0chghy	/m/09nqf	/m/01ppq	/m/09nqf
+/location/statistical_region/gdp_nominal./measurement_unit/dated_money_value/currency	_/location/statistical_region/gdp_nominal_per_capita./measurement_unit/dated_money_value/currency	/location/statistical_region/gdp_real./measurement_unit/adjusted_money_value/adjustment_currency
+-1
+-2.996301223174669
+___
+/m/0chghy	/m/09nqf	/m/01ppq	/m/09nqf
+/location/statistical_region/gdp_nominal./measurement_unit/dated_money_value/currency	_/location/statistical_region/gdp_nominal_per_capita./measurement_unit/dated_money_value/currency	/location/statistical_region/gdp_real./measurement_unit/adjusted_money_value/adjustment_currency
+-1
+-2.996301223174669
+___
+/m/0chghy	/m/09nqf	/m/04wlh	/m/09nqf
+/location/statistical_region/gdp_nominal./measurement_unit/dated_money_value/currency	_/location/statistical_region/gdp_nominal_per_capita./measurement_unit/dated_money_value/currency	/location/statistical_region/gdp_real./measurement_unit/adjusted_money_value/adjustment_currency
+-1
+-2.996301223174669
+___
+/m/0chghy	/m/09nqf	/m/01ppq	/m/09nqf
+/location/statistical_region/gdp_nominal./measurement_unit/dated_money_value/currency	_/location/statistical_region/gdp_nominal_per_capita./measurement_unit/dated_money_value/currency	/location/statistical_region/gdp_real./measurement_unit/adjusted_money_value/adjustment_currency
+-1
+-2.996301223174669
+___
+/m/0chghy	/m/09nqf	/m/05l8y	/m/09nqf
+/location/statistical_region/gdp_nominal./measurement_unit/dated_money_value/currency	_/location/statistical_region/gdp_nominal_per_capita./measurement_unit/dated_money_value/currency	/location/statistical_region/gdp_real./measurement_unit/adjusted_money_value/adjustment_currency
+-1
+-2.996301223174669
+___
+/m/0chghy	/m/09nqf	/m/0ctw_b	/m/09nqf
+/location/statistical_region/gdp_nominal./measurement_unit/dated_money_value/currency	_/location/statistical_region/gdp_nominal_per_capita./measurement_unit/dated_money_value/currency	/location/statistical_region/gdp_real./measurement_unit/adjusted_money_value/adjustment_currency
+-1
+-2.996301223174669
+___
+/m/0chghy	/m/09nqf	/m/0l3h	/m/09nqf
+/location/statistical_region/gdp_nominal./measurement_unit/dated_money_value/currency	_/location/statistical_region/gdp_nominal_per_capita./measurement_unit/dated_money_value/currency	/location/statistical_region/gdp_real./measurement_unit/adjusted_money_value/adjustment_currency
+-1
+-2.996301223174669
+___
+/m/0chghy	/m/09nqf	/m/01xbgx	/m/09nqf
+/location/statistical_region/gdp_nominal./measurement_unit/dated_money_value/currency	_/location/statistical_region/gdp_nominal_per_capita./measurement_unit/dated_money_value/currency	/location/statistical_region/gdp_real./measurement_unit/adjusted_money_value/adjustment_currency
+-1
+-2.996301223174669
+___
+/m/0chghy	/m/09nqf	/m/0697s	/m/09nqf
+/location/statistical_region/gdp_nominal./measurement_unit/dated_money_value/currency	_/location/statistical_region/gdp_nominal_per_capita./measurement_unit/dated_money_value/currency	/location/statistical_region/gdp_real./measurement_unit/adjusted_money_value/adjustment_currency
+-1
+-2.996301223174669
+___
+/m/0chghy	/m/09nqf	/m/0697s	/m/09nqf
+/location/statistical_region/gdp_nominal./measurement_unit/dated_money_value/currency	_/location/statistical_region/gdp_nominal_per_capita./measurement_unit/dated_money_value/currency	/location/statistical_region/gdp_real./measurement_unit/adjusted_money_value/adjustment_currency
+-1
+-2.996301223174669
+___
+/m/0chghy	/m/09nqf	/m/01ppq	/m/09nqf
+/location/statistical_region/gdp_nominal./measurement_unit/dated_money_value/currency	_/location/statistical_region/gdp_nominal_per_capita./measurement_unit/dated_money_value/currency	/location/statistical_region/gdp_real./measurement_unit/adjusted_money_value/adjustment_currency
+-1
+-2.996301223174669
+___
+/m/0chghy	/m/09nqf	/m/04wgh	/m/09nqf
+/location/statistical_region/gdp_nominal./measurement_unit/dated_money_value/currency	_/location/statistical_region/gdp_nominal_per_capita./measurement_unit/dated_money_value/currency	/location/statistical_region/gdp_real./measurement_unit/adjusted_money_value/adjustment_currency
+-1
+-2.996301223174669
+___
+/m/0chghy	/m/09nqf	/m/04wgh	/m/09nqf
+/location/statistical_region/gdp_nominal./measurement_unit/dated_money_value/currency	_/location/statistical_region/gdp_nominal_per_capita./measurement_unit/dated_money_value/currency	/location/statistical_region/gdp_real./measurement_unit/adjusted_money_value/adjustment_currency
+-1
+-2.996301223174669
+___
+/m/0chghy	/m/09nqf	/m/0ctw_b	/m/09nqf
+/location/statistical_region/gdp_nominal./measurement_unit/dated_money_value/currency	_/location/statistical_region/gdp_nominal_per_capita./measurement_unit/dated_money_value/currency	/location/statistical_region/gdp_real./measurement_unit/adjusted_money_value/adjustment_currency
+-1
+-2.996301223174669
+___
+/m/0chghy	/m/09nqf	/m/05l8y	/m/09nqf
+/location/statistical_region/gdp_nominal./measurement_unit/dated_money_value/currency	_/location/statistical_region/gdp_nominal_per_capita./measurement_unit/dated_money_value/currency	/location/statistical_region/gdp_real./measurement_unit/adjusted_money_value/adjustment_currency
+-1
+-2.996301223174669
+___
+/m/0chghy	/m/09nqf	/m/0697s	/m/09nqf
+/location/statistical_region/gdp_nominal./measurement_unit/dated_money_value/currency	_/location/statistical_region/gdp_nominal_per_capita./measurement_unit/dated_money_value/currency	/location/statistical_region/gdp_real./measurement_unit/adjusted_money_value/adjustment_currency
+-1
+-2.996301223174669
+___
+/m/0chghy	/m/09nqf	/m/05l8y	/m/09nqf
+/location/statistical_region/gdp_nominal./measurement_unit/dated_money_value/currency	_/location/statistical_region/gdp_nominal_per_capita./measurement_unit/dated_money_value/currency	/location/statistical_region/gdp_real./measurement_unit/adjusted_money_value/adjustment_currency
+-1
+-2.996301223174669
+___
+/m/0chghy	/m/09nqf	/m/07dzf	/m/09nqf
+/location/statistical_region/gdp_nominal./measurement_unit/dated_money_value/currency	_/location/statistical_region/gdp_nominal_per_capita./measurement_unit/dated_money_value/currency	/location/statistical_region/gdp_real./measurement_unit/adjusted_money_value/adjustment_currency
+-1
+-2.996301223174669
+___
+/m/0chghy	/m/09nqf	/m/0166v	/m/09nqf
+/location/statistical_region/gdp_nominal./measurement_unit/dated_money_value/currency	_/location/statistical_region/gdp_nominal_per_capita./measurement_unit/dated_money_value/currency	/location/statistical_region/gdp_real./measurement_unit/adjusted_money_value/adjustment_currency
+-1
+-2.996301223174669
+___
+/m/0chghy	/m/09nqf	/m/07dzf	/m/09nqf
+/location/statistical_region/gdp_nominal./measurement_unit/dated_money_value/currency	_/location/statistical_region/gdp_nominal_per_capita./measurement_unit/dated_money_value/currency	/location/statistical_region/gdp_real./measurement_unit/adjusted_money_value/adjustment_currency
+-1
+-2.996301223174669
+___
+/m/0chghy	/m/09nqf	/m/0j1z8	/m/09nqf
+/location/statistical_region/gdp_nominal./measurement_unit/dated_money_value/currency	_/location/statistical_region/gdp_nominal_per_capita./measurement_unit/dated_money_value/currency	/location/statistical_region/gdp_real./measurement_unit/adjusted_money_value/adjustment_currency
+-1
+-2.996301223174669
+___
+/m/0chghy	/m/09nqf	/m/01xbgx	/m/09nqf
+/location/statistical_region/gdp_nominal./measurement_unit/dated_money_value/currency	_/location/statistical_region/gdp_nominal_per_capita./measurement_unit/dated_money_value/currency	/location/statistical_region/gdp_real./measurement_unit/adjusted_money_value/adjustment_currency
+-1
+-2.996301223174669
+___
+/m/0chghy	/m/09nqf	/m/04wgh	/m/09nqf
+/location/statistical_region/gdp_nominal./measurement_unit/dated_money_value/currency	_/location/statistical_region/gdp_nominal_per_capita./measurement_unit/dated_money_value/currency	/location/statistical_region/gdp_real./measurement_unit/adjusted_money_value/adjustment_currency
+-1
+-2.996301223174669
+___
+/m/0chghy	/m/09nqf	/m/04wgh	/m/09nqf
+/location/statistical_region/gdp_nominal./measurement_unit/dated_money_value/currency	_/location/statistical_region/gdp_nominal_per_capita./measurement_unit/dated_money_value/currency	/location/statistical_region/gdp_real./measurement_unit/adjusted_money_value/adjustment_currency
+-1
+-2.996301223174669
+___
+/m/0chghy	/m/09nqf	/m/0ctw_b	/m/09nqf
+/location/statistical_region/gdp_nominal./measurement_unit/dated_money_value/currency	_/location/statistical_region/gdp_nominal_per_capita./measurement_unit/dated_money_value/currency	/location/statistical_region/gdp_real./measurement_unit/adjusted_money_value/adjustment_currency
+-1
+-2.996301223174669
+___
+/m/0chghy	/m/09nqf	/m/0l3h	/m/09nqf
+/location/statistical_region/gdp_nominal./measurement_unit/dated_money_value/currency	_/location/statistical_region/gdp_nominal_per_capita./measurement_unit/dated_money_value/currency	/location/statistical_region/gdp_real./measurement_unit/adjusted_money_value/adjustment_currency
+-1
+-2.996301223174669
+___
+/m/0chghy	/m/09nqf	/m/01ppq	/m/09nqf
+/location/statistical_region/gdp_nominal./measurement_unit/dated_money_value/currency	_/location/statistical_region/gdp_nominal_per_capita./measurement_unit/dated_money_value/currency	/location/statistical_region/gdp_real./measurement_unit/adjusted_money_value/adjustment_currency
+-1
+-2.996301223174669
+___
+/m/0chghy	/m/09nqf	/m/05r7t	/m/09nqf
+/location/statistical_region/gdp_nominal./measurement_unit/dated_money_value/currency	_/location/statistical_region/gdp_nominal_per_capita./measurement_unit/dated_money_value/currency	/location/statistical_region/gdp_real./measurement_unit/adjusted_money_value/adjustment_currency
+-1
+-2.996301223174669
+___
+/m/0chghy	/m/09nqf	/m/0j1z8	/m/09nqf
+/location/statistical_region/gdp_nominal./measurement_unit/dated_money_value/currency	_/location/statistical_region/gdp_nominal_per_capita./measurement_unit/dated_money_value/currency	/location/statistical_region/gdp_real./measurement_unit/adjusted_money_value/adjustment_currency
+-1
+-2.996301223174669
+___
+/m/0chghy	/m/09nqf	/m/04wlh	/m/09nqf
+/location/statistical_region/gdp_nominal./measurement_unit/dated_money_value/currency	_/location/statistical_region/gdp_nominal_per_capita./measurement_unit/dated_money_value/currency	/location/statistical_region/gdp_real./measurement_unit/adjusted_money_value/adjustment_currency
+-1
+-2.996301223174669
+___
+/m/0chghy	/m/09nqf	/m/07dzf	/m/09nqf
+/location/statistical_region/gdp_nominal./measurement_unit/dated_money_value/currency	_/location/statistical_region/gdp_nominal_per_capita./measurement_unit/dated_money_value/currency	/location/statistical_region/gdp_real./measurement_unit/adjusted_money_value/adjustment_currency
+-1
+-2.996301223174669
+___
+/m/0chghy	/m/09nqf	/m/04wgh	/m/09nqf
+/location/statistical_region/gdp_nominal./measurement_unit/dated_money_value/currency	_/location/statistical_region/gdp_nominal_per_capita./measurement_unit/dated_money_value/currency	/location/statistical_region/gdp_real./measurement_unit/adjusted_money_value/adjustment_currency
+-1
+-2.996301223174669
+___
+/m/0chghy	/m/09nqf	/m/01ppq	/m/09nqf
+/location/statistical_region/gdp_nominal./measurement_unit/dated_money_value/currency	_/location/statistical_region/gdp_nominal_per_capita./measurement_unit/dated_money_value/currency	/location/statistical_region/gdp_real./measurement_unit/adjusted_money_value/adjustment_currency
+-1
+-2.996301223174669
+___
+/m/0chghy	/m/09nqf	/m/0ctw_b	/m/09nqf
+/location/statistical_region/gdp_nominal./measurement_unit/dated_money_value/currency	_/location/statistical_region/gdp_nominal_per_capita./measurement_unit/dated_money_value/currency	/location/statistical_region/gdp_real./measurement_unit/adjusted_money_value/adjustment_currency
+-1
+-2.996301223174669
+___
+/m/0chghy	/m/09nqf	/m/09pmkv	/m/09nqf
+/location/statistical_region/gdp_nominal./measurement_unit/dated_money_value/currency	_/location/statistical_region/gdp_nominal_per_capita./measurement_unit/dated_money_value/currency	/location/statistical_region/gdp_real./measurement_unit/adjusted_money_value/adjustment_currency
+-1
+-2.996301223174669
+___
+/m/0chghy	/m/09nqf	/m/0697s	/m/09nqf
+/location/statistical_region/gdp_nominal./measurement_unit/dated_money_value/currency	_/location/statistical_region/gdp_nominal_per_capita./measurement_unit/dated_money_value/currency	/location/statistical_region/gdp_real./measurement_unit/adjusted_money_value/adjustment_currency
+-1
+-2.996301223174669
+___
+/m/0chghy	/m/09nqf	/m/0j1z8	/m/09nqf
+/location/statistical_region/gdp_nominal./measurement_unit/dated_money_value/currency	_/location/statistical_region/gdp_nominal_per_capita./measurement_unit/dated_money_value/currency	/location/statistical_region/gdp_real./measurement_unit/adjusted_money_value/adjustment_currency
+-1
+-2.996301223174669
+___
+/m/0chghy	/m/09nqf	/m/0l3h	/m/09nqf
+/location/statistical_region/gdp_nominal./measurement_unit/dated_money_value/currency	_/location/statistical_region/gdp_nominal_per_capita./measurement_unit/dated_money_value/currency	/location/statistical_region/gdp_real./measurement_unit/adjusted_money_value/adjustment_currency
+-1
+-2.996301223174669
+___
+/m/0chghy	/m/09nqf	/m/04wgh	/m/09nqf
+/location/statistical_region/gdp_nominal./measurement_unit/dated_money_value/currency	_/location/statistical_region/gdp_nominal_per_capita./measurement_unit/dated_money_value/currency	/location/statistical_region/gdp_real./measurement_unit/adjusted_money_value/adjustment_currency
+-1
+-2.996301223174669
+___
+/m/0chghy	/m/09nqf	/m/05r7t	/m/09nqf
+/location/statistical_region/gdp_nominal./measurement_unit/dated_money_value/currency	_/location/statistical_region/gdp_nominal_per_capita./measurement_unit/dated_money_value/currency	/location/statistical_region/gdp_real./measurement_unit/adjusted_money_value/adjustment_currency
+-1
+-2.996301223174669
+___
+/m/0chghy	/m/09nqf	/m/01xbgx	/m/09nqf
+/location/statistical_region/gdp_nominal./measurement_unit/dated_money_value/currency	_/location/statistical_region/gdp_nominal_per_capita./measurement_unit/dated_money_value/currency	/location/statistical_region/gdp_real./measurement_unit/adjusted_money_value/adjustment_currency
+-1
+-2.996301223174669
+___
+/m/0chghy	/m/09nqf	/m/05r7t	/m/09nqf
+/location/statistical_region/gdp_nominal./measurement_unit/dated_money_value/currency	_/location/statistical_region/gdp_nominal_per_capita./measurement_unit/dated_money_value/currency	/location/statistical_region/gdp_real./measurement_unit/adjusted_money_value/adjustment_currency
+-1
+-2.996301223174669
+___
+/m/0chghy	/m/09nqf	/m/0j1z8	/m/09nqf
+/location/statistical_region/gdp_nominal./measurement_unit/dated_money_value/currency	_/location/statistical_region/gdp_nominal_per_capita./measurement_unit/dated_money_value/currency	/location/statistical_region/gdp_real./measurement_unit/adjusted_money_value/adjustment_currency
+-1
+-2.996301223174669
+___
+/m/0chghy	/m/09nqf	/m/05l8y	/m/09nqf
+/location/statistical_region/gdp_nominal./measurement_unit/dated_money_value/currency	_/location/statistical_region/gdp_nominal_per_capita./measurement_unit/dated_money_value/currency	/location/statistical_region/gdp_real./measurement_unit/adjusted_money_value/adjustment_currency
+-1
+-2.996301223174669
+___
+/m/0chghy	/m/09nqf	/m/09pmkv	/m/09nqf
+/location/statistical_region/gdp_nominal./measurement_unit/dated_money_value/currency	_/location/statistical_region/gdp_nominal_per_capita./measurement_unit/dated_money_value/currency	/location/statistical_region/gdp_real./measurement_unit/adjusted_money_value/adjustment_currency
+-1
+-2.996301223174669
+___
+/m/0chghy	/m/09nqf	/m/04wgh	/m/09nqf
+/location/statistical_region/gdp_nominal./measurement_unit/dated_money_value/currency	_/location/statistical_region/gdp_nominal_per_capita./measurement_unit/dated_money_value/currency	/location/statistical_region/gdp_real./measurement_unit/adjusted_money_value/adjustment_currency
+-1
+-2.996301223174669
+___
+/m/0chghy	/m/09nqf	/m/0697s	/m/09nqf
+/location/statistical_region/gdp_nominal./measurement_unit/dated_money_value/currency	_/location/statistical_region/gdp_nominal_per_capita./measurement_unit/dated_money_value/currency	/location/statistical_region/gdp_real./measurement_unit/adjusted_money_value/adjustment_currency
+-1
+-2.996301223174669
+___
+/m/0chghy	/m/09nqf	/m/05r7t	/m/09nqf
+/location/statistical_region/gdp_nominal./measurement_unit/dated_money_value/currency	_/location/statistical_region/gdp_nominal_per_capita./measurement_unit/dated_money_value/currency	/location/statistical_region/gdp_real./measurement_unit/adjusted_money_value/adjustment_currency
+-1
+-2.996301223174669
+___
+/m/0chghy	/m/09nqf	/m/0l3h	/m/09nqf
+/location/statistical_region/gdp_nominal./measurement_unit/dated_money_value/currency	_/location/statistical_region/gdp_nominal_per_capita./measurement_unit/dated_money_value/currency	/location/statistical_region/gdp_real./measurement_unit/adjusted_money_value/adjustment_currency
+-1
+-2.996301223174669
+___
+/m/0chghy	/m/09nqf	/m/01xbgx	/m/09nqf
+/location/statistical_region/gdp_nominal./measurement_unit/dated_money_value/currency	_/location/statistical_region/gdp_nominal_per_capita./measurement_unit/dated_money_value/currency	/location/statistical_region/gdp_real./measurement_unit/adjusted_money_value/adjustment_currency
+-1
+-2.996301223174669
+___
+/m/0chghy	/m/09nqf	/m/01xbgx	/m/09nqf
+/location/statistical_region/gdp_nominal./measurement_unit/dated_money_value/currency	_/location/statistical_region/gdp_nominal_per_capita./measurement_unit/dated_money_value/currency	/location/statistical_region/gdp_real./measurement_unit/adjusted_money_value/adjustment_currency
+-1
+-2.996301223174669
+___
+/m/0chghy	/m/09nqf	/m/04wgh	/m/09nqf
+/location/statistical_region/gdp_nominal./measurement_unit/dated_money_value/currency	_/location/statistical_region/gdp_nominal_per_capita./measurement_unit/dated_money_value/currency	/location/statistical_region/gdp_real./measurement_unit/adjusted_money_value/adjustment_currency
+-1
+-2.996301223174669
+___
+/m/0chghy	/m/09nqf	/m/01xbgx	/m/09nqf
+/location/statistical_region/gdp_nominal./measurement_unit/dated_money_value/currency	_/location/statistical_region/gdp_nominal_per_capita./measurement_unit/dated_money_value/currency	/location/statistical_region/gdp_real./measurement_unit/adjusted_money_value/adjustment_currency
+-1
+-2.996301223174669
+___
+/m/0chghy	/m/09nqf	/m/0l3h	/m/09nqf
+/location/statistical_region/gdp_nominal./measurement_unit/dated_money_value/currency	_/location/statistical_region/gdp_nominal_per_capita./measurement_unit/dated_money_value/currency	/location/statistical_region/gdp_real./measurement_unit/adjusted_money_value/adjustment_currency
+-1
+-2.996301223174669
+___
+/m/0chghy	/m/09nqf	/m/0697s	/m/09nqf
+/location/statistical_region/gdp_nominal./measurement_unit/dated_money_value/currency	_/location/statistical_region/gdp_nominal_per_capita./measurement_unit/dated_money_value/currency	/location/statistical_region/gdp_real./measurement_unit/adjusted_money_value/adjustment_currency
+-1
+-2.996301223174669
+___
+/m/0chghy	/m/09nqf	/m/0697s	/m/09nqf
+/location/statistical_region/gdp_nominal./measurement_unit/dated_money_value/currency	_/location/statistical_region/gdp_nominal_per_capita./measurement_unit/dated_money_value/currency	/location/statistical_region/gdp_real./measurement_unit/adjusted_money_value/adjustment_currency
+-1
+-2.996301223174669
+___
+/m/0chghy	/m/09nqf	/m/0ctw_b	/m/09nqf
+/location/statistical_region/gdp_nominal./measurement_unit/dated_money_value/currency	_/location/statistical_region/gdp_nominal_per_capita./measurement_unit/dated_money_value/currency	/location/statistical_region/gdp_real./measurement_unit/adjusted_money_value/adjustment_currency
+-1
+-2.996301223174669
+___
+/m/0chghy	/m/09nqf	/m/01xbgx	/m/09nqf
+/location/statistical_region/gdp_nominal./measurement_unit/dated_money_value/currency	_/location/statistical_region/gdp_nominal_per_capita./measurement_unit/dated_money_value/currency	/location/statistical_region/gdp_real./measurement_unit/adjusted_money_value/adjustment_currency
+-1
+-2.996301223174669
+___
+/m/0chghy	/m/09nqf	/m/0166v	/m/09nqf
+/location/statistical_region/gdp_nominal./measurement_unit/dated_money_value/currency	_/location/statistical_region/gdp_nominal_per_capita./measurement_unit/dated_money_value/currency	/location/statistical_region/gdp_real./measurement_unit/adjusted_money_value/adjustment_currency
+-1
+-2.996301223174669
+___
+/m/0chghy	/m/09nqf	/m/09pmkv	/m/09nqf
+/location/statistical_region/gdp_nominal./measurement_unit/dated_money_value/currency	_/location/statistical_region/gdp_nominal_per_capita./measurement_unit/dated_money_value/currency	/location/statistical_region/gdp_real./measurement_unit/adjusted_money_value/adjustment_currency
+-1
+-2.996301223174669
+___
+/m/0chghy	/m/09nqf	/m/0697s	/m/09nqf
+/location/statistical_region/gdp_nominal./measurement_unit/dated_money_value/currency	_/location/statistical_region/gdp_nominal_per_capita./measurement_unit/dated_money_value/currency	/location/statistical_region/gdp_real./measurement_unit/adjusted_money_value/adjustment_currency
+-1
+-2.996301223174669
+___
+/m/0chghy	/m/09nqf	/m/04wgh	/m/09nqf
+/location/statistical_region/gdp_nominal./measurement_unit/dated_money_value/currency	_/location/statistical_region/gdp_nominal_per_capita./measurement_unit/dated_money_value/currency	/location/statistical_region/gdp_real./measurement_unit/adjusted_money_value/adjustment_currency
+-1
+-2.996301223174669
+___
+/m/0chghy	/m/09nqf	/m/0166v	/m/09nqf
+/location/statistical_region/gdp_nominal./measurement_unit/dated_money_value/currency	_/location/statistical_region/gdp_nominal_per_capita./measurement_unit/dated_money_value/currency	/location/statistical_region/gdp_real./measurement_unit/adjusted_money_value/adjustment_currency
+-1
+-2.996301223174669
+___
+/m/0chghy	/m/09nqf	/m/0ctw_b	/m/09nqf
+/location/statistical_region/gdp_nominal./measurement_unit/dated_money_value/currency	_/location/statistical_region/gdp_nominal_per_capita./measurement_unit/dated_money_value/currency	/location/statistical_region/gdp_real./measurement_unit/adjusted_money_value/adjustment_currency
+-1
+-2.996301223174669
+___
+/m/0chghy	/m/09nqf	/m/0697s	/m/09nqf
+/location/statistical_region/gdp_nominal./measurement_unit/dated_money_value/currency	_/location/statistical_region/gdp_nominal_per_capita./measurement_unit/dated_money_value/currency	/location/statistical_region/gdp_real./measurement_unit/adjusted_money_value/adjustment_currency
+-1
+-2.996301223174669
+___
+/m/0chghy	/m/09nqf	/m/0166v	/m/09nqf
+/location/statistical_region/gdp_nominal./measurement_unit/dated_money_value/currency	_/location/statistical_region/gdp_nominal_per_capita./measurement_unit/dated_money_value/currency	/location/statistical_region/gdp_real./measurement_unit/adjusted_money_value/adjustment_currency
+-1
+-2.996301223174669
+___
+/m/0chghy	/m/09nqf	/m/0n3g	/m/09nqf
+/location/statistical_region/gdp_nominal./measurement_unit/dated_money_value/currency	_/location/statistical_region/gdp_nominal_per_capita./measurement_unit/dated_money_value/currency	/location/statistical_region/gdp_nominal./measurement_unit/dated_money_value/currency
+-1
+-3.0014361697249115
+___
+/m/0chghy	/m/09nqf	/m/0n3g	/m/09nqf
+/location/statistical_region/gdp_nominal./measurement_unit/dated_money_value/currency	_/location/statistical_region/gdp_nominal_per_capita./measurement_unit/dated_money_value/currency	/location/statistical_region/gdp_nominal./measurement_unit/dated_money_value/currency
+-1
+-3.0014361697249115
+___
+/m/0chghy	/m/09nqf	/m/0n3g	/m/09nqf
+/location/statistical_region/gdp_nominal./measurement_unit/dated_money_value/currency	_/location/statistical_region/gdp_nominal_per_capita./measurement_unit/dated_money_value/currency	/location/statistical_region/gdp_nominal./measurement_unit/dated_money_value/currency
+-1
+-3.0014361697249115
+___
+/m/0chghy	/m/09nqf	/m/07fb6	/m/09nqf
+/location/statistical_region/gdp_nominal./measurement_unit/dated_money_value/currency	_/location/statistical_region/gdp_nominal_per_capita./measurement_unit/dated_money_value/currency	/location/statistical_region/gdp_nominal./measurement_unit/dated_money_value/currency
+-1
+-3.0014362884685397
+___
+/m/0chghy	/m/09nqf	/m/07fb6	/m/09nqf
+/location/statistical_region/gdp_nominal./measurement_unit/dated_money_value/currency	_/location/statistical_region/gdp_nominal_per_capita./measurement_unit/dated_money_value/currency	/location/statistical_region/gdp_nominal./measurement_unit/dated_money_value/currency
+-1
+-3.0014362884685397
+___
+/m/0chghy	/m/09nqf	/m/07fb6	/m/09nqf
+/location/statistical_region/gdp_nominal./measurement_unit/dated_money_value/currency	_/location/statistical_region/gdp_nominal_per_capita./measurement_unit/dated_money_value/currency	/location/statistical_region/gdp_nominal./measurement_unit/dated_money_value/currency
+-1
+-3.0014362884685397
+___
+/m/0chghy	/m/09nqf	/m/07fb6	/m/09nqf
+/location/statistical_region/gdp_nominal./measurement_unit/dated_money_value/currency	_/location/statistical_region/gdp_nominal_per_capita./measurement_unit/dated_money_value/currency	/location/statistical_region/gdp_nominal./measurement_unit/dated_money_value/currency
+-1
+-3.0014362884685397
+___
+/m/0chghy	/m/09nqf	/m/07fb6	/m/09nqf
+/location/statistical_region/gdp_nominal./measurement_unit/dated_money_value/currency	_/location/statistical_region/gdp_nominal_per_capita./measurement_unit/dated_money_value/currency	/location/statistical_region/gdp_nominal./measurement_unit/dated_money_value/currency
+-1
+-3.0014362884685397
+___
+/m/0chghy	/m/09nqf	/m/07fb6	/m/09nqf
+/location/statistical_region/gdp_nominal./measurement_unit/dated_money_value/currency	_/location/statistical_region/gdp_nominal_per_capita./measurement_unit/dated_money_value/currency	/location/statistical_region/gdp_nominal./measurement_unit/dated_money_value/currency
+-1
+-3.0014362884685397
+___
+/m/0chghy	/m/09nqf	/m/07fb6	/m/09nqf
+/location/statistical_region/gdp_nominal./measurement_unit/dated_money_value/currency	_/location/statistical_region/gdp_nominal_per_capita./measurement_unit/dated_money_value/currency	/location/statistical_region/gdp_nominal./measurement_unit/dated_money_value/currency
+-1
+-3.0014362884685397
+___
+/m/0chghy	/m/09nqf	/m/03_xj	/m/09nqf
+/location/statistical_region/gdp_nominal./measurement_unit/dated_money_value/currency	_/location/statistical_region/gdp_nominal_per_capita./measurement_unit/dated_money_value/currency	/location/statistical_region/gdp_nominal./measurement_unit/dated_money_value/currency
+-1
+-3.0014372365549207
+___
+/m/0chghy	/m/09nqf	/m/03_xj	/m/09nqf
+/location/statistical_region/gdp_nominal./measurement_unit/dated_money_value/currency	_/location/statistical_region/gdp_nominal_per_capita./measurement_unit/dated_money_value/currency	/location/statistical_region/gdp_nominal./measurement_unit/dated_money_value/currency
+-1
+-3.0014372365549207
+___
+/m/0chghy	/m/09nqf	/m/03_xj	/m/09nqf
+/location/statistical_region/gdp_nominal./measurement_unit/dated_money_value/currency	_/location/statistical_region/gdp_nominal_per_capita./measurement_unit/dated_money_value/currency	/location/statistical_region/gdp_nominal./measurement_unit/dated_money_value/currency
+-1
+-3.0014372365549207
+___
+/m/0chghy	/m/09nqf	/m/03_xj	/m/09nqf
+/location/statistical_region/gdp_nominal./measurement_unit/dated_money_value/currency	_/location/statistical_region/gdp_nominal_per_capita./measurement_unit/dated_money_value/currency	/location/statistical_region/gdp_nominal./measurement_unit/dated_money_value/currency
+-1
+-3.0014372365549207
+___
+/m/0chghy	/m/09nqf	/m/03_xj	/m/09nqf
+/location/statistical_region/gdp_nominal./measurement_unit/dated_money_value/currency	_/location/statistical_region/gdp_nominal_per_capita./measurement_unit/dated_money_value/currency	/location/statistical_region/gdp_nominal./measurement_unit/dated_money_value/currency
+-1
+-3.0014372365549207
+___
+/m/0chghy	/m/09nqf	/m/0d0vqn	/m/09nqf
+/location/statistical_region/gdp_nominal./measurement_unit/dated_money_value/currency	_/location/statistical_region/gdp_nominal_per_capita./measurement_unit/dated_money_value/currency	/location/statistical_region/gdp_nominal./measurement_unit/dated_money_value/currency
+-1
+-3.0014625978656113
+___
+/m/0chghy	/m/09nqf	/m/0d0vqn	/m/09nqf
+/location/statistical_region/gdp_nominal./measurement_unit/dated_money_value/currency	_/location/statistical_region/gdp_nominal_per_capita./measurement_unit/dated_money_value/currency	/location/statistical_region/gdp_nominal./measurement_unit/dated_money_value/currency
+-1
+-3.0014625978656113
+___
+/m/0chghy	/m/09nqf	/m/0d0vqn	/m/09nqf
+/location/statistical_region/gdp_nominal./measurement_unit/dated_money_value/currency	_/location/statistical_region/gdp_nominal_per_capita./measurement_unit/dated_money_value/currency	/location/statistical_region/gdp_nominal./measurement_unit/dated_money_value/currency
+-1
+-3.0014625978656113
+___
+/m/0chghy	/m/09nqf	/m/07dzf	/m/09nqf
+/location/statistical_region/gdp_nominal_per_capita./measurement_unit/dated_money_value/currency	_/location/statistical_region/gdp_nominal_per_capita./measurement_unit/dated_money_value/currency	/location/statistical_region/gdp_real./measurement_unit/adjusted_money_value/adjustment_currency
+-1
+-5.977447541663423
+___
+#####################

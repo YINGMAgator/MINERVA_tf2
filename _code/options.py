@@ -87,6 +87,8 @@ def read_options():
     parser.add_argument("--sl_checkpoint_interval", default=1, type=int)
     # random masking parameter
     parser.add_argument("--random_masking_coef", default=0, type=float)
+    # special training conditions for fb60k
+    parser.add_argument("--fb60k", default=0, type=int)
 
     try:
         parsed = vars(parser.parse_args())
@@ -99,6 +101,7 @@ def read_options():
     parsed['test_round'] = parsed['test_round'] == 1
     parsed['sl'] = parsed['sl'] == 1
     parsed['save_model'] = parsed['save_model'] == 1
+    parsed['fb60k'] = parsed['fb60k'] == 1
     # parsed['order_swap'] = parsed['order_swap'] == 1 
     #dataset name
     parsed['dataset_name']=parsed['base_output_dir'][7:-1]

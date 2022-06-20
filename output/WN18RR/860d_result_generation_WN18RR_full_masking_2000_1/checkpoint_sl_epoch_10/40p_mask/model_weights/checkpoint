@@ -1,0 +1,2 @@
+model_checkpoint_path: "result_generation_WN18RR_full_masking"
+all_model_checkpoint_paths: "result_generation_WN18RR_full_masking"

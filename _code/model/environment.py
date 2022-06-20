@@ -8,6 +8,7 @@ from code.data.label_gen import Labeller
 import logging
 import sys
 import pickle
+import random
 logger = logging.getLogger()
 
 class Episode(object):
@@ -17,7 +18,7 @@ class Episode(object):
         self.grapher = graph
         self.batch_size, self.path_len, num_rollouts, test_rollouts, positive_reward, negative_reward, mode, batcher = params
         self.mode = mode
-        if self.mode == 'train':
+        if self.mode == 'train' or self.mode == 'fb60k':
             self.num_rollouts = num_rollouts
         else:
             self.num_rollouts = test_rollouts
@@ -36,6 +37,8 @@ class Episode(object):
         self.positive_reward = positive_reward
         self.negative_reward = negative_reward
         #turns start entities into a list of the same start entity num_rollouts number of times so we can keep track of all the rollouts later on
+        print("rollouts")
+        print(self.num_rollouts)
         start_entities = np.repeat(start_entities, self.num_rollouts)#KEY LINE RIGHT HERE
         batch_query_relation = np.repeat(query_relation, self.num_rollouts)
         if rwd:
@@ -66,6 +69,8 @@ class Episode(object):
         self.state['next_relations'] = next_actions[:, :, 1]
         self.state['next_entities'] = next_actions[:, :, 0]
         self.state['current_entities'] = self.current_entities
+        print("current entities shape")
+        print(self.current_entities.shape)
         self.rwd = rwd
 
     def get_state(self):
@@ -185,6 +190,14 @@ class env(object):
         if self.mode == 'train':
             for data in self.batcher.yield_next_batch_train(self.labeller, use_RL):
                 yield Episode(self.grapher, data, params, self.rwd, rl_train = use_RL)
+        elif self.mode == 'fb60k':
+            # 90% of the time do RL, with randomly scattered SL steps for partial labels
+            while True:
+                use_RL = False
+                rwd = bool(random.random() <= 0.9)
+                print(rwd)
+                data = next(self.batcher.yield_next_batch_train(self.labeller, use_RL))
+                yield Episode(self.grapher, data, params, rwd, rl_train = use_RL)
         else:
             for data in self.batcher.yield_next_batch_test(self.labeller):
                 if data == None:

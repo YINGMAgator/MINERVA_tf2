@@ -48,6 +48,11 @@ class Trainer(object):
             self.train_environment = None
             self.rev_relation_vocab = self.test_environment.grapher.rev_relation_vocab
             self.rev_entity_vocab = self.test_environment.grapher.rev_entity_vocab
+        elif self.fb60k:
+            self.test_environment = None
+            self.train_environment = env(params, self.rwd, 'fb60k')
+            self.rev_relation_vocab = self.train_environment.grapher.rev_relation_vocab
+            self.rev_entity_vocab = self.train_environment.grapher.rev_entity_vocab
         else:
             self.test_environment = None
             self.train_environment = env(params, self.rwd, 'train')
@@ -140,8 +145,6 @@ class Trainer(object):
         self.range_arr = np.arange(self.batch_size*self.num_rollouts)
         # cross entropy that we will use in our supervised learning implementation
         cce = tf.keras.losses.CategoricalCrossentropy(reduction=tf.keras.losses.Reduction.NONE)
-        average_accuracy = []
-        average_loss = []
         for z, episode in enumerate(self.train_environment.get_episodes(use_RL)):
             graph_epoch = episode.epoch + last_epoch
 
@@ -220,7 +223,7 @@ class Trainer(object):
                     print(batch_total_loss)
 
                     #append new data
-                    average_loss.append(batch_total_loss)
+                    ydata_loss.append(batch_total_loss)
 
                 else: #use supervised learning
                     supervised_learning_total_loss =  tf.math.reduce_mean(tf.math.square(tf.reduce_sum(supervised_learning_loss,0)))
@@ -228,28 +231,10 @@ class Trainer(object):
                     print(supervised_learning_total_loss)
 
                     #append new data
-                    average_loss.append(supervised_learning_total_loss)
+                    ydata_loss.append(supervised_learning_total_loss)
 
-                average_accuracy.append(accuracy)
-
-                # update graph at new epoch
-                if not graph_epoch in xdata:
-                    xdata.append(graph_epoch)
-
-                    # calculate averages
-                    average_accuracy = np.array(average_accuracy)
-                    average_loss = np.array(average_loss)
-
-                    mean_acc = np.mean(average_accuracy)
-                    mean_loss = np.mean(average_loss)
-
-                    # reset lists
-                    average_accuracy = []
-                    average_loss = []
-
-                    # add to dataset
-                    ydata_accuracy.append(mean_acc)
-                    ydata_loss.append(mean_loss)
+                ydata_accuracy.append(accuracy)
+                xdata.append(max(xdata) + 1)
                     
                 print("Episode: "+str(z))
                 print("Epoch: "+ str(episode.epoch))
@@ -521,12 +506,13 @@ if __name__ == '__main__':
     Dataset_list=['train','test','dev','graph']
     for dataset in Dataset_list:
         input_file = options['data_input_dir']+dataset+'.txt'
-        ds = []
-        with open(input_file) as raw_input_file:
-            csv_file = csv.reader(raw_input_file, delimiter = '\t' )
-            for line in csv_file:
-                ds.append(line)
-        options['dataset'][dataset]=ds
+        if os.path.isfile(input_file):
+            ds = []
+            with open(input_file) as raw_input_file:
+                csv_file = csv.reader(raw_input_file, delimiter = '\t' )
+                for line in csv_file:
+                    ds.append(line)
+            options['dataset'][dataset]=ds
 
     ds = []
     input_file = options['data_input_dir']+'full_graph.txt'
@@ -537,7 +523,10 @@ if __name__ == '__main__':
                 ds.append(line)  
     else:
         for dataset in Dataset_list:
-            ds = ds + options['dataset'][dataset]
+            try:
+                ds = ds + options['dataset'][dataset]
+            except:
+                pass
     options['dataset']['full_graph'] = ds      
     
     # read the vocab files, it will be used by many classes hence global scope
@@ -556,16 +545,16 @@ if __name__ == '__main__':
     save_path = ''
 
     #reset loss graph to add another set of data
-    xdata = []
-    ydata_loss = []
-    ydata_accuracy = []
+    xdata = [0]
+    ydata_loss = [0]
+    ydata_accuracy = [0]
 
-    def make_checkpoint(last_epoch, agent, options, xdata, ydata_accuracy, ydata_loss):
+    def make_rl_checkpoint(name, last_epoch, agent, options, xdata, ydata_accuracy, ydata_loss, random_masking=0, train_rwd=False):
         # set rwd
-        options['train_rwd'] = True
+        options['train_rwd'] = train_rwd
 
         # make checkpoint folder
-        options['output_dir'] += '/checkpoint_sl_epoch_'+str(last_epoch)
+        options['output_dir'] += '/'+name+'/'
         os.mkdir(options['output_dir'])
 
         # make output folder
@@ -577,22 +566,22 @@ if __name__ == '__main__':
         os.mkdir(options['output_dir']+'/model_weights/')
         options['model_dir'] = options['output_dir']+'/model_weights/'
 
+        if not train_rwd:
+            options['random_masking_coef'] = random_masking
+
         # make trainer
         trainer = Trainer(options, agent)
-        
+
         # do RL training
-        options['beta']=0.02
-        options['Lambda']=0.02
-        options['learning_rate']=1e-3
         trainer.set_hpdependent(options)
         xdata, ydata_accuracy, ydata_loss, last_epoch = trainer.train(True, xdata, ydata_accuracy, ydata_loss, last_epoch)
-        
+
         # create graph
         figure, axes = plt.subplots(1,2)
         loss_graph=axes[0]
         accuracy_graph=axes[1]
-        loss_graph.set_xlim(1, last_epoch)
-        accuracy_graph.set_xlim(1, last_epoch)
+        loss_graph.set_xlim(1, max(xdata))
+        accuracy_graph.set_xlim(1, max(xdata))
         loss_graph.set_ylim(min(0, min(ydata_loss)), max(ydata_loss))
         accuracy_graph.set_ylim(min(0, min(ydata_accuracy)), max(ydata_accuracy))
         line_loss, = loss_graph.plot(xdata, ydata_loss, 'r-', label="Loss")
@@ -613,14 +602,52 @@ if __name__ == '__main__':
         # save model
         trainer.agent.save_weights(options['model_dir'] + options['model_name'])
 
+        return xdata, ydata_accuracy, ydata_loss, last_epoch
+
+    def make_sl_checkpoint(last_epoch, agent, options, xdata, ydata_accuracy, ydata_loss):
+        # make checkpoint folder
+        options['output_dir'] += '/checkpoint_sl_epoch_'+str(last_epoch)
+        os.mkdir(options['output_dir'])
+
+        # make model folder
+        os.mkdir(options['output_dir']+'/model_weights/')
+        options['model_dir'] = options['output_dir']+'/model_weights/'
+
+        # make trainer
+        trainer = Trainer(options, agent)
+        
+        # original reward testing
+        trainer.agent.save_weights(options['model_dir'])
+        make_rl_checkpoint("original_reward", last_epoch, agent, options.copy(), xdata.copy(), ydata_accuracy.copy(), ydata_loss.copy(), train_rwd=True)
+        trainer.agent.load_weights(options['model_dir'])
+
+        # different levels of random masking
+        trainer.agent.save_weights(options['model_dir'])
+        make_rl_checkpoint("no_mask", last_epoch, agent, options.copy(), xdata.copy(), ydata_accuracy.copy(), ydata_loss.copy(), random_masking=0)
+        trainer.agent.load_weights(options['model_dir'])
+
+        trainer.agent.save_weights(options['model_dir'])
+        make_rl_checkpoint("20p_mask", last_epoch, agent, options.copy(), xdata.copy(), ydata_accuracy.copy(), ydata_loss.copy(), random_masking=0.2)
+        trainer.agent.load_weights(options['model_dir'])
+
+        trainer.agent.save_weights(options['model_dir'])
+        make_rl_checkpoint("40p_mask", last_epoch, agent, options.copy(), xdata.copy(), ydata_accuracy.copy(), ydata_loss.copy(), random_masking=0.4)
+        trainer.agent.load_weights(options['model_dir'])
+
     # Training
-    if not options['load_model']:
+    if options['fb60k']:
         trainer = Trainer(options)
+        xdata, ydata_accuracy, ydata_loss, last_epoch = make_rl_checkpoint("partial_labels_0", 0, trainer.agent, options.copy(), xdata.copy(), ydata_accuracy.copy(), ydata_loss.copy(), train_rwd=True)
+        for i in range(10):
+            make_rl_checkpoint("partial_labels_"+str(i+1), last_epoch, trainer.agent, options.copy(), xdata.copy(), ydata_accuracy.copy(), ydata_loss.copy(), train_rwd=True)
+    elif not options['load_model']:
+        trainer = Trainer(options)
+        original_options = options.copy()
 
         # Create checkpoint for no rl
         last_epoch = 0
         trainer.agent.save_weights(options['model_dir'])
-        make_checkpoint(last_epoch, trainer.agent, options.copy(), xdata.copy(), ydata_accuracy.copy(), ydata_loss.copy())
+        make_sl_checkpoint(last_epoch, trainer.agent, original_options.copy(), xdata.copy(), ydata_accuracy.copy(), ydata_loss.copy())
         trainer.agent.load_weights(options['model_dir'])
 
         # Create initial SL checkpoint
@@ -632,7 +659,7 @@ if __name__ == '__main__':
         trainer.total_epochs_sl = options['sl_start_checkpointing']
         xdata, ydata_accuracy, ydata_loss, last_epoch = trainer.train(False, xdata, ydata_accuracy, ydata_loss, last_epoch)
         trainer.agent.save_weights(options['model_dir'])
-        make_checkpoint(last_epoch, trainer.agent, options.copy(), xdata.copy(), ydata_accuracy.copy(), ydata_loss.copy())
+        make_sl_checkpoint(last_epoch, trainer.agent, original_options.copy(), xdata.copy(), ydata_accuracy.copy(), ydata_loss.copy())
         trainer.agent.load_weights(options['model_dir'])
 
         # Create subsequent SL checkpoints
@@ -640,7 +667,7 @@ if __name__ == '__main__':
         for ckpt in range(options['sl_checkpoints']):
             xdata, ydata_accuracy, ydata_loss, last_epoch = trainer.train(False, xdata, ydata_accuracy, ydata_loss, last_epoch)
             trainer.agent.save_weights(options['model_dir'])
-            make_checkpoint(last_epoch, trainer.agent, options.copy(), xdata.copy(), ydata_accuracy.copy(), ydata_loss.copy())
+            make_sl_checkpoint(last_epoch, trainer.agent, original_options.copy(), xdata.copy(), ydata_accuracy.copy(), ydata_loss.copy())
             trainer.agent.load_weights(options['model_dir'])
     else:
         options['test_round'] = True
