@@ -18,7 +18,7 @@ class Episode(object):
         self.grapher = graph
         self.batch_size, self.path_len, num_rollouts, test_rollouts, positive_reward, negative_reward, mode, batcher = params
         self.mode = mode
-        if self.mode == 'train' or self.mode == 'fb60k':
+        if self.mode == 'train':# or self.mode == 'fb60k':
             self.num_rollouts = num_rollouts
         else:
             self.num_rollouts = test_rollouts
@@ -27,23 +27,22 @@ class Episode(object):
         if self.mode == 'test':
             start_entities, query_relation, end_entities,  all_answers = data
         elif rwd:
-            start_entities, query_relation,  end_entities, all_answers, self.epoch = data
+            start_entities, query_relation,  end_entities, all_answers = data#, self.epoch = data
         else:
             if self.use_RL:
-                start_entities, query_relation,  all_answers, self.masked, self.epoch = data
+                start_entities, query_relation,  all_answers, self.masked = data#, self.epoch = data
             else:
-                start_entities, query_relation,  all_answers, self.correct_path, self.epoch = data
+                start_entities, query_relation,  all_answers, self.correct_path = data#, self.epoch = data
         self.no_examples = start_entities.shape[0]   #256
         self.positive_reward = positive_reward
         self.negative_reward = negative_reward
         #turns start entities into a list of the same start entity num_rollouts number of times so we can keep track of all the rollouts later on
-        print("rollouts")
-        print(self.num_rollouts)
         start_entities = np.repeat(start_entities, self.num_rollouts)#KEY LINE RIGHT HERE
         batch_query_relation = np.repeat(query_relation, self.num_rollouts)
         if rwd:
             end_entities = np.repeat(end_entities, self.num_rollouts)
-        all_answers = np.repeat(all_answers, self.num_rollouts)
+        pre_rollout = all_answers
+        all_answers = np.repeat(all_answers, self.num_rollouts, axis=0)
         self.start_entities = start_entities
         if rwd:
             self.end_entities = end_entities
@@ -53,15 +52,23 @@ class Episode(object):
         self.all_answers = all_answers
 
         if rwd:
+            # print("RWD")
             next_actions = self.grapher.return_next_actions(self.current_entities, self.start_entities, self.query_relation,
                                                         self.all_answers, self.current_hop == self.path_len - 1,
                                                         self.num_rollouts, rwd, answers = self.end_entities)
         else:
             if self.use_RL:
-                next_actions = self.grapher.return_next_actions(self.current_entities, self.start_entities, self.query_relation,
-                                                        self.all_answers, self.current_hop == self.path_len - 1,
-                                                        self.num_rollouts, rwd, masking = self.masked, rl = self.use_RL)
+                # print("RL")
+                try:
+                    next_actions = self.grapher.return_next_actions(self.current_entities, self.start_entities, self.query_relation,
+                                                            self.all_answers, self.current_hop == self.path_len - 1,
+                                                            self.num_rollouts, rwd, masking = self.masked, rl = self.use_RL)
+                except:
+                    print("pre and post rollout:")
+                    print(pre_rollout)
+                    print(all_answers)
             else:
+                # print("SL")
                 next_actions = self.grapher.return_next_actions(self.current_entities, self.start_entities, self.query_relation,
                                                         self.all_answers, self.current_hop == self.path_len - 1,
                                                         self.num_rollouts, rwd)
@@ -69,8 +76,6 @@ class Episode(object):
         self.state['next_relations'] = next_actions[:, :, 1]
         self.state['next_entities'] = next_actions[:, :, 0]
         self.state['current_entities'] = self.current_entities
-        print("current entities shape")
-        print(self.current_entities.shape)
         self.rwd = rwd
 
     def get_state(self):
@@ -190,14 +195,6 @@ class env(object):
         if self.mode == 'train':
             for data in self.batcher.yield_next_batch_train(self.labeller, use_RL):
                 yield Episode(self.grapher, data, params, self.rwd, rl_train = use_RL)
-        elif self.mode == 'fb60k':
-            # 90% of the time do RL, with randomly scattered SL steps for partial labels
-            while True:
-                use_RL = False
-                rwd = bool(random.random() <= 0.9)
-                print(rwd)
-                data = next(self.batcher.yield_next_batch_train(self.labeller, use_RL))
-                yield Episode(self.grapher, data, params, rwd, rl_train = use_RL)
         else:
             for data in self.batcher.yield_next_batch_test(self.labeller):
                 if data == None:

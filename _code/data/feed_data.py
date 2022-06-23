@@ -41,7 +41,7 @@ class RelationEntityBatcher():
         if self.rwd:
             self.store = []
 
-        if self.mode == 'train' or self.mode == 'fb60k':
+        if self.mode == 'train':# or self.mode == 'fb60k':
             # with open(input_file) as raw_input_file:
                 # csv_file = csv.reader(raw_input_file, delimiter = '\t' )
             #goes through the training data and adds the encoding generated in vocab_gen.py for every fact to a list. Also creates a dictionary that for a query returns a list of correct answers
@@ -54,12 +54,16 @@ class RelationEntityBatcher():
                     self.store.append([e1,r,e2])
                 self.store_all_correct[(e1, r)].add(e2)  #YM: there may exist multiple answers for the same query, i.e., same (e1,r) may mapping to different e2. store_all_correct will give all solution for the same query
             if self.rwd:
-                ##self.store = np.array(self.store[:300])
+                ##self.store = np.array(self.store[:5000])
                 self.store = np.array(self.store)
                 print(self.store.shape)
-            ##self.queries=np.array(list(self.store_all_correct.keys())[:300], int)
+            ##self.queries=np.array(list(self.store_all_correct.keys())[:5000], int)
             self.queries=np.array(list(self.store_all_correct.keys()), int)
             print(self.queries.shape)
+            if self.rwd:
+                self.train_set_length = self.store.shape[0]
+            else:
+                self.train_set_length = self.queries.shape[0]
         else:
             if self.mode == 'test':
                 dataset = self.test_data
@@ -92,51 +96,17 @@ class RelationEntityBatcher():
                     self.store_all_correct[(e1, r)].add(e2)
             ###self.queries=np.array(list(self.query_answers.keys()), int)
             ####
-        
-                    
+            
     #UNDERSTOOD
     def yield_next_batch_train(self, labeller, rl):
-        epoch = 1
-        current_idx = 0
-        if self.rwd:
-            remaining = self.store.shape[0]
-            random.shuffle(self.store)
-        else:
-            remaining = self.queries.shape[0]
-            random.shuffle(self.queries)
-        # shuffle list before beginning training
         while True:
-            print(remaining)
-            # reset for new epoch
-            if remaining == 0:
-                if self.rwd:
-                    remaining = self.store.shape[0]
-                    random.shuffle(self.store)
-                else:
-                    remaining = self.queries.shape[0]
-                    random.shuffle(self.queries)
-                epoch += 1
-                current_idx = 0
-
-            # get batch indices
-            if remaining - self.batch_size > 0:
-                batch_idx = np.arange(current_idx, current_idx+self.batch_size)
-                current_idx += self.batch_size
-                remaining -= self.batch_size
-            else:
-                # if self.rwd:
-                #     batch_idx = np.arange(current_idx, self.store.shape[0])
-                # else:
-                #     batch_idx = np.arange(current_idx, self.queries.shape[0])
-                # partial batches mess with the agent, so we don't use them
-                remaining = 0
-                continue
-
             # get batch
             if self.rwd:
                 rl = False
+                batch_idx = np.random.randint(0, self.store.shape[0], size=self.batch_size)
                 batch = self.store[batch_idx, :]
             else:
+                batch_idx = np.random.randint(0, self.queries.shape[0], size=int(self.batch_size))
                 batch = self.queries[batch_idx, :]
             
             # if doing supervised learning, randomly generates a list of indices of facts in the training data the length of which is the batch size
@@ -153,9 +123,9 @@ class RelationEntityBatcher():
                         labels[2].append(correct[2])
 
                 #get indices where no path was found and delete them from the batch
-                indices=np.argwhere(labels==np.array([-1,-1]))
-                np.delete(labels,indices)
-                np.delete(batch,indices)
+                # indices=np.argwhere(labels==np.array([-1,-1]))
+                # np.delete(labels,indices)
+                # np.delete(batch,indices)
 
             if rl:
                 masked = []
@@ -180,16 +150,14 @@ class RelationEntityBatcher():
                 assert e1.shape[0] == e2.shape[0] == r.shape[0] == len(all_e2s)
             assert e1.shape[0] == r.shape[0] == len(all_e2s)
             if self.rwd:
-                print("e1 shape")
-                print(e1.shape)
-                print("all e2 example")
-                print(all_e2s[0])
-                yield e1, r, e2, all_e2s, epoch
+                yield e1, r, e2, all_e2s#, epoch
             else:
                 if rl:
-                    yield e1, r, all_e2s, masked, epoch
+                    print("RL")
+                    yield e1, r, all_e2s, masked#, epoch
                 else:
-                    yield e1, r, all_e2s, labels, epoch
+                    print("SL")
+                    yield e1, r, all_e2s, labels#, epoch
 
     #UNDERSTOOD
     # doesnt check rwd since we always test with original reward

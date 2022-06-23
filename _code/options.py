@@ -54,11 +54,16 @@ def read_options():
     parser.add_argument("--num_rollouts", default=20, type=int)
     parser.add_argument("--test_rollouts", default=100, type=int)
     #self explanatory
-    parser.add_argument("--LSTM_layers", default=1, type=int)
+    parser.add_argument("--LSTM_layers", default=1       , type=int)
     parser.add_argument("--model_dir", default='', type=str)
     parser.add_argument("--base_output_dir", default='', type=str)
+    parser.add_argument("--total_iterations", default=2000, type=int)
     parser.add_argument("--total_epochs_sl", default=2000, type=int)
     parser.add_argument("--total_epochs_rl", default=2000, type=int)
+    #SL hyperparameters
+    parser.add_argument("--beta_sl", default=0.02, type=float)
+    parser.add_argument("--Lambda_sl", default=0.02, type=float)
+    parser.add_argument("--learning_rate_sl", default=1e-3, type=float)
     
     #not sure about this one
     parser.add_argument("--Lambda", default=0.0, type=float)
@@ -87,8 +92,10 @@ def read_options():
     parser.add_argument("--sl_checkpoint_interval", default=1, type=int)
     # random masking parameter
     parser.add_argument("--random_masking_coef", default=0, type=float)
-    # special training conditions for fb60k
+    # # special training conditions for fb60k
     parser.add_argument("--fb60k", default=0, type=int)
+    # special option to tune hyperparameters for a dataset
+    parser.add_argument("--tune_hp", default=0, type=int)
 
     try:
         parsed = vars(parser.parse_args())
@@ -101,7 +108,8 @@ def read_options():
     parsed['test_round'] = parsed['test_round'] == 1
     parsed['sl'] = parsed['sl'] == 1
     parsed['save_model'] = parsed['save_model'] == 1
-    parsed['fb60k'] = parsed['fb60k'] == 1
+    # parsed['fb60k'] = parsed['fb60k'] == 1
+    parsed['tune_hp'] = parsed['tune_hp'] == 1
     # parsed['order_swap'] = parsed['order_swap'] == 1 
     #dataset name
     parsed['dataset_name']=parsed['base_output_dir'][7:-1]
@@ -131,7 +139,7 @@ def read_options():
     parsed['log_file_name'] = parsed['output_dir'] +'/log.txt'
     os.makedirs(parsed['output_dir'])
     os.mkdir(parsed['model_dir'])
-    # os.mkdir(parsed['output_dir']+'/path_info/')
+    os.mkdir(parsed['output_dir']+'/path_info/')
     with open(parsed['output_dir']+'/config.txt', 'w') as out:
         pprint(parsed, stream=out)
 
