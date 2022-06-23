@@ -23,10 +23,10 @@ from code.data.vocab_gen import Vocab_Gen
 import matplotlib
 import matplotlib.pyplot as plt
 logger = logging.getLogger()
-logging.basicConfig(stream=sys.stdout, level=logging.DEBUG)
+# logging.basicConfig(stream=sys.stdout, level=logging.DEBUG)
+logging.basicConfig(filename="out.txt", level=logging.DEBUG)
 # tf.keras.backend.set_floatx('float64')
 
-matplotlib.use('Agg') 
 class Trainer(object):
     def __init__(self, params, train_type, reward_type):
         # transfer parameters to self
@@ -34,7 +34,9 @@ class Trainer(object):
 
         # set the trainer mode
         self.RL = train_type != "supervised"
+        logging.debug(str(self.RL))
         self.original_reward = reward_type == "original" if self.RL else False
+        logging.debug(str(self.original_reward))
 
         # create agent
         self.agent = Agent(params)
@@ -601,13 +603,16 @@ if __name__ == '__main__':
     original_options = options.copy()
 
     # create SL Trainer
-    options['beta'] = options['beta_sl']
-    options['Lambda'] = options['Lambda_sl']
-    options['learning_rate'] = options['learning_rate_sl']
-    options['random_masking_coef'] = 0
-    options['total_epochs_sl'] = options['sl_start_checkpointing']
-    trainer = Trainer(options, "supervised", "our")
-    
+    # options['beta'] = options['beta_sl']
+    # options['Lambda'] = options['Lambda_sl']
+    # options['learning_rate'] = options['learning_rate_sl']
+    # options['random_masking_coef'] = 0
+    # options['total_epochs_sl'] = options['sl_start_checkpointing']
+    # trainer = Trainer(options, "supervised", "our")
+    trainer = Trainer(options, "reinforcement", "original")
+    xdata, ydata_accuracy, ydata_loss = trainer.train(xdata, ydata_accuracy, ydata_loss)
+    trainer.testing()
+
     # Create checkpoint for pure RL run
     last_epoch = 0
     trainer.agent.save_weights(options['model_dir'])
