@@ -1,5 +1,5 @@
-configs/
-
-datasets/
-labels/
-
+*.pyc
+ipynb_checkpoints/*
+datasets/*
+configs/*
+_code/*
