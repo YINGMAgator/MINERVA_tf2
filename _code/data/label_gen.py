@@ -13,22 +13,7 @@ import random
 
 class Labeller(object):
     def __init__(self,params):
-        self.array_store, self.ePAD, self.rPAD, self.generate, self.correct_filepath, self.all_correct, self.rwd, self.masking = params
-        # if not self.generate:
-        #     print("loading correct labels")
-        #     try:
-        #         self.correct=pickle.load(open(self.correct_filepath,'rb'))
-        #     except:
-        #         pass
-        self.open_labels()
-
-    def open_labels(self):
-        # try to open the labels file unless it is nonexistent or corrupted
-        # try:
-        #     with open(self.correct_filepath,'rb') as lf:
-        #         self.correct=pickle.load(lf)
-        # except:
-        #     self.correct={}
+        self.array_store, self.ePAD, self.rPAD, self.correct_filepath, self.all_correct, self.rwd, self.masking = params
         self.correct={}
 
     def save_labels(self):

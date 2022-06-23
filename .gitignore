@@ -1,6 +1,5 @@
-*.pyc
-*/.ipynb_checkpoints/*
-.idea/*
-./datasets/*
-./labels/*
+configs/
+
+datasets/
+labels/
 

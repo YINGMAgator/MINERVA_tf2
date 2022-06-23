@@ -28,57 +28,45 @@ logging.basicConfig(stream=sys.stdout, level=logging.DEBUG)
 
 matplotlib.use('Agg') 
 class Trainer(object):
-    def __init__(self, params, agent = None):
+    def __init__(self, params, train_type, reward_type):
         # transfer parameters to self
         for key, val in params.items(): setattr(self, key, val)
-        self.rwd = self.train_rwd
-        self.test = self.test_round
-        if self.test:
-            self.rwd = True
-            ###self.rwd = False
-        # allow passing an agent to the trainer for testing
-        if agent !=None:
-            self.agent = agent
-        else:
-            self.agent = Agent(params)
-        # I don't want to load a 10gb file into memory 3 times so I'm just not creating these environemnts during this part of testing
-        self.dev_test_environment = None #env(params, 'dev')
+
+        # set the trainer mode
+        self.RL = train_type != "supervised"
+        self.original_reward = reward_type == "original" if self.RL else False
+
+        # create agent
+        self.agent = Agent(params)
+        self.save_path = None
+
+        # create environments
+        self.train_environment = env(params, self.original_reward, 'train', self.RL)
+        self.dev_test_environment = env(params, True, 'dev', True)
+        self.test_test_environment = env(params, True, 'test', True)
         self.test_environment = self.dev_test_environment
-        if self.test:
-            ###self.test_environment = env(params, False, 'test')
-            self.test_environment = env(params, True, 'test')
-            self.train_environment = None
-            self.rev_relation_vocab = self.test_environment.grapher.rev_relation_vocab
-            self.rev_entity_vocab = self.test_environment.grapher.rev_entity_vocab
-        # elif self.fb60k:
-        #     self.test_environment = None
-        #     self.train_environment = env(params, self.rwd, 'fb60k')
-        #     self.rev_relation_vocab = self.train_environment.grapher.rev_relation_vocab
-        #     self.rev_entity_vocab = self.train_environment.grapher.rev_entity_vocab
+        self.rev_relation_vocab = self.train_environment.grapher.rev_relation_vocab
+        self.rev_entity_vocab = self.train_environment.grapher.rev_entity_vocab
+
+        # get step counts
+        if self.RL:
+            self.total_steps_rl = self.total_iterations
         else:
-            self.test_environment = None
-            self.train_environment = env(params, self.rwd, 'train')
-            self.rev_relation_vocab = self.train_environment.grapher.rev_relation_vocab
-            self.rev_entity_vocab = self.train_environment.grapher.rev_entity_vocab
-            self.total_steps_rl = self.total_epochs_rl * int(self.train_environment.batcher.train_set_length/self.batch_size)
             self.total_steps_sl = self.total_epochs_sl * int(self.train_environment.batcher.train_set_length/self.batch_size)
-            if self.fb60k:# partial pretraining
-                self.total_steps_sl = self.total_epochs_sl * self.train_environment.batcher.train_set_length * 0.1
+
+        # set values
         self.max_hits_at_10 = 0
         self.ePAD = self.entity_vocab['PAD']
         self.rPAD = self.relation_vocab['PAD']
         self.global_step = 0
         self.path_data = []
 
-    def set_hpdependent(self, options):
-        self.Lambda = options['Lambda']
-        self.beta = options['beta']
-        self.learning_rate = options['learning_rate']
+        # create optimizer
         self.decaying_beta = tf.keras.optimizers.schedules.ExponentialDecay(self.beta, decay_steps=200, decay_rate=0.90, staircase=True)
-        # optimize
         self.baseline = ReactiveBaseline(l=self.Lambda)
-        # self.optimizer = tf.compat.v1.train.AdamOptimizer(self.learning_rate)
         self.optimizer = tf.keras.optimizers.Adam(self.learning_rate)
+
+        # print("Training RL="+str(self.RL)+", original reward="+str(self.original_reward)+", options: "+str(options))
 
     #total loss encorporating 
     def calc_reinforce_loss(self,cum_discounted_reward,loss_all,logits_all):
@@ -95,12 +83,9 @@ class Trainer(object):
         final_reward = tf.math.divide(final_reward - reward_mean, reward_std)
 
         loss = tf.multiply(loss, final_reward)  # [B, T]
-        # self.loss_before_reg = loss
-        # print(self.decaying_beta(self.global_step) )
-        # loss1= tf.reduce_mean(loss) 
+
         total_loss = tf.reduce_mean(loss) - self.decaying_beta(self.global_step) * self.entropy_reg_loss(logits_all)  # scalar
-        # total_loss = tf.reduce_mean(loss)  # scalar
-        # print(self.decaying_beta(self.global_step))
+
         return total_loss
 
     def entropy_reg_loss(self, all_logits):
@@ -109,8 +94,6 @@ class Trainer(object):
         entropy_policy = - tf.reduce_mean(tf.reduce_sum(tf.multiply(tf.exp(all_logits), all_logits), axis=1))  # scalar
         return entropy_policy
 
-
-    #the return we all know and love, discounted by gamma
     def calc_cum_discounted_reward(self, rewards):
         """
         calculates the cumulative discounted reward.
@@ -128,40 +111,21 @@ class Trainer(object):
             cum_disc_reward[:, t] = running_add
         return cum_disc_reward
 
-    def get_test_actions(self, correct):
-        used_indexes=[]
-        actions=[]
-        chosen =np.where(correct==1)
-        for count, index in enumerate(chosen[0]):
-            if index in used_indexes:
-                continue
-            used_indexes += [index]
-            actions += [chosen[1][count]]
-        return actions
-
     # the scores actually aren't exactly between 0 and 1, so we normalize them to that range to get a proper CCE error
     def normalize_scores(self, scores):
         scores = tf.cast(scores, dtype=tf.float32)
         scores = tf.divide(tf.subtract(scores, tf.reduce_min(scores)), tf.subtract(tf.reduce_max(scores), tf.reduce_min(scores)))
         return scores
 
-    def train(self, use_RL, xdata, ydata_accuracy, ydata_loss):
-        # update train length values, since epoch numbers might have been changed after init
-        # self.total_steps_rl = self.total_epochs_rl * int(self.train_environment.batcher.train_set_length/self.batch_size)#700
-        # self.total_steps_sl = self.total_epochs_sl * int(self.train_environment.batcher.train_set_length/self.batch_size)
-        print("total steps rl: "+str(self.total_steps_rl)+"\ntotal steps sl: "+str(self.total_steps_sl))
+    def train(self, xdata, ydata_accuracy, ydata_loss):
         print("Beginning Training")
         self.first_state_of_test = False
         self.batch_counter = 0
         self.range_arr = np.arange(self.batch_size*self.num_rollouts)
+
         # cross entropy that we will use in our supervised learning implementation
         cce = tf.keras.losses.CategoricalCrossentropy(reduction=tf.keras.losses.Reduction.NONE)
-        for z, episode in enumerate(self.train_environment.get_episodes(use_RL)):
-            # graph_epoch = episode.epoch + last_epoch
-            # allow for rl turning on and off with fb60k training
-            # if self.fb60k:
-            #     use_RL = episode.rwd
-
+        for episode in self.train_environment.get_episodes():
             self.batch_counter += 1
             model_state = self.agent.state_init
             prev_relation = self.agent.relation_init            
@@ -169,11 +133,12 @@ class Trainer(object):
             # h = sess.partial_run_setup(fetches=fetches, feeds=feeds)
             query_relation = episode.get_query_relation()
             query_embedding = self.agent.get_query_embedding(query_relation)
+
             # get initial state
             state = episode.get_state()
             
+            # for use with SL
             last_step = ["N/A"]*(self.batch_size*self.num_rollouts)
-            
             with tf.GradientTape() as tape:
                 supervised_learning_loss = []
                 loss_before_regularization = []
@@ -189,7 +154,7 @@ class Trainer(object):
                                                                                   self.first_state_of_test])
                     #Step 2:
                     #some code to calculate loss between loss and prediction
-                    if use_RL:
+                    if self.RL:
                         loss_before_regularization.append(loss)
                         logits_all.append(logits)
                     else: #use supervised learning
@@ -197,47 +162,26 @@ class Trainer(object):
                         choices=scores.shape[1]
 
                         correct=np.full((active_length,choices),0)
-                        actions_test=np.array([], int)
                         for batch_num in range(len(episode.correct_path[i])):
                             try:
                                 valid = episode.correct_path[i][batch_num][last_step[batch_num]]
                             except:
                                 valid = episode.backtrack(batch_num)
-                            # account for the dumb way I accounted for dead ends before
-                            actions_test = np.concatenate((actions_test, [valid[0] if len(valid)!=0 else 0]))
                             correct[np.array([batch_num]*len(valid), int),np.array(valid, int)]=np.ones(len(valid))
                             #verify that the valid actions are encoded in the correct label correctly
                             if not sorted(list(set([int(x) for x in valid]))) == list(np.nonzero(correct[batch_num,:]==1)[0]) and not -1 in sorted(list(set([int(x) for x in valid]))):
                                 print("ALERT")
                                 print(sorted(list(set([int(x) for x in valid]))))
                                 print(list(np.nonzero(correct[batch_num,:]==1)[0]))
-                        last_step = idx.numpy() #actions_test if verifying labels
-                        tensorized = tf.convert_to_tensor(correct)
-                        normalized = self.normalize_scores(scores)
-                        loss = cce(tensorized, normalized)
-
-                        #testing
-                        nan_array = tf.math.is_nan(loss)
-                        contains_nan = tf.math.reduce_any(nan_array)
-                        print(contains_nan)
-                        if contains_nan:
-                            loss = tf.map_fn(lambda x: 0.0 if tf.math.is_nan(x) else x, loss)
-                            casted = tf.cast(nan_array, tf.int32)
-                            nan_row = tf.argmax(casted)
-                            print(tensorized[nan_row-1:nan_row+1,:])
-                            print(normalized[nan_row-1:nan_row+1,:])
-                            # with np.printoptions(threshold=np.inf):
-                            #     print(tensorized)
-                            #     print(normalized)
-                            # print(loss[nan_row])
+                        last_step = idx.numpy()
+                        loss = cce(tf.convert_to_tensor(correct), self.normalize_scores(scores))
                         
                         supervised_learning_loss.append(loss)
-                        actions_test=actions_test.astype(int)
                     
                     state = episode(idx) #actions_test if verifying labels
 
                 # batch num # of rows, each holding a path
-                reward = episode.get_reward(self.rwd)
+                reward = episode.get_reward()
 
                 #calculating the accuracy, or the portion of batches where the correct answer was found
                 accuracy = np.sum((np.sum(np.reshape(reward, (self.batch_size, self.num_rollouts)), axis=1) > 0))/self.batch_size
@@ -245,8 +189,8 @@ class Trainer(object):
                 
                 # get the final reward from the environment and update the limits of the graphs accordingly
                 # plus add the new data to the dataset
-                if use_RL:
-                    rewards = episode.get_reward(self.rwd)
+                if self.RL:
+                    rewards = episode.get_reward()
                     # computed cumulative discounted reward
                     cum_discounted_reward = self.calc_cum_discounted_reward(rewards)  # [B, T]
                     batch_total_loss = self.calc_reinforce_loss(cum_discounted_reward,loss_before_regularization,logits_all)
@@ -255,7 +199,6 @@ class Trainer(object):
 
                     #append new data
                     ydata_loss.append(float(batch_total_loss.numpy()))
-
                 else: #use supervised learning
                     sl_loss_float64 = [tf.cast(x, tf.float64) for x in supervised_learning_loss]
                     reduced_sum = tf.reduce_sum(sl_loss_float64,0)
@@ -270,10 +213,9 @@ class Trainer(object):
                 ydata_accuracy.append(float(accuracy))
                 xdata.append(float(max(xdata) + 1))
                     
-                print("Episode: "+str(z))
-                # print("Epoch: "+ str(episode.epoch))
+                print("Episode: "+str(self.batch_counter))
 
-            if use_RL:
+            if self.RL:
                 gradients = tape.gradient(batch_total_loss, self.agent.trainable_variables)
             else: #use supervised learning
                 gradients = tape.gradient(supervised_learning_total_loss, self.agent.trainable_variables)
@@ -281,15 +223,14 @@ class Trainer(object):
             gradients, _ = tf.clip_by_global_norm(gradients, self.grad_clip_norm)
             self.optimizer.apply_gradients(zip(gradients, self.agent.trainable_variables))   
 
-            if (use_RL and self.batch_counter > self.total_steps_rl) or (not use_RL and self.batch_counter > self.total_steps_sl):
+            if (self.RL and self.batch_counter > self.total_steps_rl) or (not self.RL and self.batch_counter > self.total_steps_sl):
                 return xdata, ydata_accuracy, ydata_loss    
 
-    def testing(self, beam=False, print_paths=True, save_model = False, auc = False):
+    def testing(self):
         batch_counter = 0
         paths = defaultdict(list)
         
         answers = []
-        # feed_dict = {}
         all_final_reward_1 = 0
         all_final_reward_3 = 0
         all_final_reward_5 = 0
@@ -319,13 +260,10 @@ class Trainer(object):
             previous_relation = np.ones((temp_batch_size * self.test_rollouts, ), dtype='int64') * self.relation_vocab[
                 'DUMMY_START_RELATION']
             self.range_arr_test = np.arange(temp_batch_size * self.test_rollouts)
-
-            ####logger code####
-            if print_paths:
-                self.entity_trajectory = []
-                self.relation_trajectory = []
-            ####################
-
+            # print paths code
+            # self.entity_trajectory = []
+            # self.relation_trajectory = []
+            # end print paths code
             self.log_probs = np.zeros((temp_batch_size*self.test_rollouts,)) * 1.0
 
             # for each time step
@@ -343,55 +281,51 @@ class Trainer(object):
                 test_scores = test_scores.numpy()
                 test_action_idx = test_action_idx.numpy()
                 chosen_relation = chosen_relation.numpy()
-                if beam:
-                    k = self.test_rollouts
-                    new_scores = test_scores + beam_probs
-                    if i == 0:
-                        idx = np.argsort(new_scores)
-                        idx = idx[:, -k:]
-                        ranged_idx = np.tile([b for b in range(k)], temp_batch_size)
-                        idx = idx[np.arange(k*temp_batch_size), ranged_idx]
-                    else:
-                        idx = self.top_k(new_scores, k)
+                # beam search code
+                k = self.test_rollouts
+                new_scores = test_scores + beam_probs
+                if i == 0:
+                    idx = np.argsort(new_scores)
+                    idx = idx[:, -k:]
+                    ranged_idx = np.tile([b for b in range(k)], temp_batch_size)
+                    idx = idx[np.arange(k*temp_batch_size), ranged_idx]
+                else:
+                    idx = self.top_k(new_scores, k)
 
-                    y = idx//self.max_num_actions
-                    x = idx%self.max_num_actions
+                y = idx//self.max_num_actions
+                x = idx%self.max_num_actions
 
-                    y += np.repeat([b*k for b in range(temp_batch_size)], k)
-                    state['current_entities'] = state['current_entities'][y]
-                    state['next_relations'] = state['next_relations'][y,:]
-                    state['next_entities'] = state['next_entities'][y, :]
+                y += np.repeat([b*k for b in range(temp_batch_size)], k)
+                state['current_entities'] = state['current_entities'][y]
+                state['next_relations'] = state['next_relations'][y,:]
+                state['next_entities'] = state['next_entities'][y, :]
 
-                    agent_mem = agent_mem[:, :, y, :]
-                    test_action_idx = x
-                    chosen_relation = state['next_relations'][np.arange(temp_batch_size*k), x]
-                    beam_probs = new_scores[y, x]
-                    beam_probs = beam_probs.reshape((-1, 1))
-                    if print_paths:
-                        for j in range(i):
-                            self.entity_trajectory[j] = self.entity_trajectory[j][y]
-                            self.relation_trajectory[j] = self.relation_trajectory[j][y]
+                agent_mem = agent_mem[:, :, y, :]
+                test_action_idx = x
+                chosen_relation = state['next_relations'][np.arange(temp_batch_size*k), x]
+                beam_probs = new_scores[y, x]
+                beam_probs = beam_probs.reshape((-1, 1))
+                # print paths code
+                # for j in range(i):
+                #     self.entity_trajectory[j] = self.entity_trajectory[j][y]
+                #     self.relation_trajectory[j] = self.relation_trajectory[j][y]
+                # end print paths code
+                # end beam search code
                 previous_relation = chosen_relation
                 layer_state = tf.unstack(agent_mem, self.LSTM_layers)
                 model_state = [tf.unstack(s, 2) for s in layer_state]   
-                ####logger code####
-                if print_paths:
-                    self.entity_trajectory.append(state['current_entities'])
-                    self.relation_trajectory.append(chosen_relation)
-                ####################
+                # print paths code
+                # self.entity_trajectory.append(state['current_entities'])
+                # self.relation_trajectory.append(chosen_relation)
+                # end print paths code
                 state = episode(test_action_idx)
                 self.log_probs += test_scores[np.arange(self.log_probs.shape[0]), test_action_idx]
-            if beam:
-                self.log_probs = beam_probs
-            ####Logger code####
-
-            if print_paths:
-                self.entity_trajectory.append(
-                    state['current_entities'])
-
-
+            self.log_probs = beam_probs
+            # print paths code
+            # self.entity_trajectory.append(state['current_entities'])
+            # end print paths code
             # ask environment for final reward
-            rewards = episode.get_reward(True)  # [B*test_rollouts]
+            rewards = episode.get_reward()  # [B*test_rollouts]
             reward_reshape = np.reshape(rewards, (temp_batch_size, self.test_rollouts))  # [orig_batch, test_rollouts]
             self.log_probs = np.reshape(self.log_probs, (temp_batch_size, self.test_rollouts))
             sorted_indx = np.argsort(-self.log_probs)
@@ -408,31 +342,13 @@ class Trainer(object):
                 answer_pos = None
                 seen = set()
                 pos=0
-                if self.pool == 'max':
-                    for r in sorted_indx[b]:
-                        if reward_reshape[b,r] == self.positive_reward:
-                            answer_pos = pos
-                            break
-                        if ce[b, r] not in seen:
-                            seen.add(ce[b, r])
-                            pos += 1
-                if self.pool == 'sum':
-                    scores = defaultdict(list)
-                    answer = ''
-                    for r in sorted_indx[b]:
-                        scores[ce[b,r]].append(self.log_probs[b,r])
-                        if reward_reshape[b,r] == self.positive_reward:
-                            answer = ce[b,r]
-                    final_scores = defaultdict(float)
-                    for e in scores:
-                        final_scores[e] = lse(scores[e])
-                    sorted_answers = sorted(final_scores, key=final_scores.get, reverse=True)
-                    if answer in  sorted_answers:
-                        answer_pos = sorted_answers.index(answer)
-                    else:
-                        answer_pos = None
-
-
+                for r in sorted_indx[b]:
+                    if reward_reshape[b,r] == self.positive_reward:
+                        answer_pos = pos
+                        break
+                    if ce[b, r] not in seen:
+                        seen.add(ce[b, r])
+                        pos += 1
                 if answer_pos != None:
                     if answer_pos < 20:
                         final_reward_20 += 1
@@ -449,28 +365,27 @@ class Trainer(object):
                     AP += 0
                 else:
                     AP += 1.0/((answer_pos+1))
-                if print_paths:
-                    qr = self.test_environment.grapher.rev_relation_vocab[query_relation [b * self.test_rollouts]]
-                    start_e = self.rev_entity_vocab[episode.start_entities[b * self.test_rollouts]]
-                    end_e = self.rev_entity_vocab[episode.end_entities[b * self.test_rollouts]]
-                    ###end_e = [self.rev_entity_vocab[e2] for e2 in episode.all_answers[b * self.test_rollouts]]
-                    paths[str(qr)].append(str(start_e) + "\t" + str(end_e) + "\n")
-                    paths[str(qr)].append("Reward:" + str(1 if answer_pos != None and answer_pos < 10 else 0) + "\n")
-                    for r in sorted_indx[b]:
-                        indx = b * self.test_rollouts + r
-                        if rewards[indx] == self.positive_reward:
-                            rev = 1
-                        else:
-                            rev = -1
-                        answers.append(self.rev_entity_vocab[se[b,r]]+'\t'+ self.rev_entity_vocab[ce[b,r]]+'\t'+ str(self.log_probs[b,r])+'\n')
-                        paths[str(qr)].append(
-                            '\t'.join([str(self.rev_entity_vocab[e[indx]]) for e in
-                                        self.entity_trajectory]) + '\n' + '\t'.join(
-                                [str(self.rev_relation_vocab[re[indx]]) for re in self.relation_trajectory]) + '\n' + str(
-                                rev) + '\n' + str(
-                                self.log_probs[b, r]) + '\n___' + '\n')
-                    paths[str(qr)].append("#####################\n")
-
+                # print paths code
+                # qr = self.train_environment.grapher.rev_relation_vocab[query_relation[b * self.test_rollouts]]
+                # start_e = self.rev_entity_vocab[episode.start_entities[b * self.test_rollouts]]
+                # end_e = self.rev_entity_vocab[episode.end_entities[b * self.test_rollouts]]
+                # paths[str(qr)].append(str(start_e) + "\t" + str(end_e) + "\n")
+                # paths[str(qr)].append("Reward:" + str(1 if answer_pos != None and answer_pos < 10 else 0) + "\n")
+                # for r in sorted_indx[b]:
+                #     indx = b * self.test_rollouts + r
+                #     if rewards[indx] == self.positive_reward:
+                #         rev = 1
+                #     else:
+                #         rev = -1
+                #     answers.append(self.rev_entity_vocab[se[b,r]]+'\t'+ self.rev_entity_vocab[ce[b,r]]+'\t'+ str(self.log_probs[b,r])+'\n')
+                #     paths[str(qr)].append(
+                #         '\t'.join([str(self.rev_entity_vocab[e[indx]]) for e in
+                #                     self.entity_trajectory]) + '\n' + '\t'.join(
+                #             [str(self.rev_relation_vocab[re[indx]]) for re in self.relation_trajectory]) + '\n' + str(
+                #             rev) + '\n' + str(
+                #             self.log_probs[b, r]) + '\n___' + '\n')
+                # paths[str(qr)].append("#####################\n")
+                # end print paths code
             all_final_reward_1 += final_reward_1
             all_final_reward_3 += final_reward_3
             all_final_reward_5 += final_reward_5
@@ -487,19 +402,17 @@ class Trainer(object):
         auc /= total_examples
         all_mrr = float(all_mrr) / total_examples
 
-        print("len of paths and answers")
-        print(len(list(paths.keys())))
-        print(len(answers))
-        if print_paths:
-            logger.info("[ printing paths at {} ]".format(self.output_dir))
-            for q in paths:
-                j = q.replace('/', '-')
-                with codecs.open(self.path_logger_file + '_' + j, 'a', 'utf-8') as pos_file:
-                    for p in paths[q]:
-                        pos_file.write(p)
-            with open(self.path_logger_file + 'answers', 'w') as answer_file:
-                for a in answers:
-                    answer_file.write(a)
+        # print paths code
+        # logger.info("[ printing paths at {} ]".format(self.output_dir+'/test_beam/'))
+        # for q in paths:
+        #     j = q.replace('/', '-')
+        #     with codecs.open(self.path_logger_file + '_' + j, 'a', 'utf-8') as pos_file:
+        #         for p in paths[q]:
+        #             pos_file.write(p)
+        # with open(self.path_logger_file + 'answers', 'w') as answer_file:
+        #     for a in answers:
+        #         answer_file.write(a)
+        # end print paths code
 
         with open(self.output_dir + '/scores.txt', 'a') as score_file:
             score_file.write("Hits@1: {0:7.4f}".format(all_final_reward_1))
@@ -551,13 +464,12 @@ if __name__ == '__main__':
     Dataset_list=['train','test','dev','graph']
     for dataset in Dataset_list:
         input_file = options['data_input_dir']+dataset+'.txt'
-        if os.path.isfile(input_file):
-            ds = []
-            with open(input_file) as raw_input_file:
-                csv_file = csv.reader(raw_input_file, delimiter = '\t' )
-                for line in csv_file:
-                    ds.append(line)
-            options['dataset'][dataset]=ds
+        ds = []
+        with open(input_file) as raw_input_file:
+            csv_file = csv.reader(raw_input_file, delimiter = '\t' )
+            for line in csv_file:
+                ds.append(line)
+        options['dataset'][dataset]=ds
 
     ds = []
     input_file = options['data_input_dir']+'full_graph.txt'
@@ -568,10 +480,7 @@ if __name__ == '__main__':
                 ds.append(line)  
     else:
         for dataset in Dataset_list:
-            try:
-                ds = ds + options['dataset'][dataset]
-            except:
-                pass
+            ds = ds + options['dataset'][dataset]
     options['dataset']['full_graph'] = ds      
     
     # read the vocab files, it will be used by many classes hence global scope
@@ -594,10 +503,7 @@ if __name__ == '__main__':
     ydata_loss = [float(0.0)]
     ydata_accuracy = [float(0.0)]
 
-    def make_rl_checkpoint(name, original_model_dir, options, xdata, ydata_accuracy, ydata_loss, random_masking=0, train_rwd=False):
-        # set rwd
-        options['train_rwd'] = train_rwd
-
+    def make_rl_checkpoint(name, original_model_dir, options, xdata, ydata_accuracy, ydata_loss, training_type, reward_type, random_masking=0):
         # make checkpoint folder
         options['output_dir'] += '/'+name+'/'
         os.mkdir(options['output_dir'])
@@ -611,16 +517,16 @@ if __name__ == '__main__':
         os.mkdir(options['output_dir']+'/model_weights/')
         options['model_dir'] = options['output_dir']+'/model_weights/'
 
-        if not train_rwd:
+        # set training params
+        if reward_type == "ours":
             options['random_masking_coef'] = random_masking
 
         # make trainer
-        trainer = Trainer(options)
+        trainer = Trainer(options, training_type, reward_type)
         trainer.agent.load_weights(original_model_dir)
 
         # do RL training
-        trainer.set_hpdependent(options)
-        xdata, ydata_accuracy, ydata_loss = trainer.train(True, xdata, ydata_accuracy, ydata_loss)
+        xdata, ydata_accuracy, ydata_loss = trainer.train(xdata, ydata_accuracy, ydata_loss)
 
         # create graph
         figure, axes = plt.subplots(1,2)
@@ -641,9 +547,7 @@ if __name__ == '__main__':
         plt.close(figure)
 
         # do testing
-        options['test_round'] = True
-        tester = Trainer(options, trainer.agent)
-        tester.testing()
+        trainer.testing()
         
         # save model
         trainer.agent.save_weights(options['model_dir'] + options['model_name'])
@@ -657,14 +561,14 @@ if __name__ == '__main__':
         os.mkdir(options['output_dir'])
 
         # original reward testing
-        make_rl_checkpoint("original_reward", original_model_dir, options.copy(), xdata.copy(), ydata_accuracy.copy(), ydata_loss.copy(), train_rwd=True)
+        make_rl_checkpoint("original_reward", original_model_dir, options.copy(), xdata.copy(), ydata_accuracy.copy(), ydata_loss.copy(), "reinforcement", "original")
 
         # # different levels of random masking
-        # make_rl_checkpoint("no_mask", original_model_dir, options.copy(), xdata.copy(), ydata_accuracy.copy(), ydata_loss.copy(), random_masking=0)
+        # make_rl_checkpoint("no_mask", original_model_dir, options.copy(), xdata.copy(), ydata_accuracy.copy(), ydata_loss.copy(), "reinforcement", "ours")
 
-        # make_rl_checkpoint("20p_mask", original_model_dir, options.copy(), xdata.copy(), ydata_accuracy.copy(), ydata_loss.copy(), random_masking=0.2)
+        # make_rl_checkpoint("20p_mask", original_model_dir, options.copy(), xdata.copy(), ydata_accuracy.copy(), ydata_loss.copy(), "reinforcement", "ours", random_masking=0.2)
 
-        # make_rl_checkpoint("40p_mask", original_model_dir, options.copy(), xdata.copy(), ydata_accuracy.copy(), ydata_loss.copy(), random_masking=0.4)
+        # make_rl_checkpoint("40p_mask", original_model_dir, options.copy(), xdata.copy(), ydata_accuracy.copy(), ydata_loss.copy(), "reinforcement", "ours", random_masking=0.4)
 
     def hptrain(b, l, lr):
         trainer = Trainer(options)
@@ -693,90 +597,39 @@ if __name__ == '__main__':
         plt.draw()
         plt.savefig(options['output_dir']+'/beta_'+str(b)+"_lambda_"+str(l)+"_learning_rate_"+str(lr)+".png")
         plt.close(figure)
+
+    original_options = options.copy()
+
+    # create SL Trainer
+    options['beta'] = options['beta_sl']
+    options['Lambda'] = options['Lambda_sl']
+    options['learning_rate'] = options['learning_rate_sl']
+    options['random_masking_coef'] = 0
+    options['total_epochs_sl'] = options['sl_start_checkpointing']
+    trainer = Trainer(options, "supervised", "our")
     
-    # Training
-    if options['tune_hp']:
-        #default b0.02 l0.02 lr1e-3
-        # train beta
-        hptrain(0.02,0.02,1e-6)
-        hptrain(0.002,0.02,1e-6)
-        hptrain(0.0002,0.02,1e-6)
-        # train lambda
-        hptrain(0.02,2,1e-6)
-        hptrain(0.02,0.2,1e-6)
-        hptrain(0.02,0.002,1e-6)
-        hptrain(0.02,0.0002,1e-6)
-        # train learning rate
-        # hptrain(0.02,0.02,1e-4)
-        # hptrain(0.02,0.02,1e-5)
-        # hptrain(0.02,0.02,1e-8)
-        # hptrain(0.02,0.02,1e-6)
-    elif not options['load_model']:
-        trainer = Trainer(options)
-        original_options = options.copy()
+    # Create checkpoint for pure RL run
+    last_epoch = 0
+    trainer.agent.save_weights(options['model_dir'])
+    make_sl_checkpoint(last_epoch, original_options.copy(), xdata.copy(), ydata_accuracy.copy(), ydata_loss.copy())
+    trainer.agent.load_weights(options['model_dir'])
 
-        ##EMERGENCY CONVERGENCE TESTING CODE##
-        trainer.total_steps_rl = options['total_iterations']
-        # trainer.total_epochs_rl = 7
-        trainer.set_hpdependent(options)
-        xdata, ydata_accuracy, ydata_loss = trainer.train(True, [0], [0], [0])
+    # Create initial SL checkpoint
+    xdata, ydata_accuracy, ydata_loss = trainer.train(xdata, ydata_accuracy, ydata_loss)
+    last_epoch = trainer.total_epochs_sl
+
+    # Create first post-SL checkpoint
+    trainer.agent.save_weights(options['model_dir'])
+    make_sl_checkpoint(last_epoch, original_options.copy(), xdata.copy(), ydata_accuracy.copy(), ydata_loss.copy())
+    trainer.agent.load_weights(options['model_dir'])
+
+    # Create subsequent SL checkpoints
+    trainer.total_epochs_sl = options['sl_checkpoint_interval']
+
+    for ckpt in range(3,options['sl_checkpoints']):
+        xdata, ydata_accuracy, ydata_loss = trainer.train(xdata, ydata_accuracy, ydata_loss)
+        last_epoch += trainer.total_epochs_sl
+
         trainer.agent.save_weights(options['model_dir'])
-
-        options['test_round'] = True
-        tester = Trainer(options, trainer.agent)
-        tester.agent.load_weights(options['model_dir'])
-        tester.testing()
-
-        figure, axes = plt.subplots(1,2)
-        loss_graph=axes[0]
-        accuracy_graph=axes[1]
-        loss_graph.set_xlim(float(1.0), max(xdata))
-        accuracy_graph.set_xlim(float(1.0), max(xdata))
-        loss_graph.set_ylim(min(float(0.0), min(ydata_loss)), max(ydata_loss))
-        accuracy_graph.set_ylim(min(float(0.0), min(ydata_accuracy)), max(ydata_accuracy))
-        line_loss, = loss_graph.plot(xdata, ydata_loss, 'r-', label="Loss")
-        line_accuracy, = accuracy_graph.plot(xdata, ydata_accuracy, 'r-', label="Accuracy")
-        line_loss.set_xdata(xdata)
-        line_accuracy.set_xdata(xdata)
-        line_loss.set_ydata(ydata_loss)
-        line_accuracy.set_ydata(ydata_accuracy)
-        plt.draw()
-        plt.savefig(options['output_dir']+'/'+options['model_name']+".png")
-        plt.close(figure)
-        ##EMERGENCY CONVERGENCE TESTING CODE COMPLETE##
-
-        # Create checkpoint for no rl
-        # last_epoch = 0
-        # trainer.agent.save_weights(options['model_dir'])
-        # make_sl_checkpoint(last_epoch, original_options.copy(), xdata.copy(), ydata_accuracy.copy(), ydata_loss.copy())
-        # trainer.agent.load_weights(options['model_dir'])
-
-        # # Create initial SL checkpoint
-        # options['beta']=options['beta_sl']
-        # options['Lambda']=options['Lambda_sl']
-        # options['learning_rate']=options['learning_rate_sl']
-        # options['random_masking_coef']=0
-        # trainer.set_hpdependent(options)
-        # trainer.total_epochs_sl = options['sl_start_checkpointing']
-        # xdata, ydata_accuracy, ydata_loss = trainer.train(False, xdata, ydata_accuracy, ydata_loss)
-        # last_epoch = trainer.total_epochs_sl
-
-        # trainer.agent.save_weights(options['model_dir'])
-        # make_sl_checkpoint(last_epoch, original_options.copy(), xdata.copy(), ydata_accuracy.copy(), ydata_loss.copy())
-        # trainer.agent.load_weights(options['model_dir'])
-
-        # # Create subsequent SL checkpoints
-        # trainer.total_epochs_sl = options['sl_checkpoint_interval']
-
-        # for ckpt in range(3,options['sl_checkpoints']):
-        #     xdata, ydata_accuracy, ydata_loss = trainer.train(False, xdata, ydata_accuracy, ydata_loss)
-        #     last_epoch += trainer.total_epochs_sl
-
-        #     trainer.agent.save_weights(options['model_dir'])
-        #     make_sl_checkpoint(last_epoch, original_options.copy(), xdata.copy(), ydata_accuracy.copy(), ydata_loss.copy())
-        #     trainer.agent.load_weights(options['model_dir'])
-    else:
-        options['test_round'] = True
-        tester = Trainer(options)
-        tester.agent.load_weights(options['saved_model_dir'])
-        tester.testing()
+        make_sl_checkpoint(last_epoch, original_options.copy(), xdata.copy(), ydata_accuracy.copy(), ydata_loss.copy())
+        trainer.agent.load_weights(options['model_dir'])
