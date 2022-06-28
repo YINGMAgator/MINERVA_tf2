@@ -55,7 +55,8 @@ class Trainer(object):
         self.cce = tf.keras.losses.CategoricalCrossentropy(reduction=tf.keras.losses.Reduction.NONE)
 
         if not self.rl: # otherwise total iterations is fine as-is
-            self.total_iterations = self.total_epochs_sl * int(self.train_environment.batcher.train_set_length/self.batch_size)
+            self.total_iterations = self.total_iterations_sl
+            # self.total_iterations = self.total_epochs_sl * int(self.train_environment.batcher.train_set_length/self.batch_size)
 
     def calc_reinforce_loss(self,cum_discounted_reward,loss_all,logits_all):
         loss = tf.stack(loss_all, axis=1)  # [B, T]
@@ -206,18 +207,19 @@ class Trainer(object):
             if np.isnan(train_loss):
                 raise ArithmeticError("Error in computing loss")
                 
-            logger.info("batch_counter: {0:4d}, num_hits: {1:7.4f}, avg. reward per batch {2:7.4f}, "
-                        "num_ep_correct {3:4d}, avg_ep_correct {4:7.4f}, train loss {5:7.4f}".
-                        format(self.batch_counter, np.sum(rewards), avg_reward, num_ep_correct,
+            logger.info("RL: {0:4d}, batch_counter: {1:4d}, num_hits: {2:7.4f}, avg. reward per batch {3:7.4f}, "
+                        "num_ep_correct {4:4d}, avg_ep_correct {5:7.4f}, train loss {6:7.4f}".
+                        format(int(self.rl),self.batch_counter, np.sum(rewards), avg_reward, num_ep_correct,
                                 (num_ep_correct / self.batch_size),
                                 train_loss))                
             # print('111111111111111111111111')
-            if self.batch_counter%self.eval_every == 0:
-                with open(self.output_dir + '/scores.txt', 'a') as score_file:
-                    score_file.write("Score for iteration " + str(self.batch_counter) + "\n")
-                # os.mkdir(self.path_logger_file + "/" + str(self.batch_counter))
-                # self.path_logger_file_ = self.path_logger_file + "/" + str(self.batch_counter) + "/paths"
-                self.test(beam=True, print_paths=False)
+            #commented out to improve speed:
+            # if self.batch_counter%self.eval_every == 0:
+            #     with open(self.output_dir + '/scores.txt', 'a') as score_file:
+            #         score_file.write("Score for iteration " + str(self.batch_counter) + "\n")
+            #     # os.mkdir(self.path_logger_file + "/" + str(self.batch_counter))
+            #     # self.path_logger_file_ = self.path_logger_file + "/" + str(self.batch_counter) + "/paths"
+            #     self.test(beam=True, print_paths=False)
 
             # logger.info('Memory usage: %s (kb)' % resource.getrusage(resource.RUSAGE_SELF).ru_maxrss)
 
@@ -603,6 +605,47 @@ if __name__ == '__main__':
 
     original_options = options.copy()
 
+    def hp_tune(b, l, lr):
+        xdata = [float(0.0)]
+        ydata_loss = [float(0.0)]
+        ydata_accuracy = [float(0.0)]
+        # create SL Trainer
+        options['beta'] = options['beta_sl']
+        options['Lambda'] = options['Lambda_sl']
+        options['learning_rate'] = options['learning_rate_sl']
+        options['random_masking_coef'] = 0
+        options['total_epochs_sl'] = options['sl_start_checkpointing']
+        trainer = Trainer(options, "supervised", "our")
+        xdata, ydata_accuracy, ydata_loss = trainer.train(xdata, ydata_accuracy, ydata_loss)
+        # create graph
+        figure, axes = plt.subplots(1,2)
+        loss_graph=axes[0]
+        accuracy_graph=axes[1]
+        loss_graph.set_xlim(float(1.0), max(xdata))
+        accuracy_graph.set_xlim(float(1.0), max(xdata))
+        loss_graph.set_ylim(min(float(0.0), min(ydata_loss)), max(ydata_loss))
+        accuracy_graph.set_ylim(min(float(0.0), min(ydata_accuracy)), max(ydata_accuracy))
+        line_loss, = loss_graph.plot(xdata, ydata_loss, 'r-', label="Loss")
+        line_accuracy, = accuracy_graph.plot(xdata, ydata_accuracy, 'r-', label="Accuracy")
+        line_loss.set_xdata(xdata)
+        line_accuracy.set_xdata(xdata)
+        line_loss.set_ydata(ydata_loss)
+        line_accuracy.set_ydata(ydata_accuracy)
+        plt.draw()
+        plt.savefig(options['output_dir']+'/'+"lr_"+str(lr)+"_b_"+str(b)+"_L_"+str(l)+".png")
+        plt.close(figure)
+
+    #beta
+    # hp_tune(2, 0.02, 1e-3)
+    # hp_tune(0.2, 0.02, 1e-3)
+    # hp_tune(0.02, 0.02, 1e-3)
+    # hp_tune(0.002, 0.02, 1e-3)
+    # hp_tune(0.0002, 0.02, 1e-3)
+    # hp_tune(0.02, 2, 1e-3)
+    # hp_tune(0.02, 0.2, 1e-3)
+    # hp_tune(0.02, 0.002, 1e-3)
+    # hp_tune(0.02, 0.0002, 1e-3)
+
     # create SL Trainer
     options['beta'] = options['beta_sl']
     options['Lambda'] = options['Lambda_sl']
@@ -629,7 +672,7 @@ if __name__ == '__main__':
     # Create subsequent SL checkpoints
     trainer.total_epochs_sl = options['sl_checkpoint_interval']
 
-    for ckpt in range(3,options['sl_checkpoints']):
+    for ckpt in range(options['sl_checkpoints']):
         xdata, ydata_accuracy, ydata_loss = trainer.train(xdata, ydata_accuracy, ydata_loss)
         last_epoch += trainer.total_epochs_sl
 

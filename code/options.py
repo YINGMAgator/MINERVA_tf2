@@ -33,7 +33,7 @@ def read_options():
     parser.add_argument("--model_dir", default='', type=str)
     parser.add_argument("--base_output_dir", default='', type=str)
     parser.add_argument("--total_iterations", default=2000, type=int)
-
+    parser.add_argument("--total_iterations_sl", default=2000, type=int)
     parser.add_argument("--Lambda", default=0.0, type=float)
     parser.add_argument("--pool", default="max", type=str)
     parser.add_argument("--eval_every", default=100, type=int)

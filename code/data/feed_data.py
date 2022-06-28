@@ -40,9 +40,10 @@ class RelationEntityBatcher():
                 e2 = self.entity_vocab[line[2]]
                 self.store.append([e1,r,e2])
                 self.store_all_correct[(e1, r)].add(e2)  #YM: there may exist multiple answers for the same query, i.e., same (e1,r) may mapping to different e2. store_all_correct will give all solution for the same query
-            # self.store = np.array(self.store)
-            self.store = np.array(self.store[:500])
+            self.store = np.array(self.store)
+            # self.store = np.array(self.store[:500])
             self.train_set_length = self.store.shape[0]
+            print(self.train_set_length)
         else:
             if self.mode == 'test':
                 dataset = self.test_data

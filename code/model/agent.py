@@ -58,17 +58,18 @@ class Agent(tf.keras.Model):
         if params['pretrained_embeddings_entity'] != '':
             entity_embedding = np.loadtxt(open(params['pretrained_embeddings_entity'] ))
             self.entity_lookup_table.assign(entity_embedding)
-            
-            
-        # rnn_cells = [tf.keras.layers.LSTMCell(self.m * self.hidden_size) for _ in range(self.LSTM_Layers)]
-        # self.policy_step1 = tf.keras.layers.StackedRNNCells(rnn_cells)
         
+        # cells = []
+        # for _ in range(self.LSTM_Layers):
+        #     cells.append(tf.compat.v1.nn.rnn_cell.LSTMCell(self.m * self.hidden_size, use_peepholes=True, state_is_tuple=True))
+        # self.policy_step = tf.compat.v1.nn.rnn_cell.MultiRNNCell(cells, state_is_tuple=True)
+
         cells = []
         for _ in range(self.LSTM_Layers):
-            cells.append(tf.compat.v1.nn.rnn_cell.LSTMCell(self.m * self.hidden_size, use_peepholes=True, state_is_tuple=True))
-        self.policy_step = tf.compat.v1.nn.rnn_cell.MultiRNNCell(cells, state_is_tuple=True)
+            cells.append(tf.keras.layers.LSTMCell(self.m * self.hidden_size))
+        self.policy_step = tf.keras.layers.StackedRNNCells(cells)
         
-        self.state_init = self.policy_step.zero_state(batch_size=self.batch_size, dtype=tf.float32)
+        self.state_init = self.policy_step.get_initial_state(batch_size=self.batch_size, dtype=tf.float32)
         self.relation_init = self.dummy_start_label
     
     def get_query_embedding(self,query_relation):
