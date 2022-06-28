@@ -35,9 +35,15 @@ class RelationEntityBatcher():
             # with open(input_file) as raw_input_file:
                 # csv_file = csv.reader(raw_input_file, delimiter = '\t' )
             for line in self.train_data:
-                e1 = self.entity_vocab[line[0]]
-                r = self.relation_vocab[line[1]]
-                e2 = self.entity_vocab[line[2]]
+                if self.rl:
+                    e1 = self.entity_vocab[line[0]]
+                    r = self.relation_vocab[line[1]]
+                    e2 = self.entity_vocab[line[2]]
+                else:
+                    # this is because we store the embedding during the RL train step, so we don't have to fetch it again
+                    e1 = line[0]
+                    r = line[1]
+                    e2 = line[2]
                 self.store.append([e1,r,e2])
                 self.store_all_correct[(e1, r)].add(e2)  #YM: there may exist multiple answers for the same query, i.e., same (e1,r) may mapping to different e2. store_all_correct will give all solution for the same query
             self.store = np.array(self.store)
