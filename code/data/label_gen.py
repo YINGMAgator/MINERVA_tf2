@@ -15,9 +15,11 @@ class Labeller(object):
     def __init__(self,params):
         self.array_store, self.ePAD, self.rPAD, self.all_correct= params
         self.correct={}
-
+ #       self.cnt=0
+   #     self.neg_cnt=1
     def correct_path(self, line):
         # if this key is already in the dict, dont generate it again. Otherwise, generate the new key
+        self.cnt+=1
         if self.arr_2_key(line) in list(self.correct.keys()):
             return self.correct[self.arr_2_key(line)]
         else:
@@ -26,6 +28,8 @@ class Labeller(object):
             e2 = line[2]
             key=self.arr_2_key(line)
             for path in self.correct_path_generate([e1,r,e2]):
+
+    #                print(self.neg_cnt/self.cnt)
                 if key in self.correct:
                     self.correct[key][0]["N/A"] += [path[0]]
                     if path[0] in self.correct[key][1]:
