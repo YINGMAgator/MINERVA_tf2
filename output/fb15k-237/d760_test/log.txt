@@ -1,0 +1,7 @@
+07/05/2022 05:03:28 PM: [ reading vocab files... ]
+07/05/2022 05:03:29 PM: [ Reading mid to name map ]
+07/05/2022 05:03:29 PM: [ Done.. ]
+07/05/2022 05:03:29 PM: [ Total number of entities 14536 ]
+07/05/2022 05:03:29 PM: [ Total number of relations 478 ]
+07/05/2022 05:03:47 PM: [ RL:    0, batch_counter:    1, num_hits: 64.0000, avg. reward per batch  0.0125, num_ep_correct   35, avg_ep_correct  0.1367, train loss 7894.2959 ]
+07/05/2022 05:04:00 PM: [ RL:    0, batch_counter:    2, num_hits: 61.0000, avg. reward per batch  0.0119, num_ep_correct   31, avg_ep_correct  0.1211, train loss 14651.5018 ]

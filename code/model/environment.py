@@ -57,6 +57,7 @@ class Episode(object):
     def backtrack(self, batch):
         # returns all the actions which, taken at the current state, will take the agent to its previous state
         # this allows the agent to learn to backtrack when it makes a mistake
+
         return np.where(self.state['next_entities'][batch, :] == self.last_entities[batch])[0]
 
     def get_reward(self):
@@ -66,6 +67,7 @@ class Episode(object):
         condlist = [reward == True, reward == False]
         choicelist = [self.positive_reward, self.negative_reward]
         reward = np.select(condlist, choicelist)  # [B,]
+        print('self.current_entities',self.current_entities ,'end_entity',self.end_entities)
         return reward
 
     def __call__(self, action):

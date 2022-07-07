@@ -151,8 +151,11 @@ class Trainer(object):
                         for batch_num in range(len(episode.correct_path[i])):
                             try:
                                 valid = episode.correct_path[i][batch_num][last_step[batch_num]]
+                                a=0
                             except:
                                 valid = episode.backtrack(batch_num)
+                                a=1
+
                             correct[np.array([batch_num]*len(valid), int),np.array(valid, int)]=np.ones(len(valid))
                             #verify that the valid actions are encoded in the correct label correctly
                             if not sorted(list(set([int(x) for x in valid]))) == list(np.nonzero(correct[batch_num,:]==1)[0]) and not -1 in sorted(list(set([int(x) for x in valid]))):

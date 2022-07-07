@@ -19,7 +19,7 @@ class Labeller(object):
    #     self.neg_cnt=1
     def correct_path(self, line):
         # if this key is already in the dict, dont generate it again. Otherwise, generate the new key
-        self.cnt+=1
+        
         if self.arr_2_key(line) in list(self.correct.keys()):
             return self.correct[self.arr_2_key(line)]
         else:
@@ -86,7 +86,7 @@ class Labeller(object):
             for x in valid_actions:
                 paths+=1
                 yield np.array([x,0,0], int)
-
+            print(e2,0,0)
         ################################################
         ####check if the answer is in the second hop####
         ################################################
@@ -112,6 +112,7 @@ class Labeller(object):
                     for h2 in hop2:
                         paths+=1
                         yield np.array([h1, h2, 0], int)
+                print(e21,e2,0)
             ###############################################
             ####check if the answer is in the third hop####
             ###############################################
@@ -135,6 +136,7 @@ class Labeller(object):
                             for h3 in hop3:
                                 paths+=1
                                 yield np.array([h1, h2, h3], int)
+                    print(e21,e31,e2)
                 # else:
                 #     #if that third node does not lead to the answer, go back
                 #     # all actions that take you from the start node to the second node

@@ -8,6 +8,7 @@ Created on Sun Jul  3 16:53:22 2022
 
 from __future__ import absolute_import
 from __future__ import division
+from random import sample
 from matplotlib import pyplot as plt
 from tqdm import tqdm
 import time
@@ -140,8 +141,11 @@ class Trainer(object):
                 supervised_learning_loss = []
                 loss_before_regularization = []
                 logits_all = []
-
+#                print('episode.correct_path[0]',episode.correct_path[0])
+#                print('episode.correct_path[1]',episode.correct_path[1])
+#                print('episode.correct_path[2]',episode.correct_path[2])
                 for i in range(self.path_length):
+                            
                     loss, model_state, logits, idx, prev_relation, scores = self.agent.step(state['next_relations'],
                                                                                   state['next_entities'],
                                                                                   model_state, prev_relation, query_embedding,
@@ -156,7 +160,8 @@ class Trainer(object):
                         choices=scores.shape[1]
 
                         correct=np.full((active_length,choices),0)
-                        print('active_length,choices',active_length,choices)
+                        idx_sl=idx.numpy()
+                        
  
                         #print("last_step",last_step)
                         
@@ -168,19 +173,38 @@ class Trainer(object):
                                 valid = episode.correct_path[i][batch_num][last_step[batch_num]]
                                 #print('valid',valid,last_step[batch_num])
                                 a=0
+                                
                             except:
-                                valid = episode.backtrack(batch_num)
+                                #valid = episode.backtrack(batch_num)
+                                valid=-1
                                 a=1
-                                #print('invalid',valid,last_step[batch_num])
+                            
+                            if valid==-1:
+                                
+                                print('aaaaaaaaaaaaaaaaaaaaa')
+                                correct[batch_num]=idx_sl[batch_num]
+                            else:
+                                
+                                idx_sl[batch_num]=sample(valid,1)[0]
+                                correct[np.array([batch_num]*len(valid), int),np.array(valid, int)]=np.ones(len(valid))
+                            if i==2:
+                                print('valid',valid,'idx_sl[batch_num]',idx_sl[batch_num])
                            # print('len(valid)',len(valid),max(valid))    
-                            if len(valid)==0:
-                                if  i==0:
-                                    print(i,episode.correct_path[i][batch_num],'[last_step[batch_num]',last_step[batch_num])
-
-                           # elif max(valid)==-1:
-                           #     print(valid,a)
+                  #          if len(valid)==0:
+                     #           if  i==0:
+                            #print(i,episode.correct_path[i][batch_num],'[last_step[batch_num]',last_step[batch_num])
+                           # if a==1:
+                            #    print('episode.correct_path[i][batch_num]',i,last_step[batch_num],episode.correct_path[i][batch_num],'valid',a,valid)
+                             #   print('last',i-1,episode.correct_path[i-1][batch_num],'valid',a,valid)
+                           # print('valid',valid,a)
+#                            if len(valid)!=0:
+#                                if max(valid)==-1:
+#                                    print(valid,i,episode.correct_path[0][batch_num],episode.correct_path[1][batch_num],episode.correct_path[2][batch_num],correct[batch_num])
                            # print('len(valid)',i,len(valid),max(valid),valid,episode.correct_path[i][batch_num],last_step[batch_num])    
-                            correct[np.array([batch_num]*len(valid), int),np.array(valid, int)]=np.ones(len(valid))
+
+#                            if len(valid)!=0:
+#                                if max(valid)==-1:
+#                                    print('post',valid,i,episode.correct_path[0][batch_num],episode.correct_path[1][batch_num],episode.correct_path[2][batch_num],correct[batch_num])
            #                 if max(valid)>200:  
             #                    print(len(valid))
              #                   print('invalid',valid,last_step[batch_num])
@@ -191,18 +215,24 @@ class Trainer(object):
                                 print("ALERT")
                                 print(sorted(list(set([int(x) for x in valid]))))
                                 print(list(np.nonzero(correct[batch_num,:]==1)[0]))
-                          #  break
-                        last_step = idx.numpy()
+                        #print('11111111111111111111111111111')
+                        #print(idx_sl,'episode.correct_path[i]',i,episode.correct_path[i][batch_num])
+                                #print('invalid',valid,last_step[batch_num])    
+                        last_step = idx_sl
 
                         loss = self.cce(tf.convert_to_tensor(correct), self.normalize_scores(scores))
                         
                         supervised_learning_loss.append(loss)
+                        
                     # action = np.squeeze(action, axis=1)  # [B,]
-                    state = episode(idx)
-
+                    if i==2:
+                        print('next entity',state['next_entities'][:,0:30])
+                    state = episode(idx_sl)
+                    print('state',state['current_entities'])
                 # get the final reward from the environment
                 rewards = episode.get_reward()
                 accuracy = np.sum((np.sum(np.reshape(rewards, (self.batch_size, self.num_rollouts)), axis=1) > 0))/self.batch_size
+                print('accuracy',accuracy)
                 xdata.append(float(max(xdata) + 1))
                 ydata_accuracy.append(float(accuracy))
 
@@ -235,6 +265,7 @@ class Trainer(object):
             # now reshape the reward to [orig_batch_size, num_rollouts], I want to calculate for how many of the
             # entity pair, atleast one of the path get to the right answer
             reward_reshape = np.reshape(rewards, (self.batch_size, self.num_rollouts))  # [orig_batch, num_rollouts]
+            print('reward_reshape',reward_reshape)
             reward_reshape = np.sum(reward_reshape, axis=1)  # [orig_batch]
             reward_reshape = (reward_reshape > 0)
             num_ep_correct = np.sum(reward_reshape)
