@@ -53,6 +53,7 @@ def read_options():
     parser.add_argument("--Lambda_sl", default=0.02, type=float)
     parser.add_argument("--learning_rate_sl", default=1e-3, type=float)
     parser.add_argument("--num_cycles", default=1, type=int)
+    parser.add_argument("--ignore_threshold", default=0.5, type=float)
     # parser.add_argument("--nell_query", default='all', type=str)
 
     try:

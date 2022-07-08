@@ -1,6 +1,7 @@
 from __future__ import absolute_import
 from __future__ import division
 from matplotlib import pyplot as plt
+import matplotlib
 from tqdm import tqdm
 import time
 import os
@@ -16,10 +17,12 @@ from collections import defaultdict
 import gc
 import resource
 import sys
+import copy
 from code.model.baseline import ReactiveBaseline
 #from scipy.misc import logsumexp as lse
 from scipy.special import logsumexp as lse
 from code.data.vocab_gen import Vocab_Gen
+matplotlib.use("agg")
 logger = logging.getLogger()
 logging.basicConfig(stream=sys.stdout, level=logging.DEBUG)
 
@@ -61,6 +64,9 @@ class Trainer(object):
             self.needs_work_queries = []
             self.needs_work_scores = {}
 
+            self.all_good_queries = []
+            self.all_good_scores = {}
+
         if not self.rl: # otherwise total iterations is fine as-is
             self.total_iterations = self.total_iterations_sl
             # self.total_iterations = self.total_epochs_sl * int(self.train_environment.batcher.train_set_length/self.batch_size)
@@ -93,6 +99,12 @@ class Trainer(object):
         scores = tf.divide(tf.subtract(scores, tf.reduce_min(scores)), tf.subtract(tf.reduce_max(scores), tf.reduce_min(scores)))
         return scores
 
+    # returns a new correct vector where 0 values are replaced with whatever the agent already has there
+    def positive_cce_masking(self, normalized_scores, label):
+        score_cloned = list(tf.identity(normalized_scores).numpy())
+        label = list(label)
+        return np.array([[score if (correct == 0 and correct < self.ignore_threshold) else correct for (score, correct) in zip(batch_score, batch_correct)] for (batch_score, batch_correct) in zip(score_cloned, label)])
+
     def entropy_reg_loss(self, all_logits):
         all_logits = tf.stack(all_logits, axis=2)  # [B, MAX_NUM_ACTIONS, T]
         entropy_policy = - tf.reduce_mean(tf.reduce_sum(tf.multiply(tf.exp(all_logits), all_logits), axis=1))  # scalar
@@ -121,8 +133,13 @@ class Trainer(object):
         self.first_state_of_test = False
         self.range_arr = np.arange(self.batch_size*self.num_rollouts)
         
-        for episode in self.train_environment.get_episodes():
+        # used only for testing
+        # if not self.rl:
+        #     f = open(self.output_dir + "diff_3_step.txt","a")
 
+        for episode in self.train_environment.get_episodes():
+            # if not self.rl:
+            #     f.write("Query in question: {} {} {}".format(episode.start_entities[0], episode.query_relation[0], episode.end_entities[0]))
             self.batch_counter += 1
             model_state = self.agent.state_init
             prev_relation = self.agent.relation_init            
@@ -132,8 +149,10 @@ class Trainer(object):
             query_embedding = self.agent.get_query_embedding(query_relation)
             # get initial state
             state = episode.get_state()
+
             # for use with SL
-            last_step = ["N/A"]*(self.batch_size*self.num_rollouts)
+            last_step = [("N/A",)]*(self.batch_size*self.num_rollouts)
+            # last_step = ["N/A"]*(self.batch_size*self.num_rollouts)
             # for each time step
             with tf.GradientTape() as tape:
                 supervised_learning_loss = []
@@ -150,28 +169,53 @@ class Trainer(object):
                     if self.rl:
                         loss_before_regularization.append(loss)
                         logits_all.append(logits)
+                        # for testing
+                        actions_test = idx
                     else:
+                        normalized_scores = self.normalize_scores(scores)
+
                         active_length=scores.shape[0]
                         choices=scores.shape[1]
 
                         correct=np.full((active_length,choices),0)
+                        actions_test=np.array([], int)
                         for batch_num in range(len(episode.correct_path[i])):
                             try:
                                 valid = episode.correct_path[i][batch_num][last_step[batch_num]]
                             except:
                                 valid = episode.backtrack(batch_num)
-                            correct[np.array([batch_num]*len(valid), int),np.array(valid, int)]=np.ones(len(valid))
-                            #verify that the valid actions are encoded in the correct label correctly
-                            if not sorted(list(set([int(x) for x in valid]))) == list(np.nonzero(correct[batch_num,:]==1)[0]) and not -1 in sorted(list(set([int(x) for x in valid]))):
-                                print("ALERT")
-                                print(sorted(list(set([int(x) for x in valid]))))
-                                print(list(np.nonzero(correct[batch_num,:]==1)[0]))
-                        last_step = idx.numpy()
-                        loss = self.cce(tf.convert_to_tensor(correct), self.normalize_scores(scores))
+                            # if no paths were found, set the label equal to the score so nothing gets changed
+                            if len(valid) == 1 and valid[0] == -1:
+                                correct[np.array([batch_num]*len(valid), int), :] = normalized_scores[batch_num]
+                            else:
+                                correct[np.array([batch_num]*len(valid), int),np.array(valid, int)] = np.ones(len(valid))
+
+                            # the following line is just used to pick an action when testing that label gen is working properly
+                            actions_test = np.concatenate((actions_test, [valid[0] if len(valid)!=0 else 0]))
+
+                        # current_actions = idx.numpy() # actions_test if verifying labels
+                        current_actions = actions_test
+                        last_step = [tuple(list(x) + [y]) for (x, y) in zip(last_step, current_actions)]
+                        # last_step = idx.numpy()
+
+                        # the following is only used for gathering data about the difference between agent scores and labels for high-scoring queries
+                        # f.write("Correct label shape")
+                        # f.write(str(correct.shape))
+                        # f.write("Correct label")
+                        # f.write(str(correct[0]))
+                        # f.write("agent scores shape")
+                        # f.write(str(self.normalize_scores(scores).shape))
+                        # f.write("agent scores")
+                        # f.write(str(self.normalize_scores(scores)[0]))
+
+                        # masked_label = self.positive_cce_masking(normalized_scores, correct)
+                        # loss = self.cce(tf.convert_to_tensor(masked_label), normalized_scores)
+                        loss = self.cce(tf.convert_to_tensor(correct), normalized_scores)
                         
                         supervised_learning_loss.append(loss)
-                    # action = np.squeeze(action, axis=1)  # [B,]
-                    state = episode(idx)
+
+                    # state = episode(idx)
+                    state = episode(actions_test)
 
                 # get the final reward from the environment
                 rewards = episode.get_reward()
@@ -179,19 +223,29 @@ class Trainer(object):
                 xdata.append(float(max(xdata) + 1))
                 ydata_accuracy.append(float(accuracy))
 
-                if self.rl:
-                    # update the list of incorrect queries. We have a dictionary with the number of times the agent got the query wrong
-                    # and a list of the actual queries sorted by the values stored in that dictionary. That way, the queries the agent
-                    # has gotten wrong the most stay at the top
-                    incorrect_queries = [[e1, r, e2] for (e1, r, e2, reward) in zip(episode.start_entities, episode.query_relation, episode.end_entities, rewards) if reward == episode.negative_reward]
-                    for query in incorrect_queries:
-                        key = "_".join([str(x) for x in query])
-                        if not key in list(self.needs_work_scores.keys()):
-                            self.needs_work_scores[key] = 1
-                            self.needs_work_queries.append(query)
-                        else:
-                            self.needs_work_scores[key] += 1
-                    self.needs_work_queries.sort(key=lambda query: self.needs_work_scores["_".join([str(x) for x in query])])
+                # if self.rl:
+                #     # update the list of incorrect queries. We have a dictionary with the number of times the agent got the query wrong
+                #     # and a list of the actual queries sorted by the values stored in that dictionary. That way, the queries the agent
+                #     # has gotten wrong the most stay at the top
+                #     incorrect_queries = [[e1, r, e2] for (e1, r, e2, reward) in zip(episode.start_entities, episode.query_relation, episode.end_entities, rewards) if reward == episode.negative_reward]
+                #     for query in incorrect_queries:
+                #         key = "_".join([str(x) for x in query])
+                #         if not key in list(self.needs_work_scores.keys()):
+                #             self.needs_work_scores[key] = 1
+                #             self.needs_work_queries.append(query)
+                #         else:
+                #             self.needs_work_scores[key] += 1
+                #     self.needs_work_queries.sort(reverse=True, key=lambda query: self.needs_work_scores["_".join([str(x) for x in query])])
+                    
+                    # correct_queries = [[e1, r, e2] for (e1, r, e2, reward) in zip(episode.start_entities, episode.query_relation, episode.end_entities, rewards) if reward == episode.positive_reward]
+                    # for query in correct_queries:
+                    #     key = "_".join([str(x) for x in query])
+                    #     if not key in list(self.all_good_scores.keys()):
+                    #         self.all_good_scores[key] = 1
+                    #         self.all_good_queries.append(query)
+                    #     else:
+                    #         self.all_good_scores[key] += 1
+                    # self.all_good_queries.sort(reverse=True, key=lambda query: self.all_good_scores["_".join([str(x) for x in query])])
 
                 if self.rl:
                     # computed cumulative discounted reward
@@ -233,7 +287,6 @@ class Trainer(object):
                         format(int(self.rl),self.batch_counter, np.sum(rewards), avg_reward, num_ep_correct,
                                 (num_ep_correct / self.batch_size),
                                 train_loss))                
-            # print('111111111111111111111111')
             #commented out to improve speed:
             # if self.batch_counter%self.eval_every == 0:
             #     with open(self.output_dir + '/scores.txt', 'a') as score_file:
@@ -395,8 +448,6 @@ class Trainer(object):
                         answer_pos = sorted_answers.index(answer)
                     else:
                         answer_pos = None
-
-
                 if answer_pos != None:
                     if answer_pos < 20:
                         final_reward_20 += 1
@@ -446,10 +497,6 @@ class Trainer(object):
         all_final_reward_10 /= total_examples
         all_final_reward_20 /= total_examples
         auc /= total_examples
-        # if save_model:
-        #     if all_final_reward_10 >= self.max_hits_at_10:
-        #         self.max_hits_at_10 = all_final_reward_10
-        #         self.save_path = self.model_saver.save(sess, self.model_dir + "model" + '.ckpt')
 
         if print_paths:
             logger.info("[ printing paths at {} ]".format(self.output_dir+'/test_beam/'))
@@ -516,27 +563,7 @@ if __name__ == '__main__':
             for line in csv_file:
                 ds.append(line)   
         options['dataset'][dataset]=ds
-
-    # input_file = options['data_input_dir']+'test.txt'
-    # options['test_data'] = []
-    # with open(input_file) as raw_input_file:
-    #     csv_file = csv.reader(raw_input_file, delimiter = '\t' )
-    #     for line in csv_file:
-    #         options['test_data'].append(line)  
-
-    # input_file = options['data_input_dir']+'dev.txt'
-    # options['dev_data'] = []
-    # with open(input_file) as raw_input_file:
-    #     csv_file = csv.reader(raw_input_file, delimiter = '\t' )
-    #     for line in csv_file:
-    #         options['dev_data'].append(line)  
-            
-    # input_file = options['data_input_dir']+'graph.txt'
-    # options['graph_data'] = []
-    # with open(input_file) as raw_input_file:
-    #     csv_file = csv.reader(raw_input_file, delimiter = '\t' )
-    #     for line in csv_file:
-    #         options['graph_data'].append(line)  
+ 
     ds = []
     input_file = options['data_input_dir']+'full_graph.txt'
     if os.path.isfile(input_file):
@@ -547,11 +574,7 @@ if __name__ == '__main__':
     else:
         for dataset in Dataset_list:
             ds = ds + options['dataset'][dataset]
-    options['dataset']['full_graph'] = ds
-    # data_read_in =temp_fullgraph.split('\n')
-    # options['fullgraph_data'] = []
-    # for line in data_read_in:
-    #     options['fullgraph_data'].append(line.split('\t'))        
+    options['dataset']['full_graph'] = ds       
     
     # read the vocab files, it will be used by many classes hence global scope
     logger.info('reading vocab files...')
@@ -559,15 +582,11 @@ if __name__ == '__main__':
     options['relation_vocab'] = vocab.relation_vocab
     
     options['entity_vocab'] = vocab.entity_vocab
-    # print(len(options['entity_vocab'] ))
-    # options['relation_vocab'] = json.load(open(options['vocab_dir'] + '/relation_vocab.json'))
-    
-    # options['entity_vocab'] = json.load(open(options['vocab_dir'] + '/entity_vocab.json'))
+
     print(len(options['entity_vocab'] ))
     logger.info('Reading mid to name map')
     mid_to_word = {}
-    # with open('/iesl/canvas/rajarshi/data/RL-Path-RNN/FB15k-237/fb15k_names', 'r') as f:
-    #     mid_to_word = json.load(f)
+
     logger.info('Done..')
     logger.info('Total number of entities {}'.format(len(options['entity_vocab'])))
     logger.info('Total number of relations {}'.format(len(options['relation_vocab'])))
@@ -577,28 +596,6 @@ if __name__ == '__main__':
     xdata = [float(0.0)]
     ydata_loss = [float(0.0)]
     ydata_accuracy = [float(0.0)]
-
-    def train_rl(options, xdata, ydata_accuracy, ydata_loss, first):
-        trainer = Trainer(options, "reinforcement", "original")
-        if not first:
-            trainer.agent.load_weights(options['model_dir'])
-        xdata, ydata_accuracy, ydata_loss = trainer.train(xdata, ydata_accuracy, ydata_loss)
-        trainer.agent.save_weights(options['model_dir'])
-        return xdata, ydata_accuracy, ydata_loss, trainer.needs_work_queries[:len(trainer.needs_work_queries)//4]
-
-    def train_sl(options, xdata, ydata_accuracy, ydata_loss, needs_work):
-        options['dataset']['train'] = needs_work
-        options['beta'] = options['beta_sl']
-        options['Lambda'] = options['Lambda_sl']
-        options['learning_rate'] = options['learning_rate_sl']
-        options['random_masking_coef'] = 0
-        options['total_epochs_sl'] = options['sl_start_checkpointing']
-        trainer = Trainer(options, "supervised", "our")
-        trainer.agent.load_weights(options['model_dir'])
-        xdata, ydata_accuracy, ydata_loss = trainer.train(xdata, ydata_accuracy, ydata_loss)
-        trainer.agent.save_weights(options['model_dir'])
-        trainer.test()
-        return xdata, ydata_accuracy, ydata_loss
 
     def make_sl_checkpoint(last_epoch, options, xdata, ydata_accuracy, ydata_loss):
         original_model_dir = options['model_dir']
@@ -646,104 +643,100 @@ if __name__ == '__main__':
         # save model
         trainer.agent.save_weights(options['model_dir'] + options['model_name'])
 
-    def hp_tune(b, l, lr):
-        xdata = [float(0.0)]
-        ydata_loss = [float(0.0)]
-        ydata_accuracy = [float(0.0)]
-        # create SL Trainer
+    def train_rl(options, xdata, ydata_accuracy, ydata_loss, first):
+        trainer = Trainer(options, "reinforcement", "original")
+        if not first:
+            trainer.agent.load_weights(options['model_dir'])
+        xdata, ydata_accuracy, ydata_loss = trainer.train(xdata, ydata_accuracy, ydata_loss)
+        trainer.agent.save_weights(options['model_dir'])
+        return xdata, ydata_accuracy, ydata_loss, trainer.needs_work_queries[:len(trainer.needs_work_queries)//4]
+        # return xdata, ydata_accuracy, ydata_loss, trainer.all_good_queries[:len(trainer.all_good_queries)//4]
+
+    def train_sl(options, xdata, ydata_accuracy, ydata_loss, needs_work):
+        options['dataset']['train'] = needs_work
         options['beta'] = options['beta_sl']
         options['Lambda'] = options['Lambda_sl']
         options['learning_rate'] = options['learning_rate_sl']
         options['random_masking_coef'] = 0
         options['total_epochs_sl'] = options['sl_start_checkpointing']
         trainer = Trainer(options, "supervised", "our")
+        trainer.agent.load_weights(options['model_dir'])
         xdata, ydata_accuracy, ydata_loss = trainer.train(xdata, ydata_accuracy, ydata_loss)
-        # create graph
-        figure, axes = plt.subplots(1,2)
-        loss_graph=axes[0]
-        accuracy_graph=axes[1]
-        loss_graph.set_xlim(float(1.0), max(xdata))
-        accuracy_graph.set_xlim(float(1.0), max(xdata))
-        loss_graph.set_ylim(min(float(0.0), min(ydata_loss)), max(ydata_loss))
-        accuracy_graph.set_ylim(min(float(0.0), min(ydata_accuracy)), max(ydata_accuracy))
-        line_loss, = loss_graph.plot(xdata, ydata_loss, 'r-', label="Loss")
-        line_accuracy, = accuracy_graph.plot(xdata, ydata_accuracy, 'r-', label="Accuracy")
-        line_loss.set_xdata(xdata)
-        line_accuracy.set_xdata(xdata)
-        line_loss.set_ydata(ydata_loss)
-        line_accuracy.set_ydata(ydata_accuracy)
-        plt.draw()
-        plt.savefig(options['output_dir']+'/'+"lr_"+str(lr)+"_b_"+str(b)+"_L_"+str(l)+".png")
-        plt.close(figure)
+        trainer.agent.save_weights(options['model_dir'])
+        return xdata, ydata_accuracy, ydata_loss
 
-    original_options = options.copy()
-    first = True
-    for x in range(options['num_cycles']):
-        xdata, ydata_accuracy, ydata_loss, needs_work = train_rl(original_options.copy(), xdata, ydata_accuracy, ydata_loss, first)
-        first = False
-        xdata, ydata_accuracy, ydata_loss = train_sl(original_options.copy(), xdata, ydata_accuracy, ydata_loss, needs_work)
 
-    ydata_accuracy = moving_average(ydata_accuracy, n=50)
-    ydata_loss = moving_average(ydata_loss, n=50)
-    xdata = np.array(list(range(ydata_accuracy.shape[0])))
-    figure, axes = plt.subplots(1,2)
-    loss_graph=axes[0]
-    accuracy_graph=axes[1]
-    loss_graph.set_xlim(float(1.0), max(xdata))
-    accuracy_graph.set_xlim(float(1.0), max(xdata))
-    loss_graph.set_ylim(min(float(0.0), min(ydata_loss)), max(ydata_loss))
-    accuracy_graph.set_ylim(min(float(0.0), min(ydata_accuracy)), max(ydata_accuracy))
-    line_loss, = loss_graph.plot(xdata, ydata_loss, 'r-', label="Loss")
-    line_accuracy, = accuracy_graph.plot(xdata, ydata_accuracy, 'r-', label="Accuracy")
-    line_loss.set_xdata(xdata)
-    line_accuracy.set_xdata(xdata)
-    line_loss.set_ydata(ydata_loss)
-    line_accuracy.set_ydata(ydata_accuracy)
-    plt.draw()
-    plt.savefig(options['output_dir']+'/'+options['model_name']+".png")
-    plt.close(figure)
+    # the following commented out code is the code for my idea of using the queries RL performs poorly on as the training batch for SL
+    # and alternating between the two as training progresses
 
-    #beta
-    # hp_tune(2, 0.02, 1e-3)
-    # hp_tune(0.2, 0.02, 1e-3)
-    # hp_tune(0.02, 0.02, 1e-3)
-    # hp_tune(0.002, 0.02, 1e-3)
-    # hp_tune(0.0002, 0.02, 1e-3)
-    # hp_tune(0.02, 2, 1e-3)
-    # hp_tune(0.02, 0.2, 1e-3)
-    # hp_tune(0.02, 0.002, 1e-3)
-    # hp_tune(0.02, 0.0002, 1e-3)
+    # original_options = options.copy()
+    # first = True
+    # for x in range(options['num_cycles']):
+    #     xdata, ydata_accuracy, ydata_loss, needs_work = train_rl(copy.deepcopy(original_options), list(xdata), list(ydata_accuracy), list(ydata_loss), first)
+    #     if not first:
+    #         tester = Trainer(copy.deepcopy(original_options), "reinforcement", "original")
+    #         tester.agent.load_weights(original_options['model_dir'])
+    #         tester.test()
 
+    #         ydata_accuracy = moving_average(ydata_accuracy, n=1)
+    #         ydata_loss = moving_average(ydata_loss, n=1)
+    #         xdata = np.array(list(range(ydata_accuracy.shape[0])))
+    #         figure, axes = plt.subplots(1,2)
+    #         loss_graph=axes[0]
+    #         accuracy_graph=axes[1]
+    #         loss_graph.set_xlim(float(1.0), max(xdata))
+    #         accuracy_graph.set_xlim(float(1.0), max(xdata))
+    #         loss_graph.set_ylim(min(float(0.0), min(ydata_loss)), max(ydata_loss))
+    #         accuracy_graph.set_ylim(min(float(0.0), min(ydata_accuracy)), max(ydata_accuracy))
+    #         line_loss, = loss_graph.plot(xdata, ydata_loss, 'r-', label="Loss")
+    #         line_accuracy, = accuracy_graph.plot(xdata, ydata_accuracy, 'r-', label="Accuracy")
+    #         line_loss.set_xdata(xdata)
+    #         line_accuracy.set_xdata(xdata)
+    #         line_loss.set_ydata(ydata_loss)
+    #         line_accuracy.set_ydata(ydata_accuracy)
+    #         plt.draw()
+    #         plt.savefig(options['output_dir']+'/'+options['model_name']+".png")
+    #         plt.close(figure)
+    #     first = False
+    #     xdata, ydata_accuracy, ydata_loss = train_sl(copy.deepcopy(original_options), list(xdata), list(ydata_accuracy), list(ydata_loss), needs_work)
+
+    # the following not commented out code is the code for using SL to pretrain RL; it trains SL for a long time, stopping every few epochs to create a checkpoint
+    # of RL training and test its performance.
+
+    # note that right now the code has the options turned on to ignore the agent during SL and just take the action straight from the label for testing purposes
+
+    original_options = copy.deepcopy(options)
+    
     # create SL Trainer
-    # options['beta'] = options['beta_sl']
-    # options['Lambda'] = options['Lambda_sl']
-    # options['learning_rate'] = options['learning_rate_sl']
-    # options['random_masking_coef'] = 0
-    # options['total_epochs_sl'] = options['sl_start_checkpointing']
-    # trainer = Trainer(options, "supervised", "our")
+    options['beta'] = options['beta_sl']
+    options['Lambda'] = options['Lambda_sl']
+    options['learning_rate'] = options['learning_rate_sl']
+    options['random_masking_coef'] = 0
+    options['total_epochs_sl'] = options['sl_start_checkpointing']
+    trainer = Trainer(options, "supervised", "our")
 
-    # # Create checkpoint for pure RL run
-    # last_epoch = 0
-    # trainer.agent.save_weights(options['model_dir'])
-    # make_sl_checkpoint(last_epoch, original_options.copy(), xdata.copy(), ydata_accuracy.copy(), ydata_loss.copy())
-    # trainer.agent.load_weights(options['model_dir'])
+    # Create checkpoint for pure RL run
+    last_epoch = 0
+    trainer.agent.save_weights(options['model_dir'])
+    make_sl_checkpoint(last_epoch, copy.deepcopy(original_options), xdata.copy(), ydata_accuracy.copy(), ydata_loss.copy())
+    trainer.agent.load_weights(options['model_dir'])
 
-    # # Create initial SL checkpoint
-    # xdata, ydata_accuracy, ydata_loss = trainer.train(xdata, ydata_accuracy, ydata_loss)
-    # last_epoch = trainer.total_epochs_sl
+    # Create initial SL checkpoint
+    xdata, ydata_accuracy, ydata_loss = trainer.train(xdata, ydata_accuracy, ydata_loss)
+    last_epoch = trainer.total_epochs_sl
 
-    # # Create first post-SL checkpoint
-    # trainer.agent.save_weights(options['model_dir'])
-    # make_sl_checkpoint(last_epoch, original_options.copy(), xdata.copy(), ydata_accuracy.copy(), ydata_loss.copy())
-    # trainer.agent.load_weights(options['model_dir'])
+    # Create first post-SL checkpoint
+    trainer.agent.save_weights(options['model_dir'])
+    make_sl_checkpoint(last_epoch, copy.deepcopy(original_options), xdata.copy(), ydata_accuracy.copy(), ydata_loss.copy())
+    trainer.agent.load_weights(options['model_dir'])
 
-    # # Create subsequent SL checkpoints
-    # trainer.total_epochs_sl = options['sl_checkpoint_interval']
+    # Create subsequent SL checkpoints
+    trainer.total_epochs_sl = options['sl_checkpoint_interval']
 
-    # for ckpt in range(options['sl_checkpoints']):
-    #     xdata, ydata_accuracy, ydata_loss = trainer.train(xdata, ydata_accuracy, ydata_loss)
-    #     last_epoch += trainer.total_epochs_sl
+    for ckpt in range(3,options['sl_checkpoints']):
+        xdata, ydata_accuracy, ydata_loss = trainer.train(xdata, ydata_accuracy, ydata_loss)
+        last_epoch += trainer.total_epochs_sl
 
-    #     trainer.agent.save_weights(options['model_dir'])
-    #     make_sl_checkpoint(last_epoch, original_options.copy(), xdata.copy(), ydata_accuracy.copy(), ydata_loss.copy())
-    #     trainer.agent.load_weights(options['model_dir'])
+        trainer.agent.save_weights(options['model_dir'])
+        make_sl_checkpoint(last_epoch, copy.deepcopy(original_options), xdata.copy(), ydata_accuracy.copy(), ydata_loss.copy())
+        trainer.agent.load_weights(options['model_dir'])

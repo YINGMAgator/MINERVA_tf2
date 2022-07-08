@@ -15,6 +15,7 @@ class Labeller(object):
     def __init__(self,params):
         self.array_store, self.ePAD, self.rPAD, self.all_correct= params
         self.correct={}
+        self.no_paths_found = 0
 
     def correct_path(self, line):
         # if this key is already in the dict, dont generate it again. Otherwise, generate the new key
@@ -27,20 +28,24 @@ class Labeller(object):
             key=self.arr_2_key(line)
             for path in self.correct_path_generate([e1,r,e2]):
                 if key in self.correct:
-                    self.correct[key][0]["N/A"] += [path[0]]
-                    if path[0] in self.correct[key][1]:
-                        self.correct[key][1][path[0]] += [path[1]]
+                    self.correct[key][0][("N/A",)] += [path[0]]
+                    if ("N/A", path[0]) in self.correct[key][1]:
+                        # only save unique paths
+                        if not path[1] in self.correct[key][1][("N/A", path[0])]:
+                            self.correct[key][1][("N/A", path[0])] += [path[1]]
                     else:
-                        self.correct[key][1][path[0]] = [path[1]]
-                    if path[1] in self.correct[key][2]:
-                        self.correct[key][2][path[1]] += [path[2]]
+                        self.correct[key][1][("N/A", path[0])] = [path[1]]
+                    if ("N/A", path[0], path[1]) in self.correct[key][2]:
+                        # only save unique paths
+                        if not path[2] in self.correct[key][2][("N/A", path[0], path[1])]:
+                            self.correct[key][2][("N/A", path[0], path[1])] += [path[2]]
                     else:
-                        self.correct[key][2][path[1]] = [path[2]]
+                        self.correct[key][2][("N/A", path[0], path[1])] = [path[2]]
                 else:
                     self.correct[key] = {
-                        0: {"N/A" : [path[0]]},
-                        1: {path[0] : [path[1]]},
-                        2: {path[1] : [path[2]]}
+                        0: {("N/A",) : [path[0]]},
+                        1: {("N/A", path[0]) : [path[1]]},
+                        2: {("N/A", path[0], path[1]) : [path[2]]}
                     }
             return self.correct[key]
 
@@ -103,7 +108,7 @@ class Labeller(object):
                 # every action that could lead from the first node to the current node
                 hop1 = np.where(ret1[ :, 0] == e21)[0]
                 # every action that could lead from the current node to the answer
-                hop2=  np.where(ret2[ :, 0] == e2)[0]
+                hop2 =  np.where(ret2[ :, 0] == e2)[0]
                 for h1 in hop1:
                     for h2 in hop2:
                         paths+=1
@@ -112,10 +117,12 @@ class Labeller(object):
             ####check if the answer is in the third hop####
             ###############################################
             # all possible next states given 
-            start_entity_3rd_hop= set(self.array_store[e21, :, 0])
+            start_entity_3rd_hop = set(self.array_store[e21, :, 0])
             # we don't want the agent to stay on the starting entity
             if e1 in start_entity_3rd_hop:
                 start_entity_3rd_hop.remove(e1)
+            if e2 in start_entity_3rd_hop:
+                start_entity_3rd_hop.remove(e2)
             for e31 in start_entity_3rd_hop:
                 #ret3 = every possible third action, given the second action
                 ret3 = self.array_store[e31, :, :].copy()
@@ -123,39 +130,14 @@ class Labeller(object):
                     # all actions that take you from the start node to the second node
                     hop1 = np.where(ret1[ :, 0]== e21)[0]
                     # all actions that take you from the second node to the current node
-                    hop2=  np.where(ret2[ :, 0]== e31)[0]
+                    hop2 =  np.where(ret2[ :, 0]== e31)[0]
                     # all actions that takes you from the current node to the answer
-                    hop3=  np.where(ret3[ :, 0]== e2)[0]
+                    hop3 =  np.where(ret3[ :, 0]== e2)[0]
                     for h1 in hop1:
                         for h2 in hop2:
                             for h3 in hop3:
                                 paths+=1
                                 yield np.array([h1, h2, h3], int)
-                # else:
-                #     #if that third node does not lead to the answer, go back
-                #     # all actions that take you from the start node to the second node
-                #     hop1 = np.where(ret1[ :, 0]== e21)[0]
-                #     # all actions that take you from the second node to the current node
-                #     hop2=  np.where(ret2[ :, 0]== e31)[0]
-                #     # all actions that takes you from the current node back to the second node
-                #     hop3=  np.where(ret3[ :, 0]== e21)[0]
-                #     for h1 in hop1:
-                #         for h2 in hop2:
-                #             for h3 in hop3:
-                #                 print(h3)
-                #                 paths+=1
-                #                 yield np.array([h1, h2, h3], int)
-            # # we get here without yielding anything if the second action we took can't lead to a correct answer
-            # if paths-temp_paths == 0:
-            #     # all actions that take you from the start node to the second node
-            #     hop1 = np.where(ret1[ :, 0] == e21)[0]
-            #     # all actions that take you from the second node back to the start node
-            #     hop2=  np.where(ret2[ :, 0] == e1)[0]
-            #     for h1 in hop1:
-            #         for h2 in hop2:
-            #             paths+=1
-            #             print(h2)
-            #             yield np.array([h1, h2, 0], int)
-
         if paths == 0:
+            self.no_paths_found += 1
             yield np.array([-1, -1, -1], int)
