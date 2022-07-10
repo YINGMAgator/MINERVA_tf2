@@ -22,6 +22,7 @@ from code.model.baseline import ReactiveBaseline
 #from scipy.misc import logsumexp as lse
 from scipy.special import logsumexp as lse
 from code.data.vocab_gen import Vocab_Gen
+tf.keras.backend.set_floatx('float64')
 matplotlib.use("agg")
 logger = logging.getLogger()
 logging.basicConfig(stream=sys.stdout, level=logging.DEBUG)
@@ -170,7 +171,7 @@ class Trainer(object):
                         loss_before_regularization.append(loss)
                         logits_all.append(logits)
                         # for testing
-                        actions_test = idx
+                        # actions_test = idx
                     else:
                         normalized_scores = self.normalize_scores(scores)
 
@@ -178,7 +179,7 @@ class Trainer(object):
                         choices=scores.shape[1]
 
                         correct=np.full((active_length,choices),0)
-                        actions_test=np.array([], int)
+                        # actions_test=np.array([], int)
                         for batch_num in range(len(episode.correct_path[i])):
                             try:
                                 valid = episode.correct_path[i][batch_num][last_step[batch_num]]
@@ -191,13 +192,12 @@ class Trainer(object):
                                 correct[np.array([batch_num]*len(valid), int),np.array(valid, int)] = np.ones(len(valid))
 
                             # the following line is just used to pick an action when testing that label gen is working properly
-                            actions_test = np.concatenate((actions_test, [valid[0] if len(valid)!=0 else 0]))
+                            # actions_test = np.concatenate((actions_test, [valid[0] if len(valid)!=0 else 0]))
 
-                        # current_actions = idx.numpy() # actions_test if verifying labels
-                        current_actions = actions_test
+                        current_actions = idx.numpy() # actions_test if verifying labels
+                        # current_actions = actions_test
                         last_step = [tuple(list(x) + [y]) for (x, y) in zip(last_step, current_actions)]
-                        # last_step = idx.numpy()
-
+                        # laast_step = idx.numpy()
                         # the following is only used for gathering data about the difference between agent scores and labels for high-scoring queries
                         # f.write("Correct label shape")
                         # f.write(str(correct.shape))
@@ -210,16 +210,24 @@ class Trainer(object):
 
                         # masked_label = self.positive_cce_masking(normalized_scores, correct)
                         # loss = self.cce(tf.convert_to_tensor(masked_label), normalized_scores)
+                        # print(tf.math.reduce_any(tf.math.is_nan(tf.convert_to_tensor(correct)), axis=1))
+                        # print(tf.math.reduce_any(tf.math.is_nan(normalized_scores), axis=1))
                         loss = self.cce(tf.convert_to_tensor(correct), normalized_scores)
+
+                        #testing
+                        # nan_array = tf.math.is_nan(loss)
+                        # contains_nan = tf.math.reduce_any(nan_array)
+                        # print(contains_nan)
                         
                         supervised_learning_loss.append(loss)
 
-                    # state = episode(idx)
-                    state = episode(actions_test)
+                    state = episode(idx)
+                    # state = episode(actions_test)
 
                 # get the final reward from the environment
                 rewards = episode.get_reward()
-                accuracy = np.sum((np.sum(np.reshape(rewards, (self.batch_size, self.num_rollouts)), axis=1) > 0))/self.batch_size
+                # accuracy = np.sum((np.sum(np.reshape(rewards, (self.batch_size, self.num_rollouts)), axis=1) > 0))/self.batch_size
+                accuracy = np.mean(rewards)
                 xdata.append(float(max(xdata) + 1))
                 ydata_accuracy.append(float(accuracy))
 
@@ -253,6 +261,7 @@ class Trainer(object):
                     batch_total_loss = self.calc_reinforce_loss(cum_discounted_reward,loss_before_regularization,logits_all)
                     ydata_loss.append(float(batch_total_loss.numpy()))
                 else:
+                    # print(supervised_learning_loss)
                     sl_loss_float64 = [tf.cast(x, tf.float64) for x in supervised_learning_loss]
                     reduced_sum = tf.reduce_sum(sl_loss_float64,0)
                     square = tf.math.square(reduced_sum)
@@ -620,6 +629,9 @@ if __name__ == '__main__':
         xdata, ydata_accuracy, ydata_loss = trainer.train(xdata, ydata_accuracy, ydata_loss)
 
         # create graph
+        ydata_accuracy = moving_average(ydata_accuracy, n=1)
+        ydata_loss = moving_average(ydata_loss, n=1)
+        xdata = np.array(list(range(ydata_accuracy.shape[0])))
         figure, axes = plt.subplots(1,2)
         loss_graph=axes[0]
         accuracy_graph=axes[1]
@@ -665,6 +677,49 @@ if __name__ == '__main__':
         trainer.agent.save_weights(options['model_dir'])
         return xdata, ydata_accuracy, ydata_loss
 
+    def hp_tune(b, l, lr):
+        xdata = [float(0.0)]
+        ydata_loss = [float(0.0)]
+        ydata_accuracy = [float(0.0)]
+        # create SL Trainer
+        options['beta'] = options['beta_sl']
+        options['Lambda'] = options['Lambda_sl']
+        options['learning_rate'] = options['learning_rate_sl']
+        options['random_masking_coef'] = 0
+        options['total_epochs_sl'] = options['sl_start_checkpointing']
+        trainer = Trainer(options, "supervised", "our")
+        xdata, ydata_accuracy, ydata_loss = trainer.train(xdata, ydata_accuracy, ydata_loss)
+        # create graph
+        ydata_accuracy = moving_average(ydata_accuracy, n=50)
+        ydata_loss = moving_average(ydata_loss, n=50)
+        xdata = np.array(list(range(ydata_accuracy.shape[0])))
+        figure, axes = plt.subplots(1,2)
+        loss_graph=axes[0]
+        accuracy_graph=axes[1]
+        loss_graph.set_xlim(float(1.0), max(xdata))
+        accuracy_graph.set_xlim(float(1.0), max(xdata))
+        loss_graph.set_ylim(min(float(0.0), min(ydata_loss)), max(ydata_loss))
+        accuracy_graph.set_ylim(min(float(0.0), min(ydata_accuracy)), max(ydata_accuracy))
+        line_loss, = loss_graph.plot(xdata, ydata_loss, 'r-', label="Loss")
+        line_accuracy, = accuracy_graph.plot(xdata, ydata_accuracy, 'r-', label="Accuracy")
+        line_loss.set_xdata(xdata)
+        line_accuracy.set_xdata(xdata)
+        line_loss.set_ydata(ydata_loss)
+        line_accuracy.set_ydata(ydata_accuracy)
+        plt.draw()
+        plt.savefig(options['output_dir']+'/'+"lr_"+str(lr)+"_b_"+str(b)+"_L_"+str(l)+".png")
+        plt.close(figure)
+
+    # this code is for hyperparameter tuning
+    hp_tune(2, 0.02, 1e-3)
+    hp_tune(0.2, 0.02, 1e-3)
+    hp_tune(0.02, 0.02, 1e-3)
+    hp_tune(0.002, 0.02, 1e-3)
+    hp_tune(0.0002, 0.02, 1e-3)
+    hp_tune(0.02, 2, 1e-3)
+    hp_tune(0.02, 0.2, 1e-3)
+    hp_tune(0.02, 0.002, 1e-3)
+    hp_tune(0.02, 0.0002, 1e-3)
 
     # the following commented out code is the code for my idea of using the queries RL performs poorly on as the training batch for SL
     # and alternating between the two as training progresses
@@ -678,9 +733,9 @@ if __name__ == '__main__':
     #         tester.agent.load_weights(original_options['model_dir'])
     #         tester.test()
 
-    #         ydata_accuracy = moving_average(ydata_accuracy, n=1)
-    #         ydata_loss = moving_average(ydata_loss, n=1)
-    #         xdata = np.array(list(range(ydata_accuracy.shape[0])))
+            # ydata_accuracy = moving_average(ydata_accuracy, n=1)
+            # ydata_loss = moving_average(ydata_loss, n=1)
+            # xdata = np.array(list(range(ydata_accuracy.shape[0])))
     #         figure, axes = plt.subplots(1,2)
     #         loss_graph=axes[0]
     #         accuracy_graph=axes[1]
@@ -705,38 +760,38 @@ if __name__ == '__main__':
 
     # note that right now the code has the options turned on to ignore the agent during SL and just take the action straight from the label for testing purposes
 
-    original_options = copy.deepcopy(options)
+    # original_options = copy.deepcopy(options)
     
-    # create SL Trainer
-    options['beta'] = options['beta_sl']
-    options['Lambda'] = options['Lambda_sl']
-    options['learning_rate'] = options['learning_rate_sl']
-    options['random_masking_coef'] = 0
-    options['total_epochs_sl'] = options['sl_start_checkpointing']
-    trainer = Trainer(options, "supervised", "our")
+    # # create SL Trainer
+    # options['beta'] = options['beta_sl']
+    # options['Lambda'] = options['Lambda_sl']
+    # options['learning_rate'] = options['learning_rate_sl']
+    # options['random_masking_coef'] = 0
+    # options['total_epochs_sl'] = options['sl_start_checkpointing']
+    # trainer = Trainer(options, "supervised", "our")
 
-    # Create checkpoint for pure RL run
-    last_epoch = 0
-    trainer.agent.save_weights(options['model_dir'])
-    make_sl_checkpoint(last_epoch, copy.deepcopy(original_options), xdata.copy(), ydata_accuracy.copy(), ydata_loss.copy())
-    trainer.agent.load_weights(options['model_dir'])
+    # # Create checkpoint for pure RL run
+    # last_epoch = 0
+    # trainer.agent.save_weights(options['model_dir'])
+    # make_sl_checkpoint(last_epoch, copy.deepcopy(original_options), xdata.copy(), ydata_accuracy.copy(), ydata_loss.copy())
+    # trainer.agent.load_weights(options['model_dir'])
 
-    # Create initial SL checkpoint
-    xdata, ydata_accuracy, ydata_loss = trainer.train(xdata, ydata_accuracy, ydata_loss)
-    last_epoch = trainer.total_epochs_sl
+    # # Create initial SL checkpoint
+    # xdata, ydata_accuracy, ydata_loss = trainer.train(xdata, ydata_accuracy, ydata_loss)
+    # last_epoch = trainer.total_epochs_sl
 
-    # Create first post-SL checkpoint
-    trainer.agent.save_weights(options['model_dir'])
-    make_sl_checkpoint(last_epoch, copy.deepcopy(original_options), xdata.copy(), ydata_accuracy.copy(), ydata_loss.copy())
-    trainer.agent.load_weights(options['model_dir'])
+    # # Create first post-SL checkpoint
+    # trainer.agent.save_weights(options['model_dir'])
+    # make_sl_checkpoint(last_epoch, copy.deepcopy(original_options), xdata.copy(), ydata_accuracy.copy(), ydata_loss.copy())
+    # trainer.agent.load_weights(options['model_dir'])
 
-    # Create subsequent SL checkpoints
-    trainer.total_epochs_sl = options['sl_checkpoint_interval']
+    # # Create subsequent SL checkpoints
+    # trainer.total_epochs_sl = options['sl_checkpoint_interval']
 
-    for ckpt in range(3,options['sl_checkpoints']):
-        xdata, ydata_accuracy, ydata_loss = trainer.train(xdata, ydata_accuracy, ydata_loss)
-        last_epoch += trainer.total_epochs_sl
+    # for ckpt in range(3,options['sl_checkpoints']):
+    #     xdata, ydata_accuracy, ydata_loss = trainer.train(xdata, ydata_accuracy, ydata_loss)
+    #     last_epoch += trainer.total_epochs_sl
 
-        trainer.agent.save_weights(options['model_dir'])
-        make_sl_checkpoint(last_epoch, copy.deepcopy(original_options), xdata.copy(), ydata_accuracy.copy(), ydata_loss.copy())
-        trainer.agent.load_weights(options['model_dir'])
+    #     trainer.agent.save_weights(options['model_dir'])
+    #     make_sl_checkpoint(last_epoch, copy.deepcopy(original_options), xdata.copy(), ydata_accuracy.copy(), ydata_loss.copy())
+    #     trainer.agent.load_weights(options['model_dir'])
